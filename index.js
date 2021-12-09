@@ -18,6 +18,11 @@ webServer.listen(3000,
 // require the sqlite driver better-sqlite3
 const driver = require('better-sqlite3');
 
+webbserver.get('/api/greeting', (req, res) => {
+  req.setHeader('Content-type'), 'application/json';
+  res.send(JSON.stringify({ greeting: 'Hello! The connection works' }));
+})
+
 // connect to a database (call the connection db)
 //const db = driver('./database/petowners-and-pets.sqlite3');
 
