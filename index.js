@@ -18,6 +18,18 @@ webServer.listen(3000,
 // require the sqlite driver better-sqlite3
 const driver = require('better-sqlite3');
 
+// Create a route using the web server method get
+webServer.get('/api/pets', (request, response) => {
+  // create a prepared statement with my query
+  let preparedStatement = db.prepare(`
+    SELECT *
+    FROM pets
+  `);
+  // run the query
+  let result = preparedStatement.all();
+  // send the result as json to the client / browser
+  response.json(result);
+});
 // connect to a database (call the connection db)
 //const db = driver('./database/petowners-and-pets.sqlite3');
 
@@ -47,15 +59,3 @@ const driver = require('better-sqlite3');
   End of temporary code
 */
 
-// Create a route using the web server method get
-//webServer.get('/api/pets', (request, response) => {
-  // create a prepared statement with my query
-  /*let preparedStatement = db.prepare(`
-    SELECT *
-    FROM pets
-  `);*/
-  // run the query
-  //let result = preparedStatement.all();
-  // send the result as json to the client / browser
-  //response.json(result);
-//});
