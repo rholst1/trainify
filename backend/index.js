@@ -31,12 +31,13 @@ app.post("/payment", (req,res) => {
     email: token.email,
     source: token.id
   }).then(customer => {
-    stripe.charges.create({})
+    stripe.charges.create({
+      amount: product.price * 100
+    })
   }).then(result => res.status(200).json(result))
   .catch(err => console.log(err))
 
 })
-
 
 
 //listen
