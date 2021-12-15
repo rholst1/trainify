@@ -10,7 +10,7 @@ import './HomePage.css'
 const HomePage = () => {
 
     const [value, onChange] = useState(new Date());
-    
+    console.log(value)
     return (
         <>
             <p>Planera din resa</p>
