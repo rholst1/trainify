@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import StripeCheckout from 'react-stripe-checkout'
+import instance from '../Api/Axios';
+import { json } from 'body-parser';
 
 
 
@@ -17,15 +19,14 @@ const StripePayment = () => {
             'Content-Type': 'application/json'
         }
 
-        return fetch('http://localhost:3001/payment', {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(body)
-        }).then(res => {
-            console.log(res)
-            const { status } = res;
-            console.log(status)
+        return instance.post('/payment', body, {
+            headers: headers
         })
+        .then(res => {
+                console.log(res)
+                const { status } = res;
+                console.log(status)
+            })
             .catch(error => console.log(error))
     }
 
