@@ -9,22 +9,23 @@ import './HomePage.css'
 const HomePage = () => {
 
     const [value, onChange] = useState(new Date());
+    console.log(value)
     return (
         <>
             Sök en resa
-            Från<input typ="text"></input>
-            Till<input typ="text"></input>
+            Från <input typ="text"></input> 
+            Till <input typ="text"></input>
             <button>Hitta resa</button>
-        <div class = "calender">
-      <Calendar
-        onChange={onChange}
-        value={value}
-      />
-    </div> 
-            <StripePayment/>
-          
+            <div class="calender">
+                <Calendar
+                    onChange={onChange}
+                    value={value}
+                />
+            </div>
+            <StripePayment />
+
         </>
-        
+
     )
 }
 
