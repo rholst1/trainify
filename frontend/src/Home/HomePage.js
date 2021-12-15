@@ -1,10 +1,6 @@
-//import React from "react";
 import StripePayment from "../Stripe/StripePayment";
 import React, { useEffect, useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
-//import 'react-calendar/dist/Calendar.css';
-
-//import 'react-clock/dist/Clock.css';
 import './HomePage.css'
 
 const HomePage = () => {
@@ -21,7 +17,7 @@ const HomePage = () => {
                  <DateTimePicker
             onChange={onChange}
             value={value}
-      />
+        />
             </div>
             <StripePayment />
 
