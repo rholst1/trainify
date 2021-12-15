@@ -4,20 +4,23 @@ import DateTimePicker from 'react-datetime-picker';
 import './HomePage.css'
 
 const HomePage = () => {
+    var date = new Date();
+    console.log(date);
+    const [value, setValue] = useState(date);
 
-    const [value, onChange] = useState(new Date());
-    console.log(value)
+
     return (
         <>
             <p>Planera din resa</p>
-            Från <input typ="text"></input> 
+            Från <input typ="text"></input>
             Till <input typ="text"></input>
             <button>Hitta resa</button>
-            <div> 
-                 <DateTimePicker
-            onChange={onChange}
-            value={value}
-        />
+            <div>
+                <DateTimePicker
+                    onChange={setValue}
+                    value={value}
+                    locale="se"
+                />
             </div>
             <StripePayment />
 
