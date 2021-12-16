@@ -2,6 +2,7 @@ import StripePayment from "../Stripe/StripePayment";
 import React, {useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import './HomePage.css'
+import { promiseImpl } from "ejs";
 
 const HomePage = () => {
     var date = new Date();
@@ -20,6 +21,7 @@ const HomePage = () => {
                     onChange={setValue}
                     value={value}
                     locale="se"
+                    disableClock="true"
                 />
             </div>
             <StripePayment />
