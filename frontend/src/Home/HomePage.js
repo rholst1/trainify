@@ -8,7 +8,7 @@ const HomePage = () => {
     var date = new Date();
     console.log(date);
     const [value, setValue] = useState(date);
-
+    console.log(process.env.REACT_APP_TEST)
 
     return (
         <>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StripeCheckout from 'react-stripe-checkout'
 import instance from '../Api/Axios';
 import { json } from 'body-parser';
+import axios from 'axios';
 
 
 
@@ -19,7 +20,7 @@ const StripePayment = () => {
             'Content-Type': 'application/json'
         }
 
-        return instance.post('/payment', body, {
+        return axios.post('/payment', body, {
             headers: headers
         })
         .then(res => {
@@ -29,7 +30,7 @@ const StripePayment = () => {
             })
             .catch(error => console.log(error))
     }
-
+    // console.log(process.env.REACT_APP_STRIPE_KEY)
     return (
         <>
             <StripeCheckout
