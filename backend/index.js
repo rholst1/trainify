@@ -82,3 +82,49 @@ app.get('/api/:table/:id', (request, response) => {
   console.log(result);
 
   });
+
+// POST FUNCTION 1
+
+  
+  // POSTs to DB and fills columns
+  // Does not work, because for some reason request.body returns empty(not undefined), unknown why
+  // example: use postman to do a POST request towards localhost:3000/api/Ticket
+app.post('/api/Ticket', (request, response) => {
+    let postToDatabaseQuery = dbPath.prepare(`
+      INSERT INTO Ticket
+      (seat_number, price, email)
+      VALUES(:seat_number, :price, :email)
+    `)
+    console.log(request.body)
+    let result = postToDatabaseQuery.run(request.body)
+    response.json(result);
+    console.log(result)
+    
+  });
+
+
+// POST FUNCTION 2
+
+/* 
+  // POSTs to DB and fills column, dynamic setup that maps both table, column names and paramaters dynamically
+  // Does not work, because for some reason request.body returns empty(not undefined), unknown why
+  // example: use postman to do a POST request towards localhost:3000/api/(insert table name here)
+app.post('/api/:table', (request, response) => {
+  
+  let columnNames = Object.keys(request.body)
+  console.log('columnNames', columnNames)
+  let columnParameters = Object.keys(request.body).map(columnNames => ':' + columnNames)
+  console.log('columnParameters', columnParameters)
+  let query = `
+  INSERT INTO ${request.params.table}
+  (${columnNames})
+  VALUES(${columnParameters})
+`
+  console.log('query',query)
+  let postToDatabase = dbPath.prepare(query)
+  console.log(request.body)
+  let result = postToDatabase.run(request.body)
+  response.json(result);
+  
+});
+*/
