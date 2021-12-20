@@ -29,11 +29,11 @@ const StripePayment = () => {
             })
             .catch(error => console.log(error))
     }
-
+    console.log(process.env.REACT_APP_STRIPE_KEY)
     return (
         <>
             <StripeCheckout
-                stripeKey='pk_test_51K6WavLuMgncR3MOChxwZs8AmBuPekI45L0kvP16HW6TDuFKEojrJ1OjkEUWWJZLTnMCpBiUK9zY8UyshaJP2aTC00rVyiRaqm'
+                stripeKey={process.env.REACT_APP_STRIPE_KEY}
                 token={makePayment}
                 name='By Ticket '
             >
