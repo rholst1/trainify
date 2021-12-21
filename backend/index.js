@@ -1,7 +1,3 @@
-
-const nodemail = require('./nodemailer');
-console.log(nodemail);
-
 const path = require('path');
 const express = require("express")
 const cors = require("cors")
@@ -71,64 +67,63 @@ const dbPath = dbDriver('./backend/data/database.db');
 
 
   // GET Function that grabs tablename and ID dynamically
-  // example: localhost:3001/api/Ticket/1 <--- Get you all the data from Ticket table with ID 1
-app.get('/api/:table/:id', (request, response) => {
+  // example: localhost:3001/api/db/getid/Ticket/1 <--- Get you all the data from Ticket table with ID 1
+app.get('/api/db/getid/:table/:id', (request, response) => {
 
-  let fetchIdFromDatabase = dbPath.prepare(`
+  let query = `
       SELECT * 
       FROM ${request.params.table}
       WHERE id = :id
-      `);
+      `;
 
+  let fetchIdFromDatabase = dbPath.prepare(query)
+  console.log('GET request input: ' ,request.params)
   let result = fetchIdFromDatabase.all({id: request.params.id});
-
+  
   response.json(result);
-  console.log(result);
+  console.log('GET request returned data (from DB): ' , result);
+ 
+});
 
-  });
+  // GET Function that grabs table name and email dynamically
+  // example localhost:3001/api/db/getemail/(db table)/(email in db) <--- Gets you all db info connected to the email in that row
+app.get('/api/db/getemail/:table/:email', (request, response) => {
 
-// POST FUNCTION 1
-
-  
-  // POSTs to DB and fills columns
-  // Does not work, because for some reason request.body returns empty(not undefined), unknown why
-  // example: use postman to do a POST request towards localhost:3000/api/Ticket
-app.post('/api/Ticket', (request, response) => {
-    let postToDatabaseQuery = dbPath.prepare(`
-      INSERT INTO Ticket
-      (seat_number, price, email)
-      VALUES(:seat_number, :price, :email)
-    `)
-    console.log(request.body)
-    let result = postToDatabaseQuery.run(request.body)
-    response.json(result);
-    console.log(result)
-    
-  });
-
-
-// POST FUNCTION 2
-
-/* 
-  // POSTs to DB and fills column, dynamic setup that maps both table, column names and paramaters dynamically
-  // Does not work, because for some reason request.body returns empty(not undefined), unknown why
-  // example: use postman to do a POST request towards localhost:3000/api/(insert table name here)
-app.post('/api/:table', (request, response) => {
-  
-  let columnNames = Object.keys(request.body)
-  console.log('columnNames', columnNames)
-  let columnParameters = Object.keys(request.body).map(columnNames => ':' + columnNames)
-  console.log('columnParameters', columnParameters)
   let query = `
-  INSERT INTO ${request.params.table}
-  (${columnNames})
-  VALUES(${columnParameters})
-`
-  console.log('query',query)
-  let postToDatabase = dbPath.prepare(query)
-  console.log(request.body)
-  let result = postToDatabase.run(request.body)
+      SELECT * 
+      FROM ${request.params.table}
+      WHERE email = :email
+      `;
+
+  let fetchEmailFromDatabase = dbPath.prepare(query)
+  console.log('GET request input: ' ,request.params)
+  let result = fetchEmailFromDatabase.all({email: request.params.email});
+  
   response.json(result);
+  console.log('GET request returned data (from DB): ' , result);
   
 });
-*/
+
+  
+  // POST Function that posts to DB and fills column, dynamic setup that maps both table, column names and paramaters dynamically
+  // example: use postman to do a POST (with json matching that table setup) request towards
+  // localhost:3000/api/db/post/(insert table name here)
+app.post('/api/db/post/:table', (request, response) => {
+  
+  let columnNames = Object.keys(request.body)
+  let columnParameters = Object.keys(request.body).map(columnNames => ':' + columnNames)
+  
+  let query = `
+    INSERT INTO ${request.params.table}
+    (${columnNames})
+    VALUES(${columnParameters})
+    `;
+  
+  let postToDatabase = dbPath.prepare(query)
+  console.log(request.params)
+  console.log('Data Posted to DB: ', request.body, 'Into Table:', request.params)
+  let result = postToDatabase.run(request.body)
+  response.json(result);
+  console.log('Changes to DB: ', result)
+  
+});
