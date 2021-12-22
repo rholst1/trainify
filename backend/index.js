@@ -130,3 +130,17 @@ app.post('/api/db/post/:table', (request, response) => {
   console.log('Changes to DB: ', result)
   
 });
+
+  app.get('/api/db/getstations', (request, response) => {
+
+    let query = `
+        SELECT *
+        FROM Station
+        `;
+  
+    let requestDB = dbPath.prepare(query)
+    console.log('GET request - get all stations')
+    let result = requestDB.all();
+    response.json(result);
+    console.log('GET request returned data (from DB): ' , result);
+  });
