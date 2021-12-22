@@ -154,7 +154,6 @@ app.post('/api/db/post/:table', (request, response) => {
   let result = postToDatabase.run(request.body)
   response.json(result);
   console.log('Changes to DB: ', result)
-  
 });
 
   app.get('/api/db/getstations', (request, response) => {
