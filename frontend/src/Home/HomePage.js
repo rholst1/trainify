@@ -1,4 +1,4 @@
-import StripePayment from "../Stripe/StripePayment";
+import StripePayment from "../Components/Stripe/StripePayment";
 import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import './HomePage.css'
