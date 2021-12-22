@@ -8,9 +8,8 @@ import SearchButton from "../Components/Button/SearchButton";
 
 const HomePage = () => {
     var date = new Date();
-    console.log(date);
     const [value, setValue] = useState(date);
-    console.log(process.env.REACT_APP_TEST)
+    // console.log(process.env.REACT_APP_STRIPE_KEY)
 
     return (
         <>
