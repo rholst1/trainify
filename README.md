@@ -14,4 +14,6 @@ Educational project that revolves around creating a Ticket booking app for a pas
 * Awat Farah
 
 
+Run: npm install --save @stripe/react-stripe-js @stripe/stripe-js
+
 
