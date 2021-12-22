@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import StripeCheckout from 'react-stripe-checkout'
-import instance from '../Api/Axios';
 import { json } from 'body-parser';
-import axios from 'axios';
+import axios from 'axios'
+import PaymentForm from './PaymentForm';
+import { Elements} from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js';
+
 
 
 
@@ -30,16 +33,22 @@ const StripePayment = () => {
             })
             .catch(error => console.log(error))
     }
-    // console.log(process.env.REACT_APP_STRIPE_KEY)
+  const s = loadStripe(process.env.REACT_APP_STRIPE_KEY)
     return (
         <>
-            <StripeCheckout
+            {/* <StripeCheckout
                 stripeKey={process.env.REACT_APP_STRIPE_KEY}
                 token={makePayment}
                 name='By Ticket '
+                label='Pay'
+                
             >
                 <button>{product.price}KR </button>
-            </StripeCheckout>
+            </StripeCheckout> */}
+            <Elements stripe={s}>
+
+            <PaymentForm/>
+            </Elements>
         </>
     )
 
