@@ -1,2 +1,34 @@
 
-.calender{margin-left: 42.npm 5%;} 
+.calender{
+    margin-left: 42.npm 5%;
+} 
+.InputContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+input{
+    padding: 14px 20px;
+    margin: 8px 0;
+    border-color: rgba(128, 128, 128, 0.459);
+    border-radius: 4px;
+    cursor: pointer;
+    
+}
+input:hover{
+   
+}
+.IconContainer{
+    display: flex;
+    align-items: center;
+}
+.DateTimeContainer{
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+.Btn{
+    padding: 1.5rem;
+  
+}
