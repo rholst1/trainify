@@ -5,7 +5,7 @@ const output = `
 <p> Din resa är nu bokad, se din biljett nedan. </p>
 <footer>
 Tack för att för att du väljer att resa med oss!
-<h2> Train Team </h2>
+<h3> Train Team </h3>
 </footer > 
 `
   
