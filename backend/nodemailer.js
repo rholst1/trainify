@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 // send mail with defined transport object
 let mailOptions = {
   from: '"Trainify Team" <trainteam14@gmail.com>', // sender address
-  to: "julia.solbacken@gmail.com", // list of receivers
+  to: "test@gmail.com", // list of receivers
   subject: "Bokningsbekräftelse", // Subject line
   text: "none graphical text", // plain text body
   html: output, // html body
