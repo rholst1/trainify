@@ -3,5 +3,15 @@
     margin-left: 42.npm 5%;
 } 
 .InputContainer{
-    background-color: aquamarine;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+input{
+    padding: 14px 20px;
+    margin: 8px 0;
+    border-color: rgba(128, 128, 128, 0.459);
+    border-radius: 4px;
+    cursor: pointer;
 }

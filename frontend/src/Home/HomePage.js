@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import './HomePage.css'
 import { promiseImpl } from "ejs";
+import { FaBeer, FaArrowRight, FaRegArrowAltCircleRight} from 'react-icons/fa';
 
 const HomePage = () => {
     var date = new Date();
@@ -13,19 +14,27 @@ const HomePage = () => {
     return (
         <>
             <div className="Wrapper">
-
-                <p>Planera din resa</p>
+                <h2>Planera din resa</h2>
                 <form>
-
                     <div className="InputContainer">
-                        <label>
-                            Från
-                            <input typ="text"></input>
-                        </label>
-                        <label>
-                            Till
-                            <input typ="text"></input>
-                        </label>
+
+                        <input
+                            typ="text"
+                            placeholder="Från"
+                        />
+                        <div>
+
+                           
+                            <FaRegArrowAltCircleRight
+                            fontSize='35px'
+                            
+
+                            />
+                        </div>
+                        <input
+                            typ="text"
+                            placeholder="Till"
+                        />
                     </div>
                     <button type="submit">Hitta resa</button>
                     <div>
