@@ -10,7 +10,7 @@ const stripe = require("stripe")("sk_test_51K6WavLuMgncR3MOQBWdMzbytWTJ7ySxcJel0
 // const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
-
+app.use(express.static(path.join(__dirname,'../frontend','build')))
 // const db_name = path.join(__dirname, "data", "database.db");
 // connect to the database
 /* const db = new sqlite3.Database(db_name, err => {
