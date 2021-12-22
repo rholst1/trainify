@@ -14,4 +14,21 @@ input{
     border-color: rgba(128, 128, 128, 0.459);
     border-radius: 4px;
     cursor: pointer;
+    
+}
+input:hover{
+   
+}
+.IconContainer{
+    display: flex;
+    align-items: center;
+}
+.DateTimeContainer{
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+.Btn{
+    padding: 1.5rem;
+  
 }

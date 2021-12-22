@@ -2,8 +2,9 @@ import StripePayment from "../Stripe/StripePayment";
 import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import './HomePage.css'
-import { promiseImpl } from "ejs";
-import { FaBeer, FaArrowRight, FaRegArrowAltCircleRight} from 'react-icons/fa';
+// import { promiseImpl } from "ejs";
+import { FaRegArrowAltCircleRight } from 'react-icons/fa';
+import SearchButton from "../Components/Button/SearchButton";
 
 const HomePage = () => {
     var date = new Date();
@@ -20,29 +21,31 @@ const HomePage = () => {
 
                         <input
                             typ="text"
-                            placeholder="Från"
+                            placeholder="Från:"
                         />
-                        <div>
-
-                           
+                        <div className="IconContainer">
                             <FaRegArrowAltCircleRight
-                            fontSize='35px'
-                            
-
+                                fontSize='35px'
                             />
                         </div>
                         <input
                             typ="text"
-                            placeholder="Till"
+                            placeholder="Till:"
                         />
                     </div>
-                    <button type="submit">Hitta resa</button>
-                    <div>
+                    <div className="DateTimeContainer">
                         <DateTimePicker
+                            className='DateTime'
                             onChange={setValue}
                             value={value}
                             locale="se"
                             disableClock="true"
+                        />
+                    </div>
+                    <div className="Btn">
+                        <SearchButton
+                            type='submit'
+                            text='Hitta resa'
                         />
                     </div>
                 </form>
