@@ -38,6 +38,7 @@ const HomePage = () => {
                             onChange={setValue}
                             value={value}
                             locale="se"
+                            disableClock= "true"
                         />
                     </div>
                     <div className="Btn">
