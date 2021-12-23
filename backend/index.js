@@ -149,7 +149,6 @@ app.post('/api/db/post/:table', (request, response) => {
     `;
 
   let postToDatabase = dbPath.prepare(query)
-  console.log(request.params)
   console.log('Data Posted to DB: ', request.body, 'Into Table:', request.params)
   let result = postToDatabase.run(request.body)
   response.json(result);
