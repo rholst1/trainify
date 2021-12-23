@@ -156,8 +156,9 @@ app.post('/api/db/post/:table', (request, response) => {
   console.log('Changes to DB: ', result)
 });
 
+// Get function that returns a list of stations
+// example: localhost:3001/api/db/getstations
   app.get('/api/db/getstations', (request, response) => {
-
     let query = `
         SELECT *
         FROM Station
@@ -169,3 +170,47 @@ app.post('/api/db/post/:table', (request, response) => {
     response.json(result);
     console.log('GET request returned data (from DB): ' , result);
   });
+
+// GET function that takes as input parameters DepartureStationId, ArrivalStationId and day,
+// rerturns a list of seats available for booking.
+// example: http://localhost:3001/api/db/getunoccupiedseats?from=1&to=2&day=2022-02-01
+  app.get('/api/db/getunoccupiedseats', (request, response) => {
+    let day =  new Date(request.query.day);
+    let nextDay = new Date(day);
+    nextDay.setDate(day.getDate()+1);
+    let dayStr = formatDate(day);
+    let nextDayStr = formatDate(nextDay);    
+
+    let query = `
+    Select Schedule.Id AS ScheduleId, Schedule.DepartureTime, Schedule.DepartureStationId, Schedule.ArrivalStationId, Schedule.TrainId, Train.Name, Seat.Id, Seat.SeatNr, Seat.WagonNr
+    From Schedule
+    Join Train On Schedule.TrainId = Train.Id
+    Join Seat On Train.Id = Seat.TrainId
+    Where DepartureStationId=${request.query.from} AND ArrivalStationId=${request.query.to} AND Schedule.DepartureTime BETWEEN '${dayStr}' AND '${nextDayStr}'
+    Except
+    Select Schedule.Id AS ScheduleId,  Schedule.DepartureTime, Schedule.DepartureStationId, Schedule.ArrivalStationId, Schedule.TrainId, Train.Name, Ticket.SeatGuid, Seat.SeatNr, Seat.WagonNr
+    From Ticket
+    Join Schedule On Schedule.Id=Ticket.ScheduleId
+    Join Train On Schedule.TrainId = Train.Id
+    Join Seat On Train.Id = Seat.TrainId
+    Where DepartureStationId=${request.query.from} AND ArrivalStationId=${request.query.to} AND Schedule.DepartureTime BETWEEN '${dayStr}' AND '${nextDayStr}'
+    `;
+    let requestDB = dbPath.prepare(query)
+    let result = requestDB.all();
+    response.json(result);
+    console.log('GET request returned data (from DB): ' , result);
+  });
+  
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
