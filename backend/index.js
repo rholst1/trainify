@@ -209,6 +209,6 @@ function formatDate(date) {
 }
 
 //listen
-app.listen(PORT, () => {
+app.listen(process.env.PORT, '0.0.0.0', () => {
   console.log(`Server listening on ${PORT}`);
 });
