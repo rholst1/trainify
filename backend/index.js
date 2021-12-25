@@ -83,11 +83,6 @@ app.post('/payment', (req, res) => {
     .catch((err) => console.log(err));
 });
 
-//listen
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
-});
-
 // Driver for better-sqlite3
 const dbDriver = require('better-sqlite3');
 
@@ -212,3 +207,8 @@ function formatDate(date) {
 
   return [year, month, day].join('-');
 }
+
+//listen
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
+});
