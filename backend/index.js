@@ -10,7 +10,7 @@ const stripe = require('stripe')(
 
 let PORT = process.env.PORT;
 if (PORT == null || PORT == '') {
-  PORT = 80;
+  PORT = 3001;
 }
 //const uuid = require("uuid/v4")
 
