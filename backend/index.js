@@ -7,6 +7,11 @@ const cors = require('cors');
 const stripe = require('stripe')(
   'sk_test_51K6WavLuMgncR3MOQBWdMzbytWTJ7ySxcJel0RjjQyAgLC39rk88VqkphcCrKkEgPKOdxeLjAMARSHZN8WGW1tRP00yoXqSBj0'
 );
+
+let port = process.env.PORT;
+if (port == null || port == '') {
+  port = 3001;
+}
 //const uuid = require("uuid/v4")
 
 // const sqlite3 = require("sqlite3").verbose();
@@ -27,8 +32,6 @@ app.use(express.static(path.join(__dirname, '../frontend', 'build')));
 //middelware
 app.use(express.json());
 app.use(cors());
-
-const PORT = process.env.PORT || 3001;
 
 // View Engine Setup
 app.set('view engine', 'ejs');
@@ -209,6 +212,6 @@ function formatDate(date) {
 }
 
 //listen
-app.listen(process.env.PORT, '0.0.0.0', () => {
-  console.log(`Server listening on ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server listening on ${port}`);
 });
