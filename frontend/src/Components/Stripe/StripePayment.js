@@ -33,7 +33,7 @@ const StripePayment = () => {
     //         })
     //         .catch(error => console.log(error))
     // }
-  const s = loadStripe(process.env.REACT_APP_STRIPE_KEY)
+  const s = loadStripe('${process.env.REACT_APP_STRIPE_KEY}')
     return (
         <>
             {/* <StripeCheckout

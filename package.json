@@ -1,10 +1,15 @@
 {
   "name": "node-template",
   "version": "1.0.0",
+  "engines": {
+    "node": "15.x",
+    "npm": "7.x"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node backend/index.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build",
     "server": "nodemon backend/index.js --ignore client"
   },
   "keywords": [],
