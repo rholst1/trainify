@@ -88,6 +88,7 @@ app.post('/payment', (req, res) => {
 
 // Driver for better-sqlite3
 const dbDriver = require('better-sqlite3');
+const { format } = require('path');
 
 // Database connector with DB path
 const dbPath = dbDriver('./backend/data/database.db');
@@ -128,7 +129,17 @@ app.get('/api/db/getemail/:table/:email', (request, response) => {
 
 // POST Function that posts to DB and fills column, dynamic setup that maps both table, column names and paramaters dynamically
 // example: use postman to do a POST (with json matching that table setup) request towards
-// localhost:3000/api/db/post/(insert table name here)
+// localhost:3001/api/db/post/(insert table name here)
+//  Example json in POST body
+//  URL: /api/db/post/Ticket
+//  Body
+//  {
+//     "email":  "test@test.com",
+//     "ScheduleId": "1",
+//     "Price": "400",
+//     "SeatGuid": "103"
+// }
+
 app.post('/api/db/post/:table', (request, response) => {
   let columnNames = Object.keys(request.body);
   let columnParameters = Object.keys(request.body).map(
