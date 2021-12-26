@@ -8,9 +8,9 @@ const stripe = require('stripe')(
   'sk_test_51K6WavLuMgncR3MOQBWdMzbytWTJ7ySxcJel0RjjQyAgLC39rk88VqkphcCrKkEgPKOdxeLjAMARSHZN8WGW1tRP00yoXqSBj0'
 );
 
-let port = process.env.PORT;
-if (port == null || port == '') {
-  port = 3001;
+let PORT = process.env.PORT;
+if (PORT == null || PORT == '') {
+  PORT = 80;
 }
 //const uuid = require("uuid/v4")
 
@@ -212,6 +212,6 @@ function formatDate(date) {
 }
 
 //listen
-app.listen(port, () => {
-  console.log(`Server listening on ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
 });
