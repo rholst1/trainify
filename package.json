@@ -9,6 +9,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/index.js",
+    "heroku-postbuild": "npm install && npm run build",
     "server": "nodemon backend/index.js --ignore client"
   },
   "keywords": [],
