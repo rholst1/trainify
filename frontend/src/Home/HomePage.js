@@ -1,8 +1,10 @@
 import StripePayment from "../Stripe/StripePayment";
 import React, {useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
+import axios from "axios";
 import './HomePage.css'
 import Trafikverket from "../Api/Trafikverket";
+
 
 const HomePage = () => {
     var date = new Date();
@@ -13,7 +15,8 @@ const HomePage = () => {
     return (
         <>
             <p>Planera din resa</p>
-            Från <input typ="text"></input>
+            Från <input typ="text"
+            ></input>
             Till <input typ="text"></input>
             <button>Hitta resa</button>
             <div>
