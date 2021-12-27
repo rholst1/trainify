@@ -55,8 +55,8 @@ const Trafikverket = () => {
        
     }
     const onSuggestHandler2 = (text2) => {
-        setText(text2);
-        setSuggestions([]);
+        setText2(text2);
+        setSuggestions2([]);
     }
     const onChangeHandler2 = (text2) => {
 
@@ -73,9 +73,6 @@ const Trafikverket = () => {
     }
 
     
-
-
-
     return (
         <>
             <p>Planera din resa</p>
