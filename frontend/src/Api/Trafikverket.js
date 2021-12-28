@@ -88,8 +88,7 @@ const Trafikverket = () => {
                 typ="text2"
                 value={text2}
                 onChange={e => onChangeHandler2(e.target.value)}
-            >
-            </input>
+            ></input>
             <p>
                 {suggestions && suggestions.map((suggestion, i) =>
                     <div
