@@ -8,3 +8,7 @@
 .suggestion:hover{
     background-color: grey;
 }
+.SearchContainer{
+    display: flex;
+    flex-direction: column;
+}
