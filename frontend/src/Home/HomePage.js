@@ -1,8 +1,7 @@
 import StripePayment from "../Components/Stripe/StripePayment";
 import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
-import axios from "axios";
-import './HomePage.css'
+import './HomePage.css';
 import SearchStation from "../Components/Search/SearchStation";
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
 import SearchButton from "../Components/Button/SearchButton";
@@ -20,17 +19,17 @@ const HomePage = () => {
                 <h2>Planera din resa</h2>
                 <form>
                     <div className="InputContainer">
-                        <SearchStation
-                            input='Från:'
-                        />
 
+                        <SearchStation
+                            placeholder="Från:"
+                        />
                         <div className="IconContainer">
                             <FaRegArrowAltCircleRight
                                 fontSize='35px'
                             />
                         </div>
                         <SearchStation
-                            input='Till:'
+                            input="Till:"
                         />
                     </div>
                     <div className="DateTimeContainer">
@@ -39,7 +38,7 @@ const HomePage = () => {
                             onChange={setValue}
                             value={value}
                             locale="se"
-                            disableClock="true"
+                            disableClock= "true"
                         />
                     </div>
                     <div className="Btn">
@@ -53,7 +52,6 @@ const HomePage = () => {
             </div>
             <StripePayment />
 
-            {/* <Trafikverket/> */}
         </>
 
     )
