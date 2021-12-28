@@ -1,10 +1,12 @@
 import StripePayment from "../Components/Stripe/StripePayment";
 import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
+import axios from "axios";
 import './HomePage.css'
-// import { promiseImpl } from "ejs";
+import Trafikverket from "../Api/Trafikverket";
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
 import SearchButton from "../Components/Button/SearchButton";
+
 
 const HomePage = () => {
     var date = new Date();
@@ -13,6 +15,7 @@ const HomePage = () => {
 
     return (
         <>
+
             <div className="Wrapper">
                 <h2>Planera din resa</h2>
                 <form>
@@ -48,9 +51,11 @@ const HomePage = () => {
                         />
                     </div>
                 </form>
+
             </div>
             <StripePayment />
 
+            <Trafikverket/>
         </>
 
     )
