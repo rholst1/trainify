@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Select from 'react-select';
+// import Select from 'react-select';
 import './SearchStation.css';
+
 
 
 const SearchStation = (props) => {
@@ -75,6 +76,7 @@ const SearchStation = (props) => {
                     </div>
                 )}
                 </div>
+               
             </div>
         </>
 
