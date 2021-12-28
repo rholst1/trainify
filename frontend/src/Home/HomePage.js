@@ -55,7 +55,7 @@ const HomePage = () => {
             </div>
             <StripePayment />
 
-           // <Trafikverket/>
+            <Trafikverket/>
         </>
 
     )
