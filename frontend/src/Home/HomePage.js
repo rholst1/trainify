@@ -21,7 +21,7 @@ const HomePage = () => {
                     <div className="InputContainer">
 
                         <SearchStation
-                            placeholder="Från:"
+                            input="Från:"
                         />
                         <div className="IconContainer">
                             <FaRegArrowAltCircleRight
