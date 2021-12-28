@@ -9,7 +9,7 @@ const SearchStation = (props) => {
     const [data, setData] = useState([]);
     const [text, setText] = useState("");
     const [suggestions, setSuggestions] = useState([]);
-   
+    const [noResult, setNoResult] = useState('')
 
     const xmlBodyStr = `<REQUEST>
                             <LOGIN authenticationkey="937a3590518241f88071375537a4cf47" />
@@ -22,7 +22,6 @@ const SearchStation = (props) => {
                             </QUERY>
                         </REQUEST>`
 
-
     const config = {
         headers: { 'Content-Type': 'text/xml' }
     };
@@ -30,7 +29,7 @@ const SearchStation = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.post('https://api.trafikinfo.trafikverket.se/v2/data.json', xmlBodyStr, config);
-            console.log(response.data.RESPONSE.RESULT[0].TrainStation)
+            // console.log(response.data.RESPONSE.RESULT[0].TrainStation)
             setData(response.data.RESPONSE.RESULT[0].TrainStation);
         };
         fetchData()
@@ -39,9 +38,9 @@ const SearchStation = (props) => {
     const onSuggestHandler = (text) => {
         setText(text);
         setSuggestions([]);
+        props.setValue(text)
     }
     const onChangeHandler = (text) => {
-
         let matches = []
         if (text.length > 0) {
             matches = data.filter(data => {
@@ -50,8 +49,12 @@ const SearchStation = (props) => {
 
             })
         }
+        setNoResult('')
         setSuggestions(matches)
         setText(text)
+        if ((text !== '') && matches.length === 0 ) {
+            setNoResult('Ingen matchning')
+        }
 
     }
 
@@ -65,8 +68,8 @@ const SearchStation = (props) => {
                     onChange={e => onChangeHandler(e.target.value)}
                     value={text}
                 ></input>
-
-                <div>{suggestions && suggestions.map((suggestion, i) =>
+                
+                <div className="StationContainer">{suggestions && suggestions.map((suggestion, i) =>
                     <div
                         key={i}
                         className="suggestion"
@@ -75,8 +78,11 @@ const SearchStation = (props) => {
                         {suggestion.AdvertisedLocationName}
                     </div>
                 )}
+                    {noResult}
+
                 </div>
-               
+                { }
+
             </div>
         </>
 

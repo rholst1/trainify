@@ -10,18 +10,20 @@ import SearchButton from "../Components/Button/SearchButton";
 const HomePage = () => {
     var date = new Date();
     const [value, setValue] = useState(date);
+    const [stationOne, setStationOne] = useState("stationOne");
+    const [stationTwo, setStationTwo] = useState("stationTwo");
     // console.log(process.env.REACT_APP_STRIPE_KEY)
+
 
     return (
         <>
-
             <div className="Wrapper">
                 <h2>Planera din resa</h2>
                 <form>
                     <div className="InputContainer">
-
                         <SearchStation
                             input="Från:"
+                            setValue={setStationOne}
                         />
                         <div className="IconContainer">
                             <FaRegArrowAltCircleRight
@@ -30,6 +32,7 @@ const HomePage = () => {
                         </div>
                         <SearchStation
                             input="Till:"
+                            setValue={setStationTwo}
                         />
                     </div>
                     <div className="DateTimeContainer">
@@ -38,7 +41,7 @@ const HomePage = () => {
                             onChange={setValue}
                             value={value}
                             locale="se"
-                            disableClock= "true"
+                            disableClock="true"
                         />
                     </div>
                     <div className="Btn">
@@ -48,7 +51,6 @@ const HomePage = () => {
                         />
                     </div>
                 </form>
-
             </div>
             <StripePayment />
 
