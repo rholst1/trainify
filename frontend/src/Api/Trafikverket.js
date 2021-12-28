@@ -89,16 +89,16 @@ const Trafikverket = () => {
                 value={text2}
                 onChange={e => onChangeHandler2(e.target.value)}
             ></input>
-            <p>
-                {suggestions && suggestions.map((suggestion, i) =>
-                    <div
-                        key={i}
-                        className="suggestion"
-                        onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
-                    >
-                        {suggestion.AdvertisedLocationName}
-                    </div>
-                )}
+            
+            <p>{suggestions && suggestions.map((suggestion, i) =>
+                <div
+                    key={i}
+                    className="suggestion"
+                    onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
+                >
+                    {suggestion.AdvertisedLocationName}
+                </div>
+            )}
             </p>
             <p>{suggestions2 && suggestions2.map((suggestion, i) =>
                 <div
