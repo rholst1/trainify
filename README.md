@@ -1,5 +1,20 @@
 # trainify
-Educational project
+Educational project that revolves around creating a Ticket booking app for a passenger-carrier railway company
 
-# testing
-Git in Jira works
+# Authors:
+
+* Randa Al Mandawi (randamandawi)
+* Sandra Algervik (SaAlgervik)
+* Rasmus Holst (rholst1)
+* Stefan Holmqvist (sholmqvist)
+* Julia Berg (JuliaB-dotcom)
+* Svetlana Ernyleva
+* Per Bodå
+* Sruthi Krishna Radhakrishnan Rajini
+* Awat Farah
+
+
+Run: npm install --save @stripe/react-stripe-js @stripe/stripe-js
+frontend : npm run build
+
+
