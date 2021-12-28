@@ -1,14 +1,38 @@
 .suggestion{
     cursor: pointer;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
+    
+    box-shadow: rgba(60, 64, 67, .3) 0 1px 1px 0, rgba(60, 64, 67, .15) 0 4px 15px 3px;
+    border-radius: 3px;
+    padding: 3px;
+    margin: 4px;
+
 }
 
 .suggestion:hover{
-    background-color: grey;
+    border: 2px solid #4285f4
 }
 .SearchContainer{
     display: flex;
     flex-direction: column;
 }
+.StationContainer{
+    max-height: 0px;
+    
+
+}
+/* 
+.StationContainer::-webkit-scrollbar {
+ display: none;
+}
+.StationContainer {
+    -ms-overflow-style: none;
+     scrollbar-width: none;
+}
+
+.StationContainer::-webkit-scrollbar { 
+    display: none;
+}
+.StationContainer { -ms-overflow-style: none;
+     scrollbar-width: none;
+} */
+
