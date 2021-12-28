@@ -43,16 +43,16 @@ const Trafikverket = () => {
     const onChangeHandler = (text) => {
 
         let matches = []
-        if (text.length > 0 ) {
+        if (text.length > 0) {
             matches = data.filter(data => {
-                const regex = new RegExp(`${text}`,"gi");
+                const regex = new RegExp(`${text}`, "gi");
                 return (data.AdvertisedLocationName.match(regex))
 
             })
         }
         setSuggestions(matches)
         setText(text)
-       
+
     }
     const onSuggestHandler2 = (text2) => {
         setText2(text2);
@@ -61,7 +61,7 @@ const Trafikverket = () => {
     const onChangeHandler2 = (text2) => {
 
         let matches2 = []
-        if (text2.length > 0 ) {
+        if (text2.length > 0) {
             matches2 = data.filter(data => {
                 const regex2 = new RegExp(`${text2}`, "gi");
                 return (data.AdvertisedLocationName.match(regex2))
@@ -72,11 +72,12 @@ const Trafikverket = () => {
         setText2(text2)
     }
 
-    
+
     return (
         <>
             <p>Planera din resa</p>
-            Från <input 
+            Från
+            <input
                 typ="text"
                 onChange={e => onChangeHandler(e.target.value)}
                 value={text}
@@ -85,20 +86,32 @@ const Trafikverket = () => {
             Till
             <input
                 typ="text2"
-                value={text2} 
-                onChange={e=> onChangeHandler2(e.target.value)}
-                ></input>
-            <p>{suggestions && suggestions.map((suggestion, i) => <div key={i} className="suggestion"
-                onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
-            >{suggestion.AdvertisedLocationName}</div>
-            )}</p>
-             <p>{suggestions2 && suggestions2.map((suggestion, i) => <div key={i} className="suggestion"
-                onClick={() => onSuggestHandler2(suggestion.AdvertisedLocationName)}
-            >{suggestion.AdvertisedLocationName}</div>
-            )}</p>
-            
+                value={text2}
+                onChange={e => onChangeHandler2(e.target.value)}
+            >
+            </input>
+            <p>
+                {suggestions && suggestions.map((suggestion, i) =>
+                    <div
+                        key={i}
+                        className="suggestion"
+                        onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
+                    >
+                        {suggestion.AdvertisedLocationName}
+                    </div>
+                )}
+            </p>
+            <p>{suggestions2 && suggestions2.map((suggestion, i) =>
+                <div
+                    key={i}
+                    className="suggestion"
+                    onClick={() => onSuggestHandler2(suggestion.AdvertisedLocationName)}
+                >
+                    {suggestion.AdvertisedLocationName}
+                </div>
+            )}
+            </p>
             <button>Hitta resa</button>
-
         </>
 
     )
