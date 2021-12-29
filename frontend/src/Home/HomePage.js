@@ -6,30 +6,45 @@ import SearchStation from "../Components/Search/SearchStation";
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
 import SearchButton from "../Components/Button/SearchButton";
 
+import Image from "../Components/Image/Image";
+import Booking from "../Components/Booking/Booking";
 
 const HomePage = () => {
     var date = new Date();
     const [value, setValue] = useState(date);
+    const [stationOne, setStationOne] = useState("stationOne");
+    const [stationTwo, setStationTwo] = useState("stationTwo");
     // console.log(process.env.REACT_APP_STRIPE_KEY)
+
 
     return (
         <>
-
             <div className="Wrapper">
-                <h2>Planera din resa</h2>
+                <div className='Section'>
+                    <p>
+                        Trainify
+                    </p>
+                </div>
+
+                <Image />
+                <div className="PageHeader" >
+                    <h1>Planera din resa </h1>
+                </div>
                 <form>
                     <div className="InputContainer">
-
                         <SearchStation
-                            placeholder="Från:"
+                            input="Från:"
+                            setValue={setStationOne}
                         />
                         <div className="IconContainer">
                             <FaRegArrowAltCircleRight
-                                fontSize='35px'
+                                className="Icon"
+                                fontSize='43px'
                             />
                         </div>
                         <SearchStation
                             input="Till:"
+                            setValue={setStationTwo}
                         />
                     </div>
                     <div className="DateTimeContainer">
@@ -38,22 +53,29 @@ const HomePage = () => {
                             onChange={setValue}
                             value={value}
                             locale="se"
-                            disableClock= "true"
+                            disableClock="true"
                         />
                     </div>
-                    <div className="Btn">
+                    {/* <div className="Btn">
                         <SearchButton
                             type='submit'
                             text='Hitta resa'
                         />
-                    </div>
+                    </div> */}
                 </form>
 
+                <div className='Separator' ></div>
             </div>
-            <StripePayment />
+
+            {/* <StripePayment /> */}
+            <Booking
+                fromStation = {stationOne}
+                toStation = {stationTwo}
+                d = {value}
+            />
+          
 
         </>
-
     )
 }
 export default HomePage
