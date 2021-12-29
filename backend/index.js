@@ -209,10 +209,10 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN  '${dayStr}' AND '${nextDayStr}'
   Order by Schedule.DepartureTime ASC, Train.Name ASC, Seat.WagonNr ASC, Seat.SeatNr ASC
     `;
+  console.log(query);
   let requestDB = dbPath.prepare(query);
   let result = requestDB.all();
   response.json(result);
-  console.log(query);
   console.log('GET request returned data (from DB): ', result);
 });
 
@@ -227,6 +227,8 @@ function formatDate(date) {
 
   return [year, month, day].join('-');
 }
+
+
 
 //listen
 app.listen(PORT, () => {
