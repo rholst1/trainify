@@ -1,15 +1,25 @@
 
+function Filter(props) {
+  
+  return (
+    <div className="App">
+      <select onChange={(e) => setSortType(e.target.value)}>
+        <option value="tid">Filter</option>
+        <option value="members">Members</option>
+        <option value="formed">Formed in</option>
+      </select>
 
-
-
-
-return (
-  <div>
-    <button onClick={this.handleFilter}></button> 
+      {data.map(band => (
+        <div key={band.id} style={{ margin: '30px' }}>
+          <select id="filter" onChange={(e) => setSortType(e.target.value)}> <option value="tid">Filter</option></select>
+          <div>{`Band: ${band.name}`}</div>
+          <div>{`Albums: ${band.albums}`}</div>
+          <div>{`Members: ${band.members}`}</div>
+          <div>{`Year of founding: ${band.formed_in}`}</div>
+        </div>
+      ))}
     </div>
-  )
+  );
+}
 
-
-export default Filter
-
-
+export default Filter;

@@ -10,8 +10,10 @@ class Booking extends React.Component {
             info: ''
         };
     }
+    
 
     handleSubmit = (event) => {
+    
         event.preventDefault();
 
         var day = this.formatDate(this.props.d);
@@ -23,8 +25,10 @@ class Booking extends React.Component {
                 this.setState({
                     seats: response,
                     info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
+                        
                 })
             })
+            
             .catch(err => {
                 console.log(err);
             });
@@ -76,6 +80,7 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
+    
     render() {
         return (
             <>
@@ -88,7 +93,6 @@ class Booking extends React.Component {
                             onClick={this.handleSubmit}
                         /> */}
                         <button onClick = {this.handleSubmit}>Hitta resa</button>
-                        
                         <div>{this.state.info}</div>
                         <table className="table table-hover">
                             <thead>
