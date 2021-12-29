@@ -103,13 +103,13 @@ class Booking extends React.Component {
                                     onChange={() => this.handleCheck(seat)}
                                     />
                             </th>
-                            <label className="seat-info" htmlFor={seat.checked}>
-                            <th>{seat.DepartureTime}</th>
+                            
+                            <th><label className="seat-info" htmlFor={seat.checked}>{seat.DepartureTime}</label></th>
                             <th>{seat.ArrivalTime}</th>
                             <th>{seat.Name}</th>
                             <th>{seat.WagonNr}</th>
                             <th>{seat.SeatNr}</th>
-                            </label>
+                            
                         </tr>
                         )}    
                         </tbody>
