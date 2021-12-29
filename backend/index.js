@@ -191,7 +191,7 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   let nextDayStr = formatDate(nextDay);
 
   let query = `
-    Select Schedule.Id AS ScheduleId, Schedule.DepartureTime, Schedule.ArrivalTime, Schedule.DepartureStationId, Schedule.ArrivalStationId, Schedule.TrainId, Train.Name, Seat.Id AS UniqueSeatId, Seat.WagonNr, Seat.SeatNr 
+    Select Schedule.Id AS ScheduleId, Schedule.DepartureTime, Schedule.ArrivalTime, Schedule.DepartureStationId, Schedule.ArrivalStationId,Schedule.TrainId, Train.Name, Seat.Id AS UniqueSeatId, Seat.WagonNr, Seat.SeatNr 
     From Schedule
     Join Train On Schedule.TrainId = Train.Id
     Join Seat On Train.Id = Seat.TrainId
