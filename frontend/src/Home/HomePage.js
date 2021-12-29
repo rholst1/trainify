@@ -64,15 +64,15 @@ const HomePage = () => {
                     </div> */}
                 </form>
 
-                <div className='Separator' ></div>
-            </div>
-
             {/* <StripePayment /> */}
             <Booking
                 fromStation = {stationOne}
                 toStation = {stationTwo}
                 d = {value}
             />
+                <div className='Separator' ></div>
+            </div>
+
           
 
         </>
