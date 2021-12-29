@@ -81,11 +81,14 @@ class Booking extends React.Component {
             <>
                 <div className="Wrapper">
                     <form>
-                        <SearchButton
+                        {/* SearchButton: onClick doesn't work, use the usual button for now */}
+                        {/* <SearchButton
                             type='submit'
                             text='Hitta resa'
                             onClick={this.handleSubmit}
-                        />
+                        /> */}
+                        <button onClick = {this.handleSubmit}>Hitta resa</button>
+                        
                         <div>{this.state.info}</div>
                         <table className="table table-hover">
                             <thead>

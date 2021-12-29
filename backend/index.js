@@ -191,20 +191,6 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   let nextDayStr = formatDate(nextDay);
 
   let query = `
-
-    Select Schedule.Id AS ScheduleId, Schedule.DepartureTime, Schedule.ArrivalTime, Schedule.DepartureStationId, Schedule.ArrivalStationId,Schedule.TrainId, Train.Name, Seat.Id AS UniqueSeatId, Seat.WagonNr, Seat.SeatNr 
-    From Schedule
-    Join Train On Schedule.TrainId = Train.Id
-    Join Seat On Train.Id = Seat.TrainId
-    Where DepartureStationId=${request.query.from} AND ArrivalStationId=${request.query.to} AND Schedule.DepartureTime BETWEEN '${dayStr}' AND '${nextDayStr}'
-    Except
-    Select Schedule.Id AS ScheduleId,  Schedule.DepartureTime,  Schedule.ArrivalTime, Schedule.DepartureStationId, Schedule.ArrivalStationId, Schedule.TrainId, Train.Name, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
-    From Ticket
-    Join Schedule On Schedule.Id=Ticket.ScheduleId
-    Join Train On Schedule.TrainId = Train.Id
-    Join Seat On Train.Id = Seat.TrainId
-    Where DepartureStationId=${request.query.from} AND ArrivalStationId=${request.query.to} AND Schedule.DepartureTime BETWEEN '${dayStr}' AND '${nextDayStr}'
-
   Select Schedule.Id AS ScheduleId, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Seat.Id AS SeatGuid, Seat.WagonNr, Seat.SeatNr 
   From Schedule
   Join Train On Schedule.TrainId = Train.Id
@@ -222,12 +208,11 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
   Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN  '${dayStr}' AND '${nextDayStr}'
   Order by Schedule.DepartureTime ASC, Train.Name ASC, Seat.WagonNr ASC, Seat.SeatNr ASC
-
     `;
+  console.log(query);
   let requestDB = dbPath.prepare(query);
   let result = requestDB.all();
   response.json(result);
-  console.log(query);
   console.log('GET request returned data (from DB): ', result);
 });
 
