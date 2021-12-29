@@ -9,7 +9,7 @@ const SearchStation = (props) => {
     const [data, setData] = useState([]);
     const [text, setText] = useState("");
     const [suggestions, setSuggestions] = useState([]);
-    const [noResult, setNoResult] = useState('')
+    const [noResult, setNoResult] = useState(false)
 
     const xmlBodyStr = `<REQUEST>
                             <LOGIN authenticationkey="937a3590518241f88071375537a4cf47" />
@@ -49,11 +49,11 @@ const SearchStation = (props) => {
 
             })
         }
-        setNoResult('')
+        setNoResult(false)
         setSuggestions(matches)
         setText(text)
-        if ((text !== '') && matches.length === 0 ) {
-            setNoResult('Ingen matchning')
+        if ((text !== '') && matches.length === 0) {
+            setNoResult(true)
         }
 
     }
@@ -62,13 +62,13 @@ const SearchStation = (props) => {
     return (
         <>
             <div className="SearchContainer">
-                <input
+                <input className="SearchInput"
                     typ="text"
                     placeholder={props.input}
                     onChange={e => onChangeHandler(e.target.value)}
                     value={text}
                 ></input>
-                
+
                 <div className="StationContainer">{suggestions && suggestions.map((suggestion, i) =>
                     <div
                         key={i}
@@ -78,8 +78,13 @@ const SearchStation = (props) => {
                         {suggestion.AdvertisedLocationName}
                     </div>
                 )}
-                    {noResult}
-
+                 {noResult ?
+                    <div className="NoResult">
+                        Ingen matchning
+                    </div>
+                :
+                <div></div>
+}
                 </div>
                 { }
 

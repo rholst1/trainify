@@ -14,7 +14,6 @@
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;
-  font-family: "Google Sans",Roboto,Arial,sans-serif;
   font-size: 14px;
   font-weight: 500;
   height: 48px;
@@ -31,9 +30,11 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  width: auto;
+  width: 10rem;
   will-change: transform,opacity;
   z-index: 0;
+  font-size: 18px;
+
 }
 
 /* .btnSearch:hover {
