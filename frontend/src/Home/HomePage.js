@@ -5,8 +5,9 @@ import './HomePage.css';
 import SearchStation from "../Components/Search/SearchStation";
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
 import SearchButton from "../Components/Button/SearchButton";
-import Image from "../Components/Image/Image";
 
+import Image from "../Components/Image/Image";
+import Booking from "../Components/Booking/Booking";
 
 const HomePage = () => {
     var date = new Date();
@@ -55,20 +56,26 @@ const HomePage = () => {
                             disableClock="true"
                         />
                     </div>
-                    <div className="Btn">
+                    {/* <div className="Btn">
                         <SearchButton
                             type='submit'
                             text='Hitta resa'
                         />
-                    </div>
+                    </div> */}
                 </form>
 
                 <div className='Separator' ></div>
             </div>
+
             {/* <StripePayment /> */}
+            <Booking
+                fromStation = {stationOne}
+                toStation = {stationTwo}
+                d = {value}
+            />
+          
 
         </>
-
     )
 }
 export default HomePage
