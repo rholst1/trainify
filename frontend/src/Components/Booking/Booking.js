@@ -1,68 +1,75 @@
 import React from 'react'
 import SearchButton from "../Button/SearchButton";
-
+import StripePayment from "../Stripe/StripePayment";
 
 class Booking extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             seats: [],
-            info: ''
+            info: '',
+            selectedSeats: [],
+            sum: 0,
+            email: ''
         };
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-
         var day = this.formatDate(this.props.d);
         var path = "/api/db/getunoccupiedseats?from='" + this.props.fromStation + "'&to='" + this.props.toStation + "'&day=" + day;
-        console.log(path);
         fetch(path)
             .then(response => response.json())
             .then(response => {
                 this.setState({
-                    seats: response,
-                    info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
+                    seats: response
                 })
+                if (this.state.seats.length === 0) {
+                    this.setState({
+                        info: 'Förlåt. Det finns inga biljetter. Välj ett annat datum eller andra stationer.'
+                    });
+                }
+                else {
+                    this.setState({
+                        info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
+                    });
+                }
             })
             .catch(err => {
                 console.log(err);
             });
-
     }
     handleCheck = (seatToCheck) => {
         seatToCheck.checked = !seatToCheck.checked;
         this.setState({
-            seats: this.state.seats
+            seats: this.state.seats,
+            selectedSeats: this.state.seats.filter(seat => seat.checked === true)
         });
     }
     handlePurchase = (event) => {
         event.preventDefault();
-        this.state.seats.forEach(seat => {
-            console.log(seat.checked);
+        this.state.selectedSeats.forEach(seat => {
 
-            if (seat.checked === true) {
-                fetch("/api/db/post/Ticket", {
-                    "method": "POST",
-                    "headers": {
-                        "content-type": "application/json",
-                        "accept": "application/json"
-                    },
-                    "body": JSON.stringify({
-                        email: "frontend@test.com",
-                        ScheduleId: seat.ScheduleId,
-                        Price: 10,
-                        SeatGuid: seat.SeatGuid
-                    })
+            fetch("/api/db/post/Ticket", {
+                "method": "POST",
+                "headers": {
+                    "content-type": "application/json",
+                    "accept": "application/json"
+                },
+                "body": JSON.stringify({
+                    email: this.state.email,
+                    ScheduleId: seat.ScheduleId,
+                    Price: 10,
+                    SeatGuid: seat.SeatGuid
                 })
-                    .then(response => response.json())
-                    .then(response => {
-                        console.log(response)
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            }
+            })
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         });
     }
     formatDate(date) {
@@ -76,20 +83,26 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
+    handleInputMailChange = (event) => {
+        this.setState({
+            email: event.target.value
+        });
+    }
     render() {
         return (
             <>
-                <div className="Wrapper">
-                    <form>
-                        {/* SearchButton: onClick doesn't work, use the usual button for now */}
-                        {/* <SearchButton
+                {/* SearchButton: onClick doesn't work, use the usual button for now */}
+                {/* <SearchButton
                             type='submit'
                             text='Hitta resa'
                             onClick={this.handleSubmit}
                         /> */}
-                        <button onClick = {this.handleSubmit}>Hitta resa</button>
-                        
-                        <div>{this.state.info}</div>
+                <button onClick={this.handleSubmit}>Hitta resa</button>
+                <div>{this.state.info}</div>
+                <div className="Wrapper" hidden={this.state.seats.length === 0}>
+                    <form>
+
+
                         <table className="table table-hover">
                             <thead>
                                 <tr>
@@ -124,9 +137,26 @@ class Booking extends React.Component {
                                 )}
                             </tbody>
                         </table>
-
-                        <button onClick={this.handlePurchase}>Köp</button>
+                        <div>
+                            <p>Översikt</p>
+                            {this.state.selectedSeats.map(seat =>
+                                <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
+                                    {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}
+                                </li>
+                            )}
+                            <p>Att betala: {this.state.sum} kr</p>
+                        </div>
                     </form>
+                    <input hidden={this.state.selectedSeats.length === 0}
+                        type="text"
+                        placeholder="example@gmail.com"
+                        value={this.state.email}
+                        onChange={this.handleInputMailChange} />
+                    <StripePayment
+                        sum={this.state.sum}
+                        email={this.state.email}
+                    />
+                    <button onClick={this.handlePurchase} hidden={this.state.email === ''}>Köp</button>
                 </div>
             </>
         )

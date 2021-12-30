@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import axios from 'axios'
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
     const [success, setSuccess] = useState(false)
     const stripe = useStripe();
     const elements = useElements();
@@ -20,7 +20,7 @@ export default function PaymentForm() {
             try {
                 const { id } = paymentMethod;
                 const response = await axios.post('/paymentTwo', {
-                    amount: 1000,
+                    amount: props.sum,
                     id
                 })
                 if (response.data.success) {
