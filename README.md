@@ -8,7 +8,7 @@ Educational project that revolves around creating a Ticket booking app for a pas
 * Rasmus Holst (rholst1)
 * Stefan Holmqvist (sholmqvist)
 * Julia Berg (JuliaB-dotcom)
-* Svetlana Ernyleva
+* Svetlana Ernyleva (SvetlanaErn)
 * Per Bodå
 * Sruthi Krishna Radhakrishnan Rajini
 * Awat Farah
