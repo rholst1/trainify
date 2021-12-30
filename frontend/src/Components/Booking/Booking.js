@@ -7,8 +7,8 @@ class Booking extends React.Component {
         super(props);
         this.state = {
             seats: [],
-            isLowestFirst: true,
-            info: ''
+            info: '',
+            sort: ''
         };
     }
     
@@ -30,6 +30,31 @@ class Booking extends React.Component {
                 })
             })
             
+            .catch(err => {
+                console.log(err);
+            });
+
+    }
+    handleSort = (event) => {
+
+        event.preventDefault();
+        
+        var day = this.formatDate(this.props.d);
+        var path = "/api/db/getunoccupiedseats?from='" + this.props.fromStation + "'&to='" + this.props.toStation + "'&day=" + day;
+        console.log(path);
+        fetch(path)
+            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    seats: response,
+                    info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
+                })
+                
+                this.info.sort((a, b) => {
+                    return a.ArrivalStation - b.ArrivalStation
+                })
+            })
+
             .catch(err => {
                 console.log(err);
             });
@@ -81,24 +106,7 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
-    sortByDate() {
-        const {seats} = this.state.info;
-        let newSeatList = seats;
-        if (this.state.isLowestFirst) {
-            newSeatList= seats.sort((a,b)=> a.ArrivalTime > b.ArrivalTime)
-        }
-        else {
-            newSeatList= seats.sort((a,b)=> a.ArrivalTime < b.ArrivalTime)
-        }
-        this.setState({
-            isLowestFirst: !this.state.isLowestFirst,
-            seats: newSeatList
-        });
-    };
-    sortDate() {
-        this.sortByDate()
-
-    }
+   
     
     render() {
         return (
@@ -112,8 +120,9 @@ class Booking extends React.Component {
                             onClick={this.handleSubmit}
                         /> */}
                         <button onClick={this.handleSubmit}>Hitta resa</button>
-                        <button onClick={this.sortDate}>Filter</button>
+                        <button onClick={this.handleSort}>Filter</button>
                         <div>{this.state.info}</div>
+                        
                         <table className="table table-hover">
                             <thead>
                                 <tr>
@@ -137,7 +146,7 @@ class Booking extends React.Component {
                                                 onChange={() => this.handleCheck(seat)}
                                             />
                                         </th>
-
+         
                                         <th><label className="seat-info" htmlFor={seat.checked}>{seat.DepartureTime}</label></th>
                                         <th>{seat.ArrivalTime}</th>
                                         <th>{seat.Name}</th>
