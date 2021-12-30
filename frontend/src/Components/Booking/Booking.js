@@ -16,6 +16,10 @@ class Booking extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+
+        this.setState({
+            info: ''
+        })
         var day = this.formatDate(this.props.d);
         var path = "/api/db/getunoccupiedseats?from='" + this.props.fromStation + "'&to='" + this.props.toStation + "'&day=" + day;
         fetch(path)
@@ -70,6 +74,14 @@ class Booking extends React.Component {
                 .catch(err => {
                     console.log(err);
                 });
+        });
+
+        this.setState({
+            seats: [],
+            info: 'Köpet slutfört. Köpbekräftelse har skickats till din email.',
+            selectedSeats: [],
+            sum: 0,
+            email: ''
         });
     }
     formatDate(date) {
