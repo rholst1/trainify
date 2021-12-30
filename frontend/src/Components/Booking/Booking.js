@@ -7,6 +7,7 @@ class Booking extends React.Component {
         super(props);
         this.state = {
             seats: [],
+            isLowestFirst: true,
             info: ''
         };
     }
@@ -80,6 +81,24 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
+    sortByDate() {
+        const {seats} = this.state.info;
+        let newSeatList = seats;
+        if (this.state.isLowestFirst) {
+            newSeatList= seats.sort((a,b)=> a.ArrivalTime > b.ArrivalTime)
+        }
+        else {
+            newSeatList= seats.sort((a,b)=> a.ArrivalTime < b.ArrivalTime)
+        }
+        this.setState({
+            isLowestFirst: !this.state.isLowestFirst,
+            seats: newSeatList
+        });
+    };
+    sortDate() {
+        this.sortByDate()
+
+    }
     
     render() {
         return (
@@ -92,7 +111,8 @@ class Booking extends React.Component {
                             text='Hitta resa'
                             onClick={this.handleSubmit}
                         /> */}
-                        <button onClick = {this.handleSubmit}>Hitta resa</button>
+                        <button onClick={this.handleSubmit}>Hitta resa</button>
+                        <button onClick={this.sortDate}>Filter</button>
                         <div>{this.state.info}</div>
                         <table className="table table-hover">
                             <thead>
