@@ -1,6 +1,7 @@
 import React from 'react'
 import SearchButton from "../Button/SearchButton";
 import StripePayment from "../Stripe/StripePayment";
+import './Booking.css';
 
 class Booking extends React.Component {
     constructor(props) {
@@ -144,12 +145,12 @@ class Booking extends React.Component {
                             onClick={this.handleSubmit}
                         /> */}
                 <button onClick={this.handleSubmit}>Hitta resa</button>
-                <div>{this.state.info}</div>
-                <div className="Wrapper" hidden={this.state.seats.length === 0}>
-                    <form>
+                <div className="Results">{this.state.info}</div>
+                <div className="Results" hidden={this.state.seats.length === 0}>
+                    <form className="Results">
 
 
-                        <table className="table table-hover">
+                        <table className="Results">
                             <thead>
                                 <tr>
                                     <th></th>
@@ -186,7 +187,7 @@ class Booking extends React.Component {
                             </tbody>
                         </table>
                         <div>
-                            <p>Översikt</p>
+                            <p className="Results">Översikt</p>
                             {this.state.selectedSeats.map(seat =>
                                 <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                     {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}- Price: {seat.Price} kr
