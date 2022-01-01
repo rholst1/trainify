@@ -10,7 +10,8 @@ class Booking extends React.Component {
             info: '',
             selectedSeats: [],
             sum: 0,
-            email: ''
+            email: '',
+            error: false
         };
     }
 
@@ -50,11 +51,12 @@ class Booking extends React.Component {
             selectedSeats: this.state.seats.filter(seat => seat.checked === true)
         });
     }
-    handlePurchase = (event) => {
+    handlePurchase = async (event) => {
         event.preventDefault();
-        this.state.selectedSeats.forEach(seat => {
 
-            fetch("/api/db/post/Ticket", {
+        this.state.selectedSeats.forEach(async (seat) => {
+
+            await fetch("/api/db/post/Ticket", {
                 "method": "POST",
                 "headers": {
                     "content-type": "application/json",
@@ -67,21 +69,29 @@ class Booking extends React.Component {
                     SeatGuid: seat.SeatGuid
                 })
             })
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
+                .then(response=> {
+                    console.log(response.status);
+                    if (response.status !== 200) this.setState({ error: true });
+                    var infoString = '';
+                    if (this.state.error === true) {
+                        infoString = 'Förlåt, köpet var inte slutfört. Kontakta kundtjänst.';
+                    }
+                    else {
+                        infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
+                    }
+            
+                    this.setState({
+                        seats: [],
+                        info: infoString,
+                        selectedSeats: [],
+                        sum: 0,
+                        email: '',
+                        error: false
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                 });
-        });
-
-        this.setState({
-            seats: [],
-            info: 'Köpet slutfört. Köpbekräftelse har skickats till din email.',
-            selectedSeats: [],
-            sum: 0,
-            email: ''
         });
     }
     formatDate(date) {
