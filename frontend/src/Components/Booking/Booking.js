@@ -65,6 +65,14 @@ class Booking extends React.Component {
             seats: this.state.seats,
             selectedSeats: this.state.seats.filter(seat => seat.checked === true)
         });
+
+        var totalSum = 0;
+        this.state.seats.filter(seat => seat.checked === true).forEach(seat => {
+            totalSum = totalSum + seat.Price;
+        });
+        this.setState({
+            sum: totalSum
+        });
     }
     handlePurchase = async (event) => {
         event.preventDefault();
@@ -80,7 +88,7 @@ class Booking extends React.Component {
                 "body": JSON.stringify({
                     email: this.state.email,
                     ScheduleId: seat.ScheduleId,
-                    Price: 10,
+                    Price: seat.Price,
                     SeatGuid: seat.SeatGuid
                 })
             })
@@ -155,7 +163,7 @@ class Booking extends React.Component {
                             </thead>
                             <tbody>
                                 {this.state.seats.map(seat =>
-                                    <tr key={seat.UniqueSeatId}>
+                                    <tr key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                         <th>
                                             <input
                                                 type="checkbox"
@@ -181,7 +189,7 @@ class Booking extends React.Component {
                             <p>Översikt</p>
                             {this.state.selectedSeats.map(seat =>
                                 <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
-                                    {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}
+                                    {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}- Price: {seat.Price} kr
                                 </li>
                             )}
                             <p>Att betala: {this.state.sum} kr</p>
