@@ -51,7 +51,7 @@ class Booking extends React.Component {
                 }
                 else {
                     this.setState({
-                        info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())+this.props.Price
+                        info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
                     });
                 }
             })
