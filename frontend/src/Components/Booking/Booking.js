@@ -13,6 +13,21 @@ class Booking extends React.Component {
             email: '',
             error: false
         };
+        const sortTypes = {
+            up: {
+                class: 'sort-up',
+                fn: (a, b) => a.Price - b.Price
+            },
+            down: {
+                class: 'sort-down',
+                fn: (a, b) => b.Price - a.Price
+            },
+            default: {
+                class: 'sort',
+                fn: (a, b) => a
+            }
+        };
+
     }
 
     handleSubmit = (event) => {
@@ -36,7 +51,7 @@ class Booking extends React.Component {
                 }
                 else {
                     this.setState({
-                        info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
+                        info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())+this.props.Price
                     });
                 }
             })
@@ -110,6 +125,7 @@ class Booking extends React.Component {
             email: event.target.value
         });
     }
+
     render() {
         return (
             <>
@@ -134,6 +150,7 @@ class Booking extends React.Component {
                                     <th>Name</th>
                                     <th>WagonNr</th>
                                     <th>SeatNr</th>
+                                    <th>Price</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,6 +171,7 @@ class Booking extends React.Component {
                                         <th>{seat.Name}</th>
                                         <th>{seat.WagonNr}</th>
                                         <th>{seat.SeatNr}</th>
+                                        <th>{seat.Price}</th>
 
                                     </tr>
                                 )}

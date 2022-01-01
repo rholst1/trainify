@@ -199,7 +199,7 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   let nextDayStr = formatDate(nextDay);
 
   let query = `
-  Select Schedule.Id AS ScheduleId, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Seat.Id AS SeatGuid, Seat.WagonNr, Seat.SeatNr 
+  Select Schedule.Id AS ScheduleId, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Schedule.Price, Seat.Id AS SeatGuid, Seat.WagonNr, Seat.SeatNr 
   From Schedule
   Join Train On Schedule.TrainId = Train.Id
   Join Seat On Train.Id = Seat.TrainId
@@ -207,7 +207,7 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
   Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN '${dayStr}' AND '${nextDayStr}'
   Except
-  Select Schedule.Id AS ScheduleId, Schedule.TrainId , Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid  AS SeatGuid, Seat.WagonNr, Seat.SeatNr
+  Select Schedule.Id AS ScheduleId, Schedule.TrainId , Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Schedule.Price, Ticket.SeatGuid  AS SeatGuid, Seat.WagonNr, Seat.SeatNr
   From Ticket
   Join Schedule On Schedule.Id=Ticket.ScheduleId
   Join Train On Schedule.TrainId = Train.Id
