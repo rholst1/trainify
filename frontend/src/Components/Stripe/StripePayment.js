@@ -30,7 +30,7 @@ const StripePayment = (props) => {
   //         })
   //         .catch(error => console.log(error))
   // }
-  const {sum, email} = props;
+  const {sum, email, handlePurchase} = props;
   const s = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
   return (
     <>
@@ -48,6 +48,7 @@ const StripePayment = (props) => {
           <PaymentForm
           sum ={sum}
           email={email}
+          handlePurchase = {handlePurchase}
           />
         </Elements>
       </div>

@@ -12,8 +12,10 @@ class Booking extends React.Component {
             selectedSeats: [],
             sum: 0,
             email: '',
-            error: false
+            error: false,
+            isPaid: false
         };
+        this.handlePurchase = this.handlePurchase.bind(this);
         const sortTypes = {
             up: {
                 class: 'sort-up',
@@ -75,12 +77,11 @@ class Booking extends React.Component {
             sum: totalSum
         });
     }
-    handlePurchase = async (event) => {
-        event.preventDefault();
+    handlePurchase = () => {
 
-        this.state.selectedSeats.forEach(async (seat) => {
+        this.state.selectedSeats.forEach((seat) => {
 
-            await fetch("/api/db/post/Ticket", {
+            fetch("/api/db/post/Ticket", {
                 "method": "POST",
                 "headers": {
                     "content-type": "application/json",
@@ -134,7 +135,6 @@ class Booking extends React.Component {
             email: event.target.value
         });
     }
-
     render() {
         return (
             <>
@@ -204,8 +204,9 @@ class Booking extends React.Component {
                     <StripePayment
                         sum={this.state.sum}
                         email={this.state.email}
+                        handlePurchase = {() => this.handlePurchase()}
                     />
-                    <button onClick={this.handlePurchase} hidden={this.state.email === ''}>Köp</button>
+                    {/* <button onClick={this.handlePurchase} hidden={this.state.email === ''}>Köp</button> */}
                 </div>
             </>
         )
