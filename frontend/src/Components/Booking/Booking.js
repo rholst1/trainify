@@ -12,11 +12,10 @@ class Booking extends React.Component {
             selectedSeats: [],
             sum: 0,
             email: '',
-            error: false,
-            isPaid: false
+            error: false
         };
-        this.handlePurchase = this.handlePurchase.bind(this);
-        this.handleSubmit =this.handleSubmit.bind(this);
+        // this.handlePurchase = this.handlePurchase.bind(this);
+        // this.handleSubmit =this.handleSubmit.bind(this);
         const sortTypes = {
             up: {
                 class: 'sort-up',
@@ -37,7 +36,12 @@ class Booking extends React.Component {
     handleSubmit = () => {
 
         this.setState({
-            info: ''
+            seats: [],
+            info: '',
+            selectedSeats: [],
+            sum: 0,
+            email: '',
+            error: false
         })
         var day = this.formatDate(this.props.d);
         var path = "/api/db/getunoccupiedseats?from='" + this.props.fromStation + "'&to='" + this.props.toStation + "'&day=" + day;

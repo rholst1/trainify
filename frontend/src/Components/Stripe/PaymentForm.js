@@ -41,7 +41,7 @@ export default function PaymentForm(props) {
     }
     return (
         <>
-            {!success ?
+            {/* {!success ? */}
                 <form onSubmit={handleSubmit}>
                     <fieldset>
                         <div >
@@ -54,11 +54,11 @@ export default function PaymentForm(props) {
                             handleOnClick = {() => this.handleSubmit()}
                         />
                 </form>
-                :
+                {/* :
                 <div>
                     <h2>Thanks for your order</h2>
-                </div>
-            }
+                </div>  */}
+            {/* } */}
 
         </>
     )
