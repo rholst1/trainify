@@ -16,6 +16,7 @@ class Booking extends React.Component {
             isPaid: false
         };
         this.handlePurchase = this.handlePurchase.bind(this);
+        this.handleSubmit =this.handleSubmit.bind(this);
         const sortTypes = {
             up: {
                 class: 'sort-up',
@@ -33,8 +34,7 @@ class Booking extends React.Component {
 
     }
 
-    handleSubmit = (event) => {
-        event.preventDefault();
+    handleSubmit = () => {
 
         this.setState({
             info: ''
@@ -138,13 +138,11 @@ class Booking extends React.Component {
     render() {
         return (
             <>
-                {/* SearchButton: onClick doesn't work, use the usual button for now */}
-                {/* <SearchButton
-                            type='submit'
+                <SearchButton
                             text='Hitta resa'
-                            onClick={this.handleSubmit}
-                        /> */}
-                <button onClick={this.handleSubmit}>Hitta resa</button>
+                            handleOnClick = {() => this.handleSubmit()}
+                        />
+                {/* <button onClick={this.handleSubmit}>Hitta resa</button> */}
                 <div className="Results">{this.state.info}</div>
                 <div className="Results" hidden={this.state.seats.length === 0}>
                     <form className="Results">
