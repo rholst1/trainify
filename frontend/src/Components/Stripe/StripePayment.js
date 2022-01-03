@@ -6,7 +6,7 @@ import PaymentForm from './PaymentForm';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-const StripePayment = () => {
+const StripePayment = (props) => {
   // const [product, setProduct] = useState({
   //     price: 10,
   // })
@@ -30,6 +30,7 @@ const StripePayment = () => {
   //         })
   //         .catch(error => console.log(error))
   // }
+  const {sum, email, handlePurchase} = props;
   const s = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
   return (
     <>
@@ -42,9 +43,15 @@ const StripePayment = () => {
             >
                 <button>{product.price}KR </button>
             </StripeCheckout> */}
-      <Elements stripe={s}>
-        <PaymentForm />
-      </Elements>
+      <div hidden= {email===''}>
+        <Elements stripe={s}>
+          <PaymentForm
+          sum ={sum}
+          email={email}
+          handlePurchase = {handlePurchase}
+          />
+        </Elements>
+      </div>
     </>
   );
 };
