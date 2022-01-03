@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import axios from 'axios'
+import SearchButton from "../Button/SearchButton";
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
     const [success, setSuccess] = useState(false)
     const stripe = useStripe();
     const elements = useElements();
@@ -20,12 +21,13 @@ export default function PaymentForm() {
             try {
                 const { id } = paymentMethod;
                 const response = await axios.post('/paymentTwo', {
-                    amount: 1000,
+                    amount: props.sum,
                     id
                 })
                 if (response.data.success) {
                     console.log('success payment')
                     setSuccess(true)
+                    props.handlePurchase();
                 }
                 return response
             } catch (error) {
@@ -39,7 +41,7 @@ export default function PaymentForm() {
     }
     return (
         <>
-            {!success ?
+            {/* {!success ? */}
                 <form onSubmit={handleSubmit}>
                     <fieldset>
                         <div >
@@ -47,13 +49,16 @@ export default function PaymentForm() {
                             <CardElement onChange={() => setErrosMessage('')} />
                         </div>
                     </fieldset>
-                    <button type='submit'>Pay</button>
+                    <SearchButton
+                            text='Pay'
+                            handleOnClick = {() => this.handleSubmit()}
+                        />
                 </form>
-                :
+                {/* :
                 <div>
                     <h2>Thanks for your order</h2>
-                </div>
-            }
+                </div>  */}
+            {/* } */}
 
         </>
     )

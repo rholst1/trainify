@@ -160,9 +160,17 @@ app.post('/api/db/post/:table', (request, response) => {
     'Into Table:',
     request.params
   );
-  let result = postToDatabase.run(request.body);
-  response.json(result);
-  console.log('Changes to DB: ', result);
+  try
+  {
+    let result = postToDatabase.run(request.body);
+    console.log('Changes to DB: ', result);
+    response.sendStatus(200);
+  }
+  catch
+  {
+    response.sendStatus(500);
+    console.log('error');
+  }
 });
 
 // Get function that returns a list of stations
@@ -203,7 +211,7 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   From Ticket
   Join Schedule On Schedule.Id=Ticket.ScheduleId
   Join Train On Schedule.TrainId = Train.Id
-  Join Seat On Train.Id = Seat.TrainId
+  Join Seat On Ticket.SeatGuid=Seat.Id
   Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
   Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
   Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN  '${dayStr}' AND '${nextDayStr}'

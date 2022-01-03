@@ -5,8 +5,8 @@ export default function SearchButton(props) {
     return (
         <>
             <button className='btnSearch'
-                type={props.type}>
-                {props.text}
+            onClick = {props.handleOnClick}>
+            {props.text}      
             </button>
         </>
     )
