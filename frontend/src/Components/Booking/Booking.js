@@ -90,6 +90,23 @@ class Booking extends React.Component {
             sortedSeats: this.state.seats.sort((a, b) => a.Price - b.Price)
         });
     }
+
+    handleSort2 = () => {
+        
+        this.setState({
+            seats: this.state.seats,
+            sortedSeats: this.state.seats.sort((a, b) => b.Price - a.Price)
+        });
+    }
+
+    handleSortTime = () => {
+        
+        this.setState({
+            seats: this.state.seats,
+            sortedSeats: this.state.seats.sort((a, b) => a.DepartureTime.getDate - b.DepartureTime.getDate)
+        });
+    }
+
     handlePurchase = () => {
 
         this.state.selectedSeats.forEach((seat) => {
@@ -157,9 +174,19 @@ class Booking extends React.Component {
                             handleOnClick = {() => this.handleSubmit()}
                 />
                 <SortButton
-                    text='Sortera'
+                    text='Sortera avlopend'
                     handleOnClick={() => this.handleSort()}
                 />
+                <SortButton
+                    text='Sortera oplopend'
+                    handleOnClick={() => this.handleSort2()}
+                />
+                 <SortButton
+                    text='Sortera tid'
+                    handleOnClick={() => this.handleSortTime()}
+                />
+
+            
                 {/* <button onClick={this.handleSubmit}>Hitta resa</button> */}
                 <div className="Results">{this.state.info}</div>
                 <div className="Results" hidden={this.state.seats.length === 0}>
