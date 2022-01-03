@@ -10,6 +10,7 @@ class Booking extends React.Component {
             seats: [],
             info: '',
             selectedSeats: [],
+            sortedSeats: [],
             sum: 0,
             email: '',
             error: false
@@ -81,6 +82,13 @@ class Booking extends React.Component {
             sum: totalSum
         });
     }
+    handleSort = (seatToCheck) => {
+        
+        this.setState({
+            seats: this.state.seats,
+            sortedSeats: this.state.seats.sort((a, b) => a.Price - b.Price)
+        });
+    }
     handlePurchase = () => {
 
         this.state.selectedSeats.forEach((seat) => {
@@ -142,6 +150,7 @@ class Booking extends React.Component {
     render() {
         return (
             <>
+                <button onClick={this.handleSort}>Filter</button>
                 <SearchButton
                             text='Hitta resa'
                             handleOnClick = {() => this.handleSubmit()}
@@ -165,7 +174,9 @@ class Booking extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
+                                
                                 {this.state.seats.map(seat =>
+                                   
                                     <tr key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                         <th>
                                             <input
@@ -175,6 +186,7 @@ class Booking extends React.Component {
                                                 checked={seat.checked}
                                                 onChange={() => this.handleCheck(seat)}
                                             />
+                                            
                                         </th>
 
                                         <th><label className="seat-info" htmlFor={seat.checked}>{seat.DepartureTime}</label></th>
@@ -184,13 +196,26 @@ class Booking extends React.Component {
                                         <th>{seat.SeatNr}</th>
                                         <th>{seat.Price}</th>
 
+                                        
                                     </tr>
+                                    
                                 )}
                             </tbody>
                         </table>
                         <div>
+                         
                             <p className="Results">Översikt</p>
                             {this.state.selectedSeats.map(seat =>
+                                <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
+                                    {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}- Price: {seat.Price} kr
+                                </li>
+                            )}
+                            <p>Att betala: {this.state.sum} kr</p>
+                        </div>
+                        <div>
+                            
+                            <p className="Results">Översikt</p>
+                            {this.state.sortedSeats.map(seat =>
                                 <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                     {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}- Price: {seat.Price} kr
                                 </li>
