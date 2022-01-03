@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchButton from "../Button/SearchButton";
+import SortButton from "../Button/SortButton";
 import StripePayment from "../Stripe/StripePayment";
 import './Booking.css';
 
@@ -150,11 +151,15 @@ class Booking extends React.Component {
     render() {
         return (
             <>
-                <button onClick={this.handleSort}>Filter</button>
+                
                 <SearchButton
                             text='Hitta resa'
                             handleOnClick = {() => this.handleSubmit()}
-                        />
+                />
+                <SortButton
+                    text='Sortera'
+                    handleOnClick={() => this.handleSort()}
+                />
                 {/* <button onClick={this.handleSubmit}>Hitta resa</button> */}
                 <div className="Results">{this.state.info}</div>
                 <div className="Results" hidden={this.state.seats.length === 0}>
@@ -174,7 +179,7 @@ class Booking extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                               
                                 {this.state.seats.map(seat =>
                                    
                                     <tr key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
