@@ -8,6 +8,7 @@ import SearchButton from "../Components/Button/SearchButton";
 
 import Image from "../Components/Image/Image";
 import Booking from "../Components/Booking/Booking";
+import { BasicTable } from "../Components/Sort/Table";
 
 const HomePage = () => {
     var date = new Date();
@@ -27,6 +28,7 @@ const HomePage = () => {
                 </div>
 
                 <Image />
+                <BasicTable />
                 <div className="PageHeader" >
                     <h1>Planera din resa </h1>
                 </div>
