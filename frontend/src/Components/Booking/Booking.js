@@ -83,11 +83,11 @@ class Booking extends React.Component {
             sum: totalSum
         });
     }
-    handleSort = () => {
+    handleSort = (e) => {
         
         this.setState({
             seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => a.Price - b.Price)
+            sortedSeats: this.state.seats.sort((a, b) => a.ArrivalTime - b.ArrivalTime)
         });
     }
     handlePurchase = () => {
