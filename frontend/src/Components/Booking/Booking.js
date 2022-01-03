@@ -83,7 +83,7 @@ class Booking extends React.Component {
             sum: totalSum
         });
     }
-    handleSort = (seatToCheck) => {
+    handleSort = () => {
         
         this.setState({
             seats: this.state.seats,
@@ -151,7 +151,7 @@ class Booking extends React.Component {
     render() {
         return (
             <>
-                
+               
                 <SearchButton
                             text='Hitta resa'
                             handleOnClick = {() => this.handleSubmit()}
@@ -176,10 +176,12 @@ class Booking extends React.Component {
                                     <th>WagonNr</th>
                                     <th>SeatNr</th>
                                     <th>Price</th>
+                                    
                                 </tr>
+                                
                             </thead>
                             <tbody>
-                               
+                                
                                 {this.state.seats.map(seat =>
                                    
                                     <tr key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
