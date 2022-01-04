@@ -12,6 +12,7 @@ import { handle } from "express/lib/application";
 
 const HomePage = () => {
     var date = new Date();
+   
     const [value, setValue] = useState(date);
     const [stationOne, setStationOne] = useState("stationOne");
     const [stationTwo, setStationTwo] = useState("stationTwo");

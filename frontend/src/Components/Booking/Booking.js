@@ -166,13 +166,15 @@ class Booking extends React.Component {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
-            year = d.getFullYear();
-
+            year = d.getFullYear(),
+            time = d.getTime();
+        
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
 
-        return [year, month, day].join('-');
+        return [year, month, day, time].join('-');
     }
+    
     handleInputMailChange = (event) => {
         this.setState({
             email: event.target.value
