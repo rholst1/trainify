@@ -1,6 +1,17 @@
-.Results{
+.Results,.Results1{
     color: rgb(255, 7, 7);
     text-shadow: -20px 0 40px #042907, 20px 0 40px #042907;
     font-size: 20px;
+ }
+ @media screen and (max-width: 600px) {
+.Results{
+      font-size: 12px; 
+      /*margin-top:14px; */ 
+      width:4rem;
+     }
+     .Results1{
+       font-size: 14px;
+       margin-top:8px;  
+     }
  }
  

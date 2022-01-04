@@ -45,6 +45,14 @@
     margin: 4px;
     background-color: rgba(255, 255, 255, 0.733);
 }
+@media screen and (max-width: 600px) {
+.SearchInput {
+   width: 5rem; 
+  }
+  .suggestion{
+    width: 115px;
+  }
+}
 /* 
 .StationContainer::-webkit-scrollbar {
  display: none;

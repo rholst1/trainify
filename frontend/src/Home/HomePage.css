@@ -67,4 +67,14 @@
     margin-top: 170px;
 
 }
-
+@media screen and (max-width: 600px) {
+.PageHeader {
+   font-size: 17px; 
+  }
+.react-datetime-picker{
+    padding: 14px 6px;
+  }
+  .react-calendar{
+      max-width:76%;
+  }
+}
