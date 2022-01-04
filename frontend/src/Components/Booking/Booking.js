@@ -18,22 +18,21 @@ class Booking extends React.Component {
         };
         // this.handlePurchase = this.handlePurchase.bind(this);
         // this.handleSubmit =this.handleSubmit.bind(this);
-        const sortTypes = {
-            up: {
-                class: 'sort-up',
-                fn: (a, b) => a.Price - b.Price
-            },
-            down: {
-                class: 'sort-down',
-                fn: (a, b) => b.Price - a.Price
-            },
-            default: {
-                class: 'sort',
-                fn: (a, b) => a
+
+     {/* 
+        const sorted = this.state.seats.sort((a,b)=>{
+            const ArrivalTime = new Date(`${a.ArrivalTime.date} ${a.ArrivalTime.time}`).valueOf();
+            const DepartureTime = new Date(`${b.DepartureTime.date} ${b.DepartureTime.time}`).valueOf();
+            if(ArrivalTime > DepartureTime){
+              return 1; // return -1 here for DESC order
             }
-        };
+            return -1 // return 1 here for DESC Order
+          });
+          console.log(ArrivalTime)
+            */}
 
     }
+    
 
     handleSubmit = () => {
 
@@ -99,13 +98,6 @@ class Booking extends React.Component {
         });
     }
 
-    handleSortTime = () => {
-        
-        this.setState({
-            seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => a.DepartureTime.getDate - b.DepartureTime.getDate)
-        });
-    }
 
     handlePurchase = () => {
 
@@ -174,11 +166,11 @@ class Booking extends React.Component {
                             handleOnClick = {() => this.handleSubmit()}
                 />
                 <SortButton
-                    text='Sortera avlopend'
+                    text= '🔽'
                     handleOnClick={() => this.handleSort()}
                 />
                 <SortButton
-                    text='Sortera oplopend'
+                    text= '🔼'
                     handleOnClick={() => this.handleSort2()}
                 />
                  <SortButton
@@ -197,7 +189,7 @@ class Booking extends React.Component {
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>DepartureTime</th>
+                                    <th>DepartureTime </th>
                                     <th>ArrivalTime</th>
                                     <th>Name</th>
                                     <th>WagonNr</th>
