@@ -6,10 +6,14 @@
     background-color: rgba(0, 0, 0, 0.151);
  }
  @media screen and (max-width: 600px) {
-.Results{
+.ResultWrapper{
       font-size: 12px; 
       /*margin-top:14px; */ 
       width:4rem;
+     }
+     .ResultWrapper p{
+      font-size: 30px; 
+      /*margin-top:14px; */ 
      }
      .Results1{
        font-size: 14px;

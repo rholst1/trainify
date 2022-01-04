@@ -54,7 +54,7 @@
 }
 @media screen and (max-width: 600px) {
 .SearchInput {
-   width: 5rem; 
+   width: 8rem; 
   }
   .suggestion{
     width: 115px;
