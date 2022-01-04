@@ -178,12 +178,13 @@ class Booking extends React.Component {
                     text='Sortera tid'
                     handleOnClick={() => this.handleSortTime()}
                 />
+                <div className="ResultWrapper">
 
-                <div className="Results">{this.state.info}</div>
-                <div className="Results" hidden={this.state.seats.length === 0}>
-                    <form className="Results">
+                <div >{this.state.info}</div>
+                <div hidden={this.state.seats.length === 0}>
+                    <form >
 
-                        <table className="Results">
+                        <table >
                             <thead>
                                 <tr>
                                     <th></th>
@@ -227,7 +228,7 @@ class Booking extends React.Component {
                         </table>
                         <div>
                          
-                            <p className="Results">Översikt</p>
+                            <p >Översikt</p>
                             {this.state.selectedSeats.map(seat =>
                                 <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                     {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}- Price: {seat.Price} kr
@@ -248,6 +249,8 @@ class Booking extends React.Component {
                         handlePurchase = {() => this.handlePurchase()}
                     />
                 </div>
+                </div>
+
             </>
         )
     }

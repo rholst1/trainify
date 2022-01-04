@@ -55,10 +55,9 @@
 .Btn{
     padding: 2.5rem;
 }
-.Section{
+/* .Section{
     height: 90px;
     background-color: rgb(245, 244, 244);
-    /* margin-top: -20px; */
     display: flex;
     flex-direction: row;
 
@@ -68,5 +67,5 @@
     height: 300px;
     background-color: rgb(245, 244, 244);
     margin-top: 170px;
-}
+} */
 
