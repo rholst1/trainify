@@ -25,12 +25,7 @@ const HomePage = () => {
         <>
             <div className="Wrapper">
                 <div className='Section'>
-                    <div>
-                        <p>Trainify</p>
-                    </div>
-                    <div>
-                        <img src="Train.png" alt="HEJSAN" height={'90px'} width={'300px'} />
-                    </div>
+              
                 </div>
              
                 <Image />

@@ -1,4 +1,18 @@
-.ImageWrapper{
+.LogoContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 40px;
+    background-color: black;
+}
+p{
+    color: white;
+    font-size: 30px;
+    letter-spacing: 4px;
+}
+
+
+.ImageContainer{
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -15,5 +29,6 @@
     width: 100%;
     position: absolute;
     margin-top: 30px;
+    background-color: black;
     
 }
