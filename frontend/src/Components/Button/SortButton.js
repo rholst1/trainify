@@ -1,4 +1,5 @@
 import React from 'react'
+import './SortButton.css'
 
 
 export default function SortButton(props) {
