@@ -58,13 +58,15 @@
 .Section{
     height: 90px;
     background-color: rgb(245, 244, 244);
-    margin-top: -20px;
+    /* margin-top: -20px; */
+    display: flex;
+    flex-direction: row;
+
     
 }
 .Separator{
     height: 300px;
     background-color: rgb(245, 244, 244);
     margin-top: 170px;
-
 }
 

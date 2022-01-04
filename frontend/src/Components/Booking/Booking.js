@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import SearchButton from "../Button/SearchButton";
 import StripePayment from "../Stripe/StripePayment";
 import './Booking.css';
@@ -33,8 +33,8 @@ class Booking extends React.Component {
 
     }
 
-    handleSubmit = () => {
-
+    componentDidMount = () => {
+        console.log('DENNA KÖRS')
         this.setState({
             seats: [],
             info: '',
@@ -44,22 +44,26 @@ class Booking extends React.Component {
             error: false
         })
         var day = this.formatDate(this.props.d);
-        var path = "/api/db/getunoccupiedseats?from='" + this.props.fromStation + "'&to='" + this.props.toStation + "'&day=" + day;
+        var path = `/api/db/getunoccupiedseats?from='${this.props.fromStation}'&to='${this.props.toStation}'&day=${day}`;
+        
         fetch(path)
-            .then(response => response.json())
-            .then(response => {
+        .then(response => response.json())
+        .then(response => {
+            this.setState({
+                seats: response
+            })
+            if (this.state.seats.length === 0) {
                 this.setState({
-                    seats: response
-                })
-                if (this.state.seats.length === 0) {
-                    this.setState({
-                        info: 'Förlåt. Det finns inga biljetter. Välj ett annat datum eller andra stationer.'
-                    });
+                    info: 'Förlåt. Det finns inga biljetter. Välj ett annat datum eller andra stationer.'
+                });
+                this.props.setSearch(false)
                 }
                 else {
                     this.setState({
                         info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
                     });
+                    this.props.setSearch(true)
+
                 }
             })
             .catch(err => {
@@ -98,7 +102,7 @@ class Booking extends React.Component {
                     SeatGuid: seat.SeatGuid
                 })
             })
-                .then(response=> {
+                .then(response => {
                     console.log(response.status);
                     if (response.status !== 200) this.setState({ error: true });
                     var infoString = '';
@@ -108,7 +112,7 @@ class Booking extends React.Component {
                     else {
                         infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
                     }
-            
+
                     this.setState({
                         seats: [],
                         info: infoString,
@@ -142,15 +146,13 @@ class Booking extends React.Component {
     render() {
         return (
             <>
-                <SearchButton
-                            text='Hitta resa'
-                            handleOnClick = {() => this.handleSubmit()}
-                        />
-                {/* <button onClick={this.handleSubmit}>Hitta resa</button> */}
+                {/* <SearchButton
+                    text='Hitta resa'
+                    handleOnClick={() => this.handleSubmit()}
+                /> */}
                 <div className="Results">{this.state.info}</div>
                 <div className="Results" hidden={this.state.seats.length === 0}>
                     <form className="Results">
-
 
                         <table className="Results">
                             <thead>
@@ -203,10 +205,11 @@ class Booking extends React.Component {
                         placeholder="example@gmail.com"
                         value={this.state.email}
                         onChange={this.handleInputMailChange} />
+
                     <StripePayment
                         sum={this.state.sum}
                         email={this.state.email}
-                        handlePurchase = {() => this.handlePurchase()}
+                        handlePurchase={() => this.handlePurchase()}
                     />
                     {/* <button onClick={this.handlePurchase} hidden={this.state.email === ''}>Köp</button> */}
                 </div>

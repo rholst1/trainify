@@ -78,13 +78,13 @@ const SearchStation = (props) => {
                         {suggestion.AdvertisedLocationName}
                     </div>
                 )}
-                 {noResult ?
-                    <div className="NoResult">
-                        Ingen matchning
-                    </div>
-                :
-                <div></div>
-}
+                    {noResult ?
+                        <div className="NoResult">
+                            Ingen matchning
+                        </div>
+                        :
+                        <div></div>
+                    }
                 </div>
                 { }
 

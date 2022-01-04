@@ -1,6 +1,7 @@
 .Results{
-    color: rgb(255, 7, 7);
+ 
+    color: #ffffff;
     text-shadow: -20px 0 40px #042907, 20px 0 40px #042907;
     font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.151);
  }
- 
