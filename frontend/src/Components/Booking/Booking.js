@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import SearchButton from "../Button/SearchButton";
 import SortButton from "../Button/SortButton";
 import StripePayment from "../Stripe/StripePayment";
@@ -34,8 +34,8 @@ class Booking extends React.Component {
     }
     
 
-    handleSubmit = () => {
-
+    componentDidMount = () => {
+        console.log('DENNA KÖRS')
         this.setState({
             seats: [],
             info: '',
@@ -45,22 +45,26 @@ class Booking extends React.Component {
             error: false
         })
         var day = this.formatDate(this.props.d);
-        var path = "/api/db/getunoccupiedseats?from='" + this.props.fromStation + "'&to='" + this.props.toStation + "'&day=" + day;
+        var path = `/api/db/getunoccupiedseats?from='${this.props.fromStation}'&to='${this.props.toStation}'&day=${day}`;
+        
         fetch(path)
-            .then(response => response.json())
-            .then(response => {
+        .then(response => response.json())
+        .then(response => {
+            this.setState({
+                seats: response
+            })
+            if (this.state.seats.length === 0) {
                 this.setState({
-                    seats: response
-                })
-                if (this.state.seats.length === 0) {
-                    this.setState({
-                        info: 'Förlåt. Det finns inga biljetter. Välj ett annat datum eller andra stationer.'
-                    });
+                    info: 'Förlåt. Det finns inga biljetter. Välj ett annat datum eller andra stationer.'
+                });
+                this.props.setSearch(false)
                 }
                 else {
                     this.setState({
                         info: this.props.fromStation + "-" + this.props.toStation + "-" + this.formatDate(this.props.d.toString())
                     });
+                    this.props.setSearch(true)
+
                 }
             })
             .catch(err => {
@@ -160,7 +164,13 @@ class Booking extends React.Component {
     render() {
         return (
             <>
-               
+
+
+                {/* <SearchButton
+                    text='Hitta resa'
+                    handleOnClick={() => this.handleSubmit()}
+                /> */}
+        
                 <SearchButton
                             text='Hitta resa'
                             handleOnClick = {() => this.handleSubmit()}
@@ -179,11 +189,10 @@ class Booking extends React.Component {
                 />
 
             
-                {/* <button onClick={this.handleSubmit}>Hitta resa</button> */}
+
                 <div className="Results">{this.state.info}</div>
                 <div className="Results" hidden={this.state.seats.length === 0}>
                     <form className="Results">
-
 
                         <table className="Results">
                             <thead>
@@ -254,6 +263,7 @@ class Booking extends React.Component {
                         placeholder="example@gmail.com"
                         value={this.state.email}
                         onChange={this.handleInputMailChange} />
+
                     <StripePayment
                         sum={this.state.sum}
                         email={this.state.email}
