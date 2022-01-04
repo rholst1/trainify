@@ -86,7 +86,7 @@ class Booking extends React.Component {
             sum: totalSum
         });
     }
-    handleSort = () => {
+    handleSortPriceAsc = () => {
         
         this.setState({
             seats: this.state.seats,
@@ -94,12 +94,29 @@ class Booking extends React.Component {
         });
     }
 
-    handleSort2 = () => {
+    handleSortPriceDesc = () => {
         
         this.setState({
             seats: this.state.seats,
             sortedSeats: this.state.seats.sort((a, b) => b.Price - a.Price)
         });
+    }
+    handleSortDepartureAsc = () => {
+        
+        this.setState({
+            seats: this.state.seats,
+            sortedSeats: this.state.seats.sort((a, b) => {return new Date(a.DepartureTime).getTime()- new Date (b.DepartureTime).getTime()}).reverse()
+        });
+       
+    }
+
+    handleSortDepartureDesc = () => {
+        
+        this.setState({
+            seats: this.state.seats,
+            sortedSeats: this.state.seats.sort((a, b) => {return new Date(b.DepartureTime).getTime()- new Date (a.DepartureTime).getTime()}).reverse()
+        });
+       
     }
 
 
@@ -167,16 +184,20 @@ class Booking extends React.Component {
 
 
                 <SortButton
-                    text= '🔽'
-                    handleOnClick={() => this.handleSort()}
+                    text= 'Pris 🔽'
+                    handleOnClick={() => this.handleSortPriceAsc()}
                 />
                 <SortButton
-                    text= '🔼'
-                    handleOnClick={() => this.handleSort2()}
+                    text= 'Pris 🔼'
+                    handleOnClick={() => this.handleSortPriceDesc()}
                 />
                  <SortButton
-                    text='Sortera tid'
-                    handleOnClick={() => this.handleSortTime()}
+                    text='Avgång 🔽'
+                    handleOnClick={() => this.handleSortDepartureAsc()}
+                />
+                 <SortButton
+                    text='Avgång 🔼'
+                    handleOnClick={() => this.handleSortDepartureDesc()}
                 />
 
                 <div className="Results">{this.state.info}</div>
