@@ -166,15 +166,6 @@ class Booking extends React.Component {
             <>
 
 
-                {/* <SearchButton
-                    text='Hitta resa'
-                    handleOnClick={() => this.handleSubmit()}
-                /> */}
-        
-                <SearchButton
-                            text='Hitta resa'
-                            handleOnClick = {() => this.handleSubmit()}
-                />
                 <SortButton
                     text= '🔽'
                     handleOnClick={() => this.handleSort()}
@@ -187,8 +178,6 @@ class Booking extends React.Component {
                     text='Sortera tid'
                     handleOnClick={() => this.handleSortTime()}
                 />
-
-            
 
                 <div className="Results">{this.state.info}</div>
                 <div className="Results" hidden={this.state.seats.length === 0}>
@@ -230,7 +219,6 @@ class Booking extends React.Component {
                                         <th>{seat.WagonNr}</th>
                                         <th>{seat.SeatNr}</th>
                                         <th>{seat.Price}</th>
-
                                         
                                     </tr>
                                     
@@ -241,16 +229,6 @@ class Booking extends React.Component {
                          
                             <p className="Results">Översikt</p>
                             {this.state.selectedSeats.map(seat =>
-                                <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
-                                    {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}- Price: {seat.Price} kr
-                                </li>
-                            )}
-                            <p>Att betala: {this.state.sum} kr</p>
-                        </div>
-                        <div>
-                            
-                            <p className="Results">Översikt</p>
-                            {this.state.sortedSeats.map(seat =>
                                 <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                     {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Wagon: {seat.WagonNr} - Seat: {seat.SeatNr}- Price: {seat.Price} kr
                                 </li>
@@ -269,7 +247,6 @@ class Booking extends React.Component {
                         email={this.state.email}
                         handlePurchase = {() => this.handlePurchase()}
                     />
-                    {/* <button onClick={this.handlePurchase} hidden={this.state.email === ''}>Köp</button> */}
                 </div>
             </>
         )
