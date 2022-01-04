@@ -5,6 +5,11 @@
     padding: 3px;
     margin: 4px;
     background-color: rgba(255, 255, 255, 0.733);
+
+}
+
+.suggestion:hover{
+    border: 2px solid #4285f4
     
 }
 
@@ -15,6 +20,7 @@
 .SearchContainer{
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 .StationContainer{
     max-height: 0px;
@@ -32,6 +38,7 @@
     box-shadow: rgba(60, 64, 67, .3) 0 1px 1px 0, rgba(60, 64, 67, .15) 0 4px 15px 3px;
     cursor: pointer;
     width: 15rem;
+    box-sizing: border-box;
     
 
 }
