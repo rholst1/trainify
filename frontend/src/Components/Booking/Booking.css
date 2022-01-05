@@ -7,8 +7,6 @@
 }
 
 .ResultWrapper{
- 
- 
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -18,10 +16,26 @@
     display: flex;
     flex-direction: column;
     width: 60%;
-    height: 600px;
+    height: 530px;
     overflow: hidden;
+    overflow: scroll;
     padding-left: 2rem;
  }
+ 
+.ResultContainer::-webkit-scrollbar {
+ display: none;
+}
+.ResultContainer {
+    -ms-overflow-style: none;
+     scrollbar-width: none;
+}
+
+.ResultContainer::-webkit-scrollbar { 
+    display: none;
+}
+.ResultContainer { -ms-overflow-style: none;
+     scrollbar-width: none;
+}
  th{
      padding: 3px;
      padding-right: 10px;
@@ -38,7 +52,7 @@
 
  }
 .Date{
-    font-size: 18px;
+    font-size: 28px;
     letter-spacing: 2px;
 
 }
