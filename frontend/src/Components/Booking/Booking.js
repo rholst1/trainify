@@ -168,13 +168,11 @@ class Booking extends React.Component {
     render() {
         return (
             <>
-
-
                 <div className="ResultWrapper">
                     <div className='ResultContainer' hidden={this.state.seats.length === 0}>
                         <div className='InfoCotainer'>
                             <p>{this.state.info}
-                            <p className='Date'>{this.state.date}</p>
+                                <p className='Date'>{this.state.date}</p>
                             </p>
                         </div>
                         <div className='SortContainer'>
@@ -215,7 +213,6 @@ class Booking extends React.Component {
                                     <tbody>
 
                                         {this.state.seats.map(seat =>
-
                                             <tr key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                                 <th>
                                                     <input
@@ -242,8 +239,9 @@ class Booking extends React.Component {
                                 </table>
                             </div>
                         </form>
+                        </div>
 
-                        <div>
+                        <div className='ViewContainer'>
                             <p >Översikt</p>
                             {this.state.selectedSeats.map(seat =>
                                 <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
@@ -264,7 +262,6 @@ class Booking extends React.Component {
                                 handlePurchase={() => this.handlePurchase()}
                             />
                         </div>
-                    </div>
                 </div>
 
             </>

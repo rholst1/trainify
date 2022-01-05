@@ -19,6 +19,9 @@
  .SortContainer{
      display: flex;
  }
+ .ViewContainer{
+
+ }
 .Date{
     font-size: 18px;
     letter-spacing: 2px;
