@@ -5,7 +5,7 @@ export default function PayButton(props) {
     
     return (
         <>
-            <button className='btnSearch'
+            <button className='btnPay'
             >
             {props.text}      
             </button>
