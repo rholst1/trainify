@@ -1,6 +1,6 @@
 
 .PageHeader{
-   color: rgb(252, 250, 249);
+   color: rgb(0, 0, 0);
    padding-top: 4rem;
    text-shadow: -20px 0 40px #042907, 20px 0 40px #042907;
    font-size: 23px;
@@ -9,6 +9,8 @@
 .Wrapper{
     position: fixed;
     width: 100%;
+    background-color: black;
+    
 }
 .Icon{
     background-color: rgba(14, 41, 5, 0.226);
@@ -55,17 +57,5 @@
 .Btn{
     padding: 2.5rem;
 }
-/* .Section{
-    height: 90px;
-    background-color: rgb(245, 244, 244);
-    display: flex;
-    flex-direction: row;
 
-    
-}
-.Separator{
-    height: 300px;
-    background-color: rgb(245, 244, 244);
-    margin-top: 170px;
-} */
 
