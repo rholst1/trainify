@@ -67,7 +67,7 @@ class Booking extends React.Component {
 
         var totalSum = 0;
         this.state.seats.filter(seat => seat.checked === true).forEach(seat => {
-            totalSum = totalSum + seat.Price;
+            totalSum = totalSum + this.calculatePrice(seat.Price, seat.DepartureTime);
         });
         this.setState({
             sum: totalSum
@@ -120,7 +120,7 @@ class Booking extends React.Component {
                 "body": JSON.stringify({
                     email: this.state.email,
                     ScheduleId: seat.ScheduleId,
-                    Price: seat.Price,
+                    Price: this.calculatePrice(seat.Price, seat.DepartureTime),
                     SeatGuid: seat.SeatGuid
                 })
             })
@@ -164,6 +164,20 @@ class Booking extends React.Component {
         this.setState({
             email: event.target.value
         });
+    }
+    calculatePrice(basePrice, departure) {
+        var today = new Date();
+        var departureDate = new Date(departure);
+
+        var daysLeft = Math.round((departureDate - today) / (1000 * 60 * 60 * 24));
+        var newPrice;
+        if (daysLeft >= 90) {
+            newPrice = Math.round(basePrice);
+        }
+        else {
+            newPrice = Math.round(basePrice + (90 - daysLeft) / 90 * basePrice);
+        }
+        return newPrice;
     }
     render() {
         return (
@@ -222,7 +236,6 @@ class Booking extends React.Component {
                                                         checked={seat.checked}
                                                         onChange={() => this.handleCheck(seat)}
                                                     />
-
                                                 </th>
 
                                                 <th><label className="seat-info" htmlFor={seat.checked}>{seat.DepartureTime}</label></th>
@@ -230,7 +243,7 @@ class Booking extends React.Component {
                                                 <th>{seat.Name}</th>
                                                 <th>{seat.WagonNr}</th>
                                                 <th>{seat.SeatNr}</th>
-                                                <th>{seat.Price}</th>
+                                                <th>{this.calculatePrice(seat.Price, seat.DepartureTime)}</th>
 
                                             </tr>
 
@@ -246,7 +259,7 @@ class Booking extends React.Component {
                             {this.state.selectedSeats.map(seat =>
                                 <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
                                     {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Vagn: {seat.WagonNr} - Plats: {seat.SeatNr}- Pris
-                                    : {seat.Price} kr
+                                    :  {this.calculatePrice(seat.Price, seat.DepartureTime)} kr
                                 </li>
                             )}
                             <p>Att betala: {this.state.sum} kr</p>
