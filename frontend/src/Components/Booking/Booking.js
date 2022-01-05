@@ -243,7 +243,7 @@ class Booking extends React.Component {
                                                 <th>{seat.Name}</th>
                                                 <th>{seat.WagonNr}</th>
                                                 <th>{seat.SeatNr}</th>
-                                                <th>{seat.Price}</th>
+                                                <th>{this.calculatePrice(seat.Price, seat.DepartureTime)}</th>
 
                                             </tr>
 
