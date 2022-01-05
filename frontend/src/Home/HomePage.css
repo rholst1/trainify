@@ -1,14 +1,19 @@
 
 .PageHeader{
-   color: rgb(252, 250, 249);
+   color: rgb(0, 0, 0);
    padding-top: 4rem;
    text-shadow: -20px 0 40px #042907, 20px 0 40px #042907;
    font-size: 23px;
 }
-
+h1{
+    color: white;
+}
 .Wrapper{
     position: fixed;
     width: 100%;
+    background-color:black;
+    height:6000px;
+    
 }
 .Icon{
     background-color: rgba(14, 41, 5, 0.226);
@@ -80,4 +85,5 @@
     margin-top: 170px;
 
 }*/
+
 

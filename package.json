@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node backend/index.js",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
-    "server": "nodemon backend/index.js --ignore client"
+    "server": "nodemon backend/index.js --ignore client",
+    "dbrun": "node backend/databasescript.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.6",
     "express": "^4.17.2",
+    "moment": "^2.29.1",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.15",
     "sqlite3": "^5.0.2",
