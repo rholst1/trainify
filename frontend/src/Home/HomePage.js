@@ -16,6 +16,7 @@ const HomePage = () => {
     const [stationOne, setStationOne] = useState("stationOne");
     const [stationTwo, setStationTwo] = useState("stationTwo");
     const [search, setSearch] = useState(false)
+    const [station, setStation] = useState('')
     // console.log(process.env.REACT_APP_STRIPE_KEY)
     console.log(search)
 
@@ -25,9 +26,7 @@ const HomePage = () => {
         <>
             <div className="Wrapper">
                 <div className='Section'>
-              
                 </div>
-             
                 <Image />
                 {!search ?
                     <div>
@@ -62,9 +61,9 @@ const HomePage = () => {
                             />
                         </div>
                         <SearchButton
-                         text='Hitta Resa'
-                         setSearch = {setSearch}
-                         />
+                            text='Hitta Resa'
+                            setSearch={setSearch}
+                        />
                     </div>
                     :
                     <p></p>
@@ -75,9 +74,10 @@ const HomePage = () => {
                         toStation={stationTwo}
                         d={value}
                         setSearch={setSearch}
+                        setStation={setStation}
                     />
                     :
-                <div></div>
+                    <div><p>{station} </p></div>
                 }
             </div>
         </>
