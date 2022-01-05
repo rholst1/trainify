@@ -9,10 +9,11 @@ h1{
     color: white;
 }
 .Wrapper{
-    position: fixed;
+    position:sticky;
     width: 100%;
     background-color:black;
     height:6000px;
+    
     
 }
 .Icon{
