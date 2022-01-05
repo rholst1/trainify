@@ -4,8 +4,8 @@ const { error, log } = require('console');
 const moment = require('moment');
 const dbPath = dbDriver('./backend/data/database.db');
 
-let startDate = moment('2022-01-01');
-let endDate = moment('2022-04-01');
+let startDate = moment('2022-04-01');
+let endDate = moment('2022-07-01');
 
 let departureTimes = [
   moment('2022-01-01 10:00'),

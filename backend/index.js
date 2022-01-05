@@ -171,7 +171,7 @@ app.post('/api/db/post/:table', (request, response) => {
 
     if (request.params.table === 'Ticket') {
       query = `
- Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
+ Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr,  Schedule.Price
 From Ticket
 Join Schedule On Schedule.Id=Ticket.ScheduleId
 Join Train On Schedule.TrainId = Train.Id
@@ -232,7 +232,7 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   From Ticket
   Join Schedule On Schedule.Id=Ticket.ScheduleId
   Join Train On Schedule.TrainId = Train.Id 
-  Join Seat On Ticket.SeatGuid = Seat.Id
+  Join Seat On Train.Id = Seat.TrainId
   Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
   Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
   Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN  '${dayStr}' AND '${nextDayStr}'
