@@ -5,11 +5,14 @@
    text-shadow: -20px 0 40px #042907, 20px 0 40px #042907;
    font-size: 23px;
 }
-
+h1{
+    color: white;
+}
 .Wrapper{
     position: fixed;
     width: 100%;
-    background-color: black;
+    background-color:black;
+    height:6000px;
     
 }
 .Icon{
