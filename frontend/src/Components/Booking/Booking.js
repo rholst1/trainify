@@ -183,34 +183,34 @@ class Booking extends React.Component {
         return (
             <>
                 {this.state.didMount ?
-                    <div className="ResultWrapper">
-                        <div className='ResultContainer' hidden={this.state.seats.length === 0}>
-                            <div className='InfoCotainer'>
-                                <p>{this.state.info}
-                                    <p className='Date'>{this.state.date}</p>
-                                </p>
-                            </div>
-                            <div className='SortContainer'>
-                                <SortButton
-                                    text='Avgång 🔼'
-                                    handleOnClick={() => this.handleSortDepartureDesc()}
-                                />
-                                <SortButton
-                                    text='Avgång 🔽'
-                                    handleOnClick={() => this.handleSortDepartureAsc()}
-                                />
-                                <SortButton
-                                    text='Pris 🔽'
-                                    handleOnClick={() => this.handleSortPriceAsc()}
-                                />
-                                <SortButton
-                                    text='Pris 🔼'
-                                    handleOnClick={() => this.handleSortPriceDesc()}
-                                />
+                    <div className='BookingWrapper'>
+                        <div className='InfoCotainer'>
+                            <p>{this.state.info}
+                                <p className='Date'>{this.state.date}</p>
+                            </p>
+                        </div>
+                        <div className="ResultWrapper">
+                            <div className='ResultContainer' hidden={this.state.seats.length === 0}>
+                                <div className='SortContainer'>
+                                    <SortButton
+                                        text='Avgång 🔼'
+                                        handleOnClick={() => this.handleSortDepartureDesc()}
+                                    />
+                                    <SortButton
+                                        text='Avgång 🔽'
+                                        handleOnClick={() => this.handleSortDepartureAsc()}
+                                    />
+                                    <SortButton
+                                        text='Pris 🔽'
+                                        handleOnClick={() => this.handleSortPriceAsc()}
+                                    />
+                                    <SortButton
+                                        text='Pris 🔼'
+                                        handleOnClick={() => this.handleSortPriceDesc()}
+                                    />
 
-                            </div>
-                            <form >
-                                <div>
+                                </div>
+                                <form >
 
                                     <table >
                                         <thead>
@@ -251,35 +251,41 @@ class Booking extends React.Component {
                                             )}
                                         </tbody>
                                     </table>
+                                </form>
+                            </div>
+
+                            <div className='ViewContainer'>
+                                <div>
+
+                                    <p >Översikt</p>
+                                    {this.state.selectedSeats.map(seat =>
+                                        <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
+                                            {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Vagn: {seat.WagonNr} - Plats: {seat.SeatNr}- Pris
+                                            :  {this.calculatePrice(seat.Price, seat.DepartureTime)} kr
+                                        </li>
+                                    )}
+                                    <p>Att betala: {this.state.sum} kr</p>
                                 </div>
-                            </form>
-                        </div>
-
-                        <div className='ViewContainer'>
-                            <p >Översikt</p>
-                            {this.state.selectedSeats.map(seat =>
-                                <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
-                                    {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Vagn: {seat.WagonNr} - Plats: {seat.SeatNr}- Pris
-                                    :  {this.calculatePrice(seat.Price, seat.DepartureTime)} kr
-                                </li>
-                            )}
-                            <p>Att betala: {this.state.sum} kr</p>
-                            <input hidden={this.state.selectedSeats.length === 0}
-                                type="text"
-                                placeholder="example@gmail.com"
-                                value={this.state.email}
-                                onChange={this.handleInputMailChange} />
-
-                            <StripePayment
-                                sum={this.state.sum}
-                                email={this.state.email}
-                                handlePurchase={() => this.handlePurchase()}
-                            />
+                                <div className='CardColumn'>
+                                    <input className='EmailContainer' hidden={this.state.selectedSeats.length === 0}
+                                        type="text"
+                                        placeholder="example@gmail.com"
+                                        value={this.state.email}
+                                        onChange={this.handleInputMailChange} />
+                                </div>
+                                    
+                                <StripePayment
+                                    sum={this.state.sum}
+                                    email={this.state.email}
+                                    handlePurchase={() => this.handlePurchase()}
+                                />
+                            </div>
                         </div>
                     </div>
                     :
                     <div></div>
                 }
+
 
             </>
         )

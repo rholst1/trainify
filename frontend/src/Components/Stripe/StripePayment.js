@@ -5,6 +5,7 @@
 import PaymentForm from './PaymentForm';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import './StripePayment.css'
 
 const StripePayment = (props) => {
   // const [product, setProduct] = useState({

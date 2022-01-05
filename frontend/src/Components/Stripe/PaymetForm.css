@@ -1,0 +1,13 @@
+.ElementsApp{
+    font-size: 30px;
+
+}
+.Paybtn{
+    padding: 15px;
+}
+.ErrorColumn{
+    color: white;
+    font-size: 13px;
+    /* background-color: rgba(0, 0, 0, 0.192); */
+
+}
