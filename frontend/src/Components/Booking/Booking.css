@@ -7,22 +7,7 @@
     display: flex;
     flex-direction: column;
     letter-spacing: 1px;
- }
- @media screen and (max-width: 600px) {
-.ResultWrapper{
-      font-size: 12px; 
-      /*margin-top:14px; */ 
-      width:4rem;
-     }
-     .ResultWrapper p{
-      font-size: 30px; 
-      /*margin-top:14px; */ 
-     }
-     /* .Results1{
-       font-size: 14px;
-       margin-top:8px;  
-     } */
- }
+}
  .ResultContainer{
     display: flex;
     flex-direction: column;
@@ -42,5 +27,22 @@
     letter-spacing: 2px;
 
 }
+
+ @media screen and (max-width: 600px) {
+.ResultWrapper{
+      font-size: 14px; 
+      /*margin-top:14px; */ 
+      width: 3rem;
+     }
+     .ResultWrapper p{
+      font-size: 15px; 
+      width: 24rem;
+     
+     }
+     .ViewContainer{
+      width: 23rem;
+ }
+     
+ }
 
  
