@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import axios from 'axios'
-import SearchButton from "../Button/SearchButton";
+import PayButton from "../Button/PayButton";
 
 export default function PaymentForm(props) {
     const [success, setSuccess] = useState(false)
@@ -49,9 +49,9 @@ export default function PaymentForm(props) {
                             <CardElement onChange={() => setErrosMessage('')} />
                         </div>
                     </fieldset>
-                    <SearchButton
+                    <PayButton
                             text='Pay'
-                            handleOnClick = {() => this.handleSubmit()}
+                            handleOnClick = {handleSubmit}
                         />
                 </form>
                 {/* :
