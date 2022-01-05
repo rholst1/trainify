@@ -61,6 +61,7 @@ h1{
 .Btn{
     padding: 2.5rem;
 }
+
 @media screen and (max-width: 600px) {
 .PageHeader {
    font-size: 17px; 
@@ -71,7 +72,10 @@ h1{
   .react-calendar{
       max-width:76%;
   }
-}
+fieldset{
+      margin: 13px 33px;
+     }
+    }
 /* .Section{
     height: 90px;
     background-color: rgb(245, 244, 244);
