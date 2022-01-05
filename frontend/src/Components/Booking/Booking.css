@@ -30,7 +30,7 @@
 .ResultWrapper{
       font-size: 14px; 
       /*margin-top:14px; */ 
-      width: 3rem;
+      
      }
      .ResultWrapper p{
       font-size: 15px; 
@@ -39,6 +39,9 @@
      }
      .ViewContainer{
       width: 23rem;
+ }
+ form{
+   font-size: 11px;
  }
      
  }
