@@ -232,7 +232,7 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   From Ticket
   Join Schedule On Schedule.Id=Ticket.ScheduleId
   Join Train On Schedule.TrainId = Train.Id 
-  Join Seat On Train.Id = Seat.TrainId
+  Join Seat On Ticket.SeatGuid = Seat.Id
   Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
   Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
   Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN  '${dayStr}' AND '${nextDayStr}'
