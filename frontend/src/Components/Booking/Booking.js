@@ -77,7 +77,10 @@ class Booking extends React.Component {
 
         this.setState({
             seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => a.Price - b.Price)
+            sortedSeats: this.state.seats.sort(function(a,b){
+                return a.Price < b.Price ? -1 : 1;
+                
+            })
         });
     }
 
@@ -192,36 +195,44 @@ class Booking extends React.Component {
                         <div className="ResultWrapper">
                             <div className='ResultContainer' hidden={this.state.seats.length === 0}>
                                 <div className='SortContainer'>
-                                    <SortButton
-                                        text='Avgång 🔼'
-                                        handleOnClick={() => this.handleSortDepartureDesc()}
-                                    />
-                                    <SortButton
-                                        text='Avgång 🔽'
-                                        handleOnClick={() => this.handleSortDepartureAsc()}
-                                    />
-                                    <SortButton
-                                        text='Pris 🔽'
-                                        handleOnClick={() => this.handleSortPriceAsc()}
-                                    />
-                                    <SortButton
-                                        text='Pris 🔼'
-                                        handleOnClick={() => this.handleSortPriceDesc()}
-                                    />
+                                    
 
                                 </div>
-                                <form >
+                                
 
                                     <table >
                                         <thead>
                                             <tr>
                                                 <th></th>
+                                  
+                                <div className='SortContainer'>
                                                 <th>Avgång </th>
+                                                <SortButton
+                                        text='▼'
+                                        handleOnClick={() => this.handleSortDepartureDesc()}
+                                    />
+                                    <SortButton
+                                        text='▲'
+                                        handleOnClick={() => this.handleSortDepartureAsc()}
+                                    />
+
+                                </div>
                                                 <th>Ankomst</th>
                                                 <th>Tåg</th>
                                                 <th>Vagn</th>
                                                 <th>Plats</th>
+                                                <div className='SortContainer'>
                                                 <th>Pris</th>
+                                               
+                                    <SortButton
+                                        text='▼'
+                                        handleOnClick={() => this.handleSortPriceAsc()}
+                                    />
+                                    <SortButton
+                                        text='▲'
+                                        handleOnClick={() => this.handleSortPriceDesc()}
+                                    />
+                                    </div>
                                             </tr>
 
                                         </thead>
@@ -251,7 +262,6 @@ class Booking extends React.Component {
                                             )}
                                         </tbody>
                                     </table>
-                                </form>
                             </div>
 
                             <div className='ViewContainer'>
