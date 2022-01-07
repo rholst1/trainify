@@ -163,6 +163,7 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
+
     handleInputMailChange = (event) => {
         this.setState({
             email: event.target.value
@@ -182,6 +183,33 @@ class Booking extends React.Component {
         }
         return newPrice;
     }
+    // Extracts time from date (string),
+    // t.ex. if dateString = '2022-02-01 07:05' getTime returns '07:05' 
+    getTime(dateString){
+        var date = new Date(dateString),
+        hours = '' + date.getHours(),
+        minutes = '' + date.getMinutes();
+
+    if (hours.length < 2) hours = '0' + hours;
+    if (minutes.length < 2) minutes = '0' + minutes;
+
+    return [hours, minutes].join(':');
+    }
+    // T.ex. if departureDate= '2022-12-31 22:35' and arrivalDate= '2023-01-01 01:35'
+    // getArrivalTime returns '01:35 (+1 dag)'
+    getArrivalTime(departureDate, arrivalDate){
+        var departure = new Date(departureDate);
+        var arrival = new Date(arrivalDate);
+        var arrivalString = ''+this.getTime(arrivalDate);
+        departure.setHours(0,0,0,0);
+        arrival.setHours(0,0,0,0);
+        var tripDuration = arrival.getTime()-departure.getTime();
+        var days = tripDuration/1000/60/60/24;
+        if (days === 1) arrivalString = arrivalString + ' (+'+ days+' dag)';
+        if (days>1) arrivalString = arrivalString + ' (+'+ days+' dagar)';
+        return arrivalString;
+    }
+
     render() {
         return (
             <>
@@ -250,8 +278,8 @@ class Booking extends React.Component {
                                                         />
                                                     </th>
 
-                                                    <th><label className="seat-info" htmlFor={seat.checked}>{seat.DepartureTime}</label></th>
-                                                    <th>{seat.ArrivalTime}</th>
+                                                    <th><label className="seat-info" htmlFor={seat.checked}>{this.getTime(seat.DepartureTime)}</label></th>
+                                                    <th>{this.getArrivalTime(seat.DepartureTime,seat.ArrivalTime)}</th>
                                                     <th>{seat.Name}</th>
                                                     <th>{seat.WagonNr}</th>
                                                     <th>{seat.SeatNr}</th>
