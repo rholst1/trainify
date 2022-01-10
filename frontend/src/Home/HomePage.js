@@ -33,24 +33,24 @@ const HomePage = () => {
                         </div>
 
 
-            <div className="InputContainer">
-              <SearchStation 
-                input={stationOne} 
-                setValue={setStationOne} 
-              />
-                  
-              <div className="IconContainer">
-                <FaRegArrowAltCircleRight 
-                  className="Icon" 
-                  fontSize="43px" 
-                  />
-              </div>
+                        <div className="InputContainer">
+                            <SearchStation
+                                input={stationOne}
+                                setValue={setStationOne}
+                            />
 
-              <SearchStation 
-               input={stationTwo} 
-               setValue={setStationTwo} 
-                />
-            </div>
+                            <div className="IconContainer">
+                                <FaRegArrowAltCircleRight
+                                    className="Icon"
+                                    fontSize="43px"
+                                />
+                            </div>
+
+                            <SearchStation
+                                input={stationTwo}
+                                setValue={setStationTwo}
+                            />
+                        </div>
 
 
                         <div className="DateTimeContainer">
@@ -66,7 +66,7 @@ const HomePage = () => {
                             text='Hitta Resa'
                             setSearch={setSearch}
                             stationOne={stationOne}
-                            stationTwo = {stationTwo}
+                            stationTwo={stationTwo}
                             setStation={setStation}
                         />
                     </div>
@@ -84,9 +84,9 @@ const HomePage = () => {
                     :
                     <div><p>{station} </p></div>
                 }
-      </div>
-    </>
-  );
+            </div>
+        </>
+    );
 
 };
 export default HomePage;
