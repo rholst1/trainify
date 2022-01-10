@@ -5,6 +5,9 @@
     background-color: rgba(0, 0, 0, 0.192);
 
 }
+.Back{
+    display: flex;
+}
 
 .ResultWrapper{
     display: flex;
