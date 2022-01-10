@@ -17,10 +17,6 @@ const HomePage = () => {
     const [stationTwo, setStationTwo] = useState("Till:");
     const [search, setSearch] = useState(false)
     const [station, setStation] = useState('')
-    // console.log(process.env.REACT_APP_STRIPE_KEY)
-    console.log(search)
-
-
 
     return (
         <>
@@ -63,6 +59,9 @@ const HomePage = () => {
                         <SearchButton
                             text='Hitta Resa'
                             setSearch={setSearch}
+                            stationOne={stationOne}
+                            stationTwo = {stationTwo}
+                            setStation={setStation}
                         />
                     </div>
                     :
