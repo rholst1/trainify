@@ -311,12 +311,14 @@ class Booking extends React.Component {
                                         value={this.state.email}
                                         onChange={this.handleInputMailChange} />
                                 </div>
-                                    
-                                <StripePayment
+
+                                    <div hidden={this.state.selectedSeats.length === 0}>
+                                <StripePayment 
                                     sum={this.state.sum}
                                     email={this.state.email}
                                     handlePurchase={() => this.handlePurchase()}
-                                />
+                                    />
+                                    </div>
                             </div>
                         </div>
                     </div>
