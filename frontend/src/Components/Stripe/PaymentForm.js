@@ -5,14 +5,14 @@ import PayButton from "../Button/PayButton";
 import './PaymetForm.css'
 
 export default function PaymentForm(props) {
-    const [success, setSuccess] = useState(false)
+    const [success, setSuccess] = useState('')
     const stripe = useStripe();
     const elements = useElements();
     const [errorMessage, setErrosMessage] = useState('')
 
     const handleSubmit = async (e) => {
-        console.log('hejsan')
         e.preventDefault();
+        setSuccess('')
         const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
             card: elements.getElement(CardElement)
@@ -27,8 +27,11 @@ export default function PaymentForm(props) {
                 })
                 if (response.data.success) {
                     console.log('success payment')
-                    setSuccess(true)
+                    setSuccess('successfull payment')
                     props.handlePurchase();
+                }
+                else {
+                    setSuccess('payment not accepted')
                 }
                 return response
             } catch (error) {
@@ -42,11 +45,10 @@ export default function PaymentForm(props) {
     }
     return (
         <>
-            {/* {!success ? */}
             <form onSubmit={handleSubmit}>
-                      <p className='ErrorColumn'>
-                          {errorMessage}
-                          </p>  
+                <p className='ErrorColumn'>
+                    {errorMessage}
+                </p>
                 <fieldset>
                     <div >
                         <CardElement onChange={() => setErrosMessage('')} />
@@ -59,12 +61,9 @@ export default function PaymentForm(props) {
                     />
                 </div>
             </form>
-            {/* :
-                <div>
-                    <h2>Thanks for your order</h2>
-                </div>  */}
-            {/* } */}
-
+            <div>
+                <h2>{success}</h2>
+            </div>
         </>
     )
 }
