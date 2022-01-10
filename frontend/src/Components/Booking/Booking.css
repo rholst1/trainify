@@ -67,21 +67,48 @@
 
  @media screen and (max-width: 600px) {
 .ResultWrapper{
+<<<<<<< Updated upstream
       font-size: 14px; 
       /*margin-top:14px; */ 
       
+=======
+    font-size: 16px; 
+    width: 100%;
+   
      }
-     .ResultWrapper p{
-      font-size: 15px; 
-      width: 24rem;
+     .ResultContainer{
+    width: 500%;
+    
+     }
+     .BookingWrapper{
+    width: 100%;
+    position: absolute;
+>>>>>>> Stashed changes
+     }
      
+     .BookingWrapper p{
+    font-size: 14px;
      }
-     .ViewContainer{
-      width: 23rem;
+     .BookingWrapper p.Date{
+    font-size: 20px;
+     }
+     
+ .ResultWrapper p{
+       width: 21rem;
+       margin: 540px -288px -513px;
+       font-size: 22px;
  }
+<<<<<<< Updated upstream
  form{
    font-size: 11px;
  }
+=======
+ /* .ResultWrapper li{
+       width: 21rem;
+       margin: 540px -288px -513px;
+       font-size: 22px;
+ } */
+>>>>>>> Stashed changes
      
  }
 
