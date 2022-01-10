@@ -19,16 +19,19 @@ const HomePage = () => {
     const [station, setStation] = useState('')
 
 
-  return (
-    <>
-      <div className="Wrapper">
-        <div className="Section"></div>
-        <Image />
-        {!search ? (
-          <div>
-            <div className="PageHeader">
-              <h1>Planera din resa </h1>
-            </div>
+
+
+    return (
+        <>
+            <div className="Wrapper">
+                <div className="Section"></div>
+                <Image />
+                {!search ? (
+                    <div>
+                        <div className="PageHeader">
+                            <h1>Planera din resa </h1>
+                        </div>
+
 
             <div className="InputContainer">
               <SearchStation 
@@ -84,5 +87,6 @@ const HomePage = () => {
       </div>
     </>
   );
+
 };
 export default HomePage;
