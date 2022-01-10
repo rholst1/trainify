@@ -238,11 +238,11 @@ class Booking extends React.Component {
                                             <div className='SortContainer'>
                                                 <th>Avgång </th>
                                                 <SortButton
-                                                    text='▼'
+                                                    text='▲'
                                                     handleOnClick={() => this.handleSortDepartureDesc()}
                                                 />
                                                 <SortButton
-                                                    text='▲'
+                                                    text='▼'
                                                     handleOnClick={() => this.handleSortDepartureAsc()}
                                                 />
 
@@ -255,11 +255,11 @@ class Booking extends React.Component {
                                                 <th>Pris</th>
 
                                                 <SortButton
-                                                    text='▼'
+                                                    text='▲'
                                                     handleOnClick={() => this.handleSortPriceAsc()}
                                                 />
                                                 <SortButton
-                                                    text='▲'
+                                                    text='▼'
                                                     handleOnClick={() => this.handleSortPriceDesc()}
                                                 />
                                             </div>
