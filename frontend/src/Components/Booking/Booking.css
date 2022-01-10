@@ -67,11 +67,6 @@
 
  @media screen and (max-width: 600px) {
 .ResultWrapper{
-<<<<<<< Updated upstream
-      font-size: 14px; 
-      /*margin-top:14px; */ 
-      
-=======
     font-size: 16px; 
     width: 100%;
    
@@ -83,7 +78,6 @@
      .BookingWrapper{
     width: 100%;
     position: absolute;
->>>>>>> Stashed changes
      }
      
      .BookingWrapper p{
@@ -98,17 +92,11 @@
        margin: 540px -288px -513px;
        font-size: 22px;
  }
-<<<<<<< Updated upstream
- form{
-   font-size: 11px;
- }
-=======
  /* .ResultWrapper li{
        width: 21rem;
        margin: 540px -288px -513px;
        font-size: 22px;
  } */
->>>>>>> Stashed changes
      
  }
 
