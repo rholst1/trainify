@@ -26,7 +26,7 @@ const HomePage = () => {
             <div className="Wrapper">
                 <div className="Section"></div>
                 <Image />
-                {!search ? (
+                {!search ?
                     <div>
                         <div className="PageHeader">
                             <h1>Planera din resa </h1>
