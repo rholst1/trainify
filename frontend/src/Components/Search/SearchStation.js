@@ -44,7 +44,7 @@ const SearchStation = (props) => {
         let matches = []
         if (text.length > 0) {
             matches = data.filter(data => {
-                const regex = new RegExp(`${text}`, "gi");
+                const regex = new RegExp(`^${text}`, "gi");
                 return (data.AdvertisedLocationName.match(regex))
 
             })
