@@ -23,7 +23,7 @@ Tågnamn: ${bookingInformation[5]}<br>
 </p></div>
 
 <footer><h3>
-Tack för att för att du väljer att resa med oss!</h3>
+Tack för att du väljer att resa med oss!</h3>
 <h3>- Trainify</h3>
 </footer >
 </div>
