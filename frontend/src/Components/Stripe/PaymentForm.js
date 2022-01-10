@@ -2,16 +2,17 @@ import React, { useState } from 'react'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import axios from 'axios'
 import PayButton from "../Button/PayButton";
+import './PaymetForm.css'
 
 export default function PaymentForm(props) {
-    const [success, setSuccess] = useState(false)
+    const [success, setSuccess] = useState('')
     const stripe = useStripe();
     const elements = useElements();
     const [errorMessage, setErrosMessage] = useState('')
 
     const handleSubmit = async (e) => {
-        console.log('hejsan')
         e.preventDefault();
+        setSuccess('')
         const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
             card: elements.getElement(CardElement)
@@ -26,8 +27,11 @@ export default function PaymentForm(props) {
                 })
                 if (response.data.success) {
                     console.log('success payment')
-                    setSuccess(true)
+                    setSuccess('successfull payment')
                     props.handlePurchase();
+                }
+                else {
+                    setSuccess('payment not accepted')
                 }
                 return response
             } catch (error) {
@@ -41,25 +45,25 @@ export default function PaymentForm(props) {
     }
     return (
         <>
-            {/* {!success ? */}
-                <form onSubmit={handleSubmit}>
-                    <fieldset>
-                        <div >
-                            {errorMessage}
-                            <CardElement onChange={() => setErrosMessage('')} />
-                        </div>
-                    </fieldset>
+            <form onSubmit={handleSubmit}>
+                <p className='ErrorColumn'>
+                    {errorMessage}
+                </p>
+                <fieldset>
+                    <div >
+                        <CardElement onChange={() => setErrosMessage('')} />
+                    </div>
+                </fieldset>
+                <div className='Paybtn'>
                     <PayButton
-                            text='Pay'
-                            handleOnClick = {handleSubmit}
-                        />
-                </form>
-                {/* :
-                <div>
-                    <h2>Thanks for your order</h2>
-                </div>  */}
-            {/* } */}
-
+                        text='Pay'
+                        handleOnClick={handleSubmit}
+                    />
+                </div>
+            </form>
+            <div>
+                <h2>{success}</h2>
+            </div>
         </>
     )
 }

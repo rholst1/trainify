@@ -1,8 +1,5 @@
 .btnSort{
-    margin: 2px;
-    padding: 4px;
-    background-color: rgba(255, 255, 255, 0.425);
-    border-radius: 30px;
-    
+    margin: 3px;
+    padding: 1px;
+    border-bottom: 15px;
 }
-

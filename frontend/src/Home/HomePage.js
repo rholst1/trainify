@@ -13,8 +13,8 @@ import { handle } from "express/lib/application";
 const HomePage = () => {
     var date = new Date();
     const [value, setValue] = useState(date);
-    const [stationOne, setStationOne] = useState("stationOne");
-    const [stationTwo, setStationTwo] = useState("stationTwo");
+    const [stationOne, setStationOne] = useState("Från:");
+    const [stationTwo, setStationTwo] = useState("Till:");
     const [search, setSearch] = useState(false)
     const [station, setStation] = useState('')
     // console.log(process.env.REACT_APP_STRIPE_KEY)
@@ -36,7 +36,7 @@ const HomePage = () => {
 
                         <div className="InputContainer">
                             <SearchStation
-                                input="Från:"
+                                input={stationOne}
                                 setValue={setStationOne}
                             />
                             <div className="IconContainer">
@@ -46,7 +46,7 @@ const HomePage = () => {
                                 />
                             </div>
                             <SearchStation
-                                input="Till:"
+                                input={stationTwo}
                                 setValue={setStationTwo}
                             />
                         </div>

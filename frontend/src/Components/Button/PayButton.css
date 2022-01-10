@@ -2,7 +2,7 @@
 <button class="btnSearch.btnSearch" role="button">Button 17</button> */
 
 /* CSS */
-.btnSearch {
+.btnPay {
     align-items: center;
     appearance: none;
     background-color: #fff;
@@ -16,7 +16,7 @@
     fill: currentcolor;
     font-size: 14px;
     font-weight: 500;
-    height: 48px;
+    height: 35px;
     justify-content: center;
     letter-spacing: .25px;
     line-height: normal;
@@ -30,10 +30,10 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    width: 10rem;
+    width: 5rem;
     will-change: transform,opacity;
     z-index: 0;
-    font-size: 18px;
+    font-size: 13px;
   
   }
   
@@ -42,32 +42,32 @@
     color: #174ea6;
   } */
   
-  .btnSearch:active {
+  .btnPay:active {
     box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
     outline: none;
   }
   
-  .btnSearch:focus {
+  .btnPay:focus {
     outline: none;
     border: 2px solid #4285f4;
   }
   
-  .btnSearch:not(:disabled) {
+  .btnPay:not(:disabled) {
     box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
   }
   
-  .btnSearch:not(:disabled):hover {
+  .btnPay:not(:disabled):hover {
     box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
   }
   
-  .btnSearch:not(:disabled):focus {
+  .btnPay:not(:disabled):focus {
     box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
   }
   
-  .btnSearch:not(:disabled):active {
+  .btnPay:not(:disabled):active {
     box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
   }
   
-  .btnSearch:disabled {
+  .btnPay:disabled {
     box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
   }

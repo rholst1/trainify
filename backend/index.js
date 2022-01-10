@@ -171,7 +171,7 @@ app.post('/api/db/post/:table', (request, response) => {
 
     if (request.params.table === 'Ticket') {
       query = `
- Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr,  Schedule.Price
+ Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
 From Ticket
 Join Schedule On Schedule.Id=Ticket.ScheduleId
 Join Train On Schedule.TrainId = Train.Id

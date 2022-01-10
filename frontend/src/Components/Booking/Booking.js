@@ -77,7 +77,10 @@ class Booking extends React.Component {
 
         this.setState({
             seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => a.Price - b.Price)
+            sortedSeats: this.state.seats.sort(function(a,b){
+                return a.Price < b.Price ? -1 : 1;
+                
+            })
         });
     }
 
@@ -160,6 +163,7 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
+
     handleInputMailChange = (event) => {
         this.setState({
             email: event.target.value
@@ -179,49 +183,84 @@ class Booking extends React.Component {
         }
         return newPrice;
     }
+    // Extracts time from date (string),
+    // t.ex. if dateString = '2022-02-01 07:05' getTime returns '07:05' 
+    getTime(dateString){
+        var date = new Date(dateString),
+        hours = '' + date.getHours(),
+        minutes = '' + date.getMinutes();
+
+    if (hours.length < 2) hours = '0' + hours;
+    if (minutes.length < 2) minutes = '0' + minutes;
+
+    return [hours, minutes].join(':');
+    }
+    // T.ex. if departureDate= '2022-12-31 22:35' and arrivalDate= '2023-01-01 01:35'
+    // getArrivalTime returns '01:35 (+1 dag)'
+    getArrivalTime(departureDate, arrivalDate){
+        var departure = new Date(departureDate);
+        var arrival = new Date(arrivalDate);
+        var arrivalString = ''+this.getTime(arrivalDate);
+        departure.setHours(0,0,0,0);
+        arrival.setHours(0,0,0,0);
+        var tripDuration = arrival.getTime()-departure.getTime();
+        var days = tripDuration/1000/60/60/24;
+        if (days === 1) arrivalString = arrivalString + ' (+'+ days+' dag)';
+        if (days>1) arrivalString = arrivalString + ' (+'+ days+' dagar)';
+        return arrivalString;
+    }
+
     render() {
         return (
             <>
                 {this.state.didMount ?
-                    <div className="ResultWrapper">
-                        <div className='ResultContainer' hidden={this.state.seats.length === 0}>
-                            <div className='InfoCotainer'>
-                                <p>{this.state.info}
-                                    <p className='Date'>{this.state.date}</p>
-                                </p>
-                            </div>
-                            <div className='SortContainer'>
-                                <SortButton
-                                    text='Avgång 🔼'
-                                    handleOnClick={() => this.handleSortDepartureDesc()}
-                                />
-                                <SortButton
-                                    text='Avgång 🔽'
-                                    handleOnClick={() => this.handleSortDepartureAsc()}
-                                />
-                                <SortButton
-                                    text='Pris 🔽'
-                                    handleOnClick={() => this.handleSortPriceAsc()}
-                                />
-                                <SortButton
-                                    text='Pris 🔼'
-                                    handleOnClick={() => this.handleSortPriceDesc()}
-                                />
+                    <div className='BookingWrapper'>
+                        <div className='InfoCotainer'>
+                            <p>{this.state.info}
+                                <p className='Date'>{this.state.date}</p>
+                            </p>
+                        </div>
+                        <div className="ResultWrapper">
+                            <div className='ResultContainer' hidden={this.state.seats.length === 0}>
+                                <div className='SortContainer'>
+                                    
 
-                            </div>
-                            <form >
-                                <div>
+                                </div>
+                                
 
                                     <table >
                                         <thead>
                                             <tr>
                                                 <th></th>
+                                  
+                                <div className='SortContainer'>
                                                 <th>Avgång </th>
+                                                <SortButton
+                                        text='▼'
+                                        handleOnClick={() => this.handleSortDepartureDesc()}
+                                    />
+                                    <SortButton
+                                        text='▲'
+                                        handleOnClick={() => this.handleSortDepartureAsc()}
+                                    />
+
+                                </div>
                                                 <th>Ankomst</th>
                                                 <th>Tåg</th>
                                                 <th>Vagn</th>
                                                 <th>Plats</th>
+                                                <div className='SortContainer'>
                                                 <th>Pris</th>
+                                               
+                                    <SortButton
+                                        text='▼'
+                                        handleOnClick={() => this.handleSortPriceAsc()}
+                                    />
+                                    <SortButton
+                                        text='▲'
+                                        handleOnClick={() => this.handleSortPriceDesc()}
+                                    />
+                                    </div>
                                             </tr>
 
                                         </thead>
@@ -239,8 +278,8 @@ class Booking extends React.Component {
                                                         />
                                                     </th>
 
-                                                    <th><label className="seat-info" htmlFor={seat.checked}>{seat.DepartureTime}</label></th>
-                                                    <th>{seat.ArrivalTime}</th>
+                                                    <th><label className="seat-info" htmlFor={seat.checked}>{this.getTime(seat.DepartureTime)}</label></th>
+                                                    <th>{this.getArrivalTime(seat.DepartureTime,seat.ArrivalTime)}</th>
                                                     <th>{seat.Name}</th>
                                                     <th>{seat.WagonNr}</th>
                                                     <th>{seat.SeatNr}</th>
@@ -251,35 +290,42 @@ class Booking extends React.Component {
                                             )}
                                         </tbody>
                                     </table>
+                            </div>
+
+                            <div className='ViewContainer'>
+                                <div>
+
+                                    <p >Översikt</p>
+                                    {this.state.selectedSeats.map(seat =>
+                                        <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
+                                            {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Vagn: {seat.WagonNr} - Plats: {seat.SeatNr}- Pris
+                                            :  {this.calculatePrice(seat.Price, seat.DepartureTime)} kr
+                                        </li>
+                                    )}
+                                    <p>Att betala: {this.state.sum} kr</p>
                                 </div>
-                            </form>
-                        </div>
+                                <div className='CardColumn'>
+                                    <input className='EmailContainer' hidden={this.state.selectedSeats.length === 0}
+                                        type="text"
+                                        placeholder="example@gmail.com"
+                                        value={this.state.email}
+                                        onChange={this.handleInputMailChange} />
+                                </div>
 
-                        <div className='ViewContainer'>
-                            <p >Översikt</p>
-                            {this.state.selectedSeats.map(seat =>
-                                <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
-                                    {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Vagn: {seat.WagonNr} - Plats: {seat.SeatNr}- Pris
-                                    :  {this.calculatePrice(seat.Price, seat.DepartureTime)} kr
-                                </li>
-                            )}
-                            <p>Att betala: {this.state.sum} kr</p>
-                            <input hidden={this.state.selectedSeats.length === 0}
-                                type="text"
-                                placeholder="example@gmail.com"
-                                value={this.state.email}
-                                onChange={this.handleInputMailChange} />
-
-                            <StripePayment
-                                sum={this.state.sum}
-                                email={this.state.email}
-                                handlePurchase={() => this.handlePurchase()}
-                            />
+                                    <div hidden={this.state.selectedSeats.length === 0}>
+                                <StripePayment 
+                                    sum={this.state.sum}
+                                    email={this.state.email}
+                                    handlePurchase={() => this.handlePurchase()}
+                                    />
+                                    </div>
+                            </div>
                         </div>
                     </div>
                     :
                     <div></div>
                 }
+
 
             </>
         )
