@@ -10,6 +10,7 @@ const SearchStation = (props) => {
     const [text, setText] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [noResult, setNoResult] = useState(false)
+    const [showResult, setShowResult] = useState(false)
 
     const xmlBodyStr = `<REQUEST>
                             <LOGIN authenticationkey="937a3590518241f88071375537a4cf47" />
@@ -65,15 +66,18 @@ const SearchStation = (props) => {
                 <input className="SearchInput"
                     typ="text"
                     placeholder={props.input}
+                    onFocus={() => {setShowResult(true) }}
+                    onBlur={() => { setShowResult(false) }}
                     onChange={e => onChangeHandler(e.target.value)}
                     value={text}
                 ></input>
+            {showResult ?
 
-                <div className="StationContainer">{suggestions && suggestions.map((suggestion, i) =>
+<div className="StationContainer">{suggestions && suggestions.map((suggestion, i) =>
                     <div
-                        key={i}
-                        className="suggestion"
-                        onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
+                    key={i}
+                    className="suggestion"
+                    onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
                     >
                         {suggestion.AdvertisedLocationName}
                     </div>
@@ -86,7 +90,9 @@ const SearchStation = (props) => {
                         <div></div>
                     }
                 </div>
-                { }
+                :
+                <div></div>
+                    }
 
             </div>
         </>
