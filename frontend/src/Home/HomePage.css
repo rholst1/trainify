@@ -64,17 +64,33 @@ h1{
 
 @media screen and (max-width: 600px) {
 .PageHeader {
-   font-size: 17px; 
+    font-size: 17px; 
   }
 .react-datetime-picker{
     padding: 14px 6px;
+    position: inherit;
   }
-  .react-calendar{
-      max-width:76%;
+  .react-datetime-picker__inputGroup__input {   
+    position: inherit;
+  }
+.react-calendar{
+    max-width:76%;
   }
 fieldset{
-      width: 110%;
-      margin-left: -20px;
+    width: 110%;
+    margin-left: -20px;
+     }
+.DateTimeContainer{
+    margin-top: 20px;
+     }
+.Station1{
+    margin-left: -129px;
+     }
+.Station2{
+    margin-left: -132px;
+     }
+     .IconContainer{
+    margin-top: 70px;
      }
     }
 /* .Section{

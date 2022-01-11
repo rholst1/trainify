@@ -35,20 +35,25 @@ const HomePage = () => {
                         </div>
 
                         <div className="InputContainer">
+                            <div className="Station1">
                             <SearchStation
                                 input={stationOne}
                                 setValue={setStationOne}
-                            />
+                                />
+                                </div>
                             <div className="IconContainer">
                                 <FaRegArrowAltCircleRight
                                     className="Icon"
                                     fontSize='43px'
                                 />
-                            </div>
+                                </div>
+                                <div className="Station2">
                             <SearchStation
                                 input={stationTwo}
                                 setValue={setStationTwo}
                             />
+                                </div>
+                            
                         </div>
 
                         <div className="DateTimeContainer">
