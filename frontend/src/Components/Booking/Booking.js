@@ -30,8 +30,20 @@ class Booking extends React.Component {
             email: '',
             error: false
         })
-        var day = this.formatDate(this.props.d);
+        var today = new Date();
+        var day = this.formatDate(this.props.d)
+
+        // if user is looking for tickets for today, then show only trains with departure time > now.
+        // if user is looking for tickets for the following days, show all trains on that day
+        if (this.formatDate(today)!== day){
+            day = day+' 00:00';
+        }
+        else {
+            day = day +' '+this.getTime(this.props.d);
+        }
+
         var path = `/api/db/getunoccupiedseats?from='${this.props.fromStation}'&to='${this.props.toStation}'&day=${day}`;
+
 
         fetch(path)
             .then(response => response.json())
@@ -151,6 +163,8 @@ class Booking extends React.Component {
                 });
         });
     }
+    
+    // returns date in the format 'YYYY-MM-DD' 
     formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -162,7 +176,7 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
-
+    
     handleInputMailChange = (event) => {
         this.setState({
             email: event.target.value
