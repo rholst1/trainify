@@ -3,5 +3,10 @@
 }
 fieldset{
     background-color: rgba(255, 255, 255, 0.733);
+
     
+}
+fieldset:hover{
+    outline: none;
+    border: 2px solid #4285f4;
 }
