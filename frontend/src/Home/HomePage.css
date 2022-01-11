@@ -73,7 +73,8 @@ h1{
       max-width:76%;
   }
 fieldset{
-      margin: 13px 33px;
+      width: 110%;
+      margin-left: -20px;
      }
     }
 /* .Section{

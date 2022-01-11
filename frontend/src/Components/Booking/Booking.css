@@ -81,22 +81,19 @@
      }
      
      .BookingWrapper p{
-    font-size: 14px;
+    font-size: 23px;
      }
      .BookingWrapper p.Date{
     font-size: 20px;
      }
-     
- .ResultWrapper p{
-       width: 21rem;
-       margin: 540px -288px -513px;
-       font-size: 22px;
+     .ViewContainer{
+    margin: 528px;
+    position: absolute; 
+    padding-right: 0rem;
  }
- /* .ResultWrapper li{
-       width: 21rem;
-       margin: 540px -288px -513px;
-       font-size: 22px;
- } */
+ .CardColumn{
+     margin-left: -13px;
+ }
      
  }
 
