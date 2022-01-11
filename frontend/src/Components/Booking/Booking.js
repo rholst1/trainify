@@ -94,7 +94,7 @@ class Booking extends React.Component {
 
         this.setState({
             seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => { return new Date(a.DepartureTime).getTime() - new Date(b.DepartureTime).getTime() }).reverse()
+            sortedSeats: this.state.seats.sort((a, b) => { return new Date(a.DepartureTime).getTime() - new Date(b.DepartureTime).getTime() })
         });
 
     }
@@ -103,7 +103,7 @@ class Booking extends React.Component {
 
         this.setState({
             seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => { return new Date(b.DepartureTime).getTime() - new Date(a.DepartureTime).getTime() }).reverse()
+            sortedSeats: this.state.seats.sort((a, b) => { return new Date(b.DepartureTime).getTime() - new Date(a.DepartureTime).getTime() })
         });
 
     }
