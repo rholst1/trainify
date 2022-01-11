@@ -51,6 +51,9 @@ const SearchStation = (props) => {
             })
         }
         setNoResult(false)
+        // if()
+        // console.log(suggestions[0].AdvertisedLocationName)
+
         setSuggestions(matches)
         setText(text)
         if ((text !== '') && matches.length === 0) {
@@ -58,6 +61,10 @@ const SearchStation = (props) => {
         }
 
     }
+    const handleOnBlur =() =>{
+        // setText(suggestions[0].AdvertisedLocationName)
+    }
+
 
 
     return (
@@ -66,33 +73,28 @@ const SearchStation = (props) => {
                 <input className="SearchInput"
                     typ="text"
                     placeholder={props.input}
-                    onFocus={() => {setShowResult(true) }}
-                    onBlur={() => { setShowResult(false) }}
+                    // onFocus={() => { setShowResult(true) }}
+                    // onBlur={() => { handleOnBlur() }}
                     onChange={e => onChangeHandler(e.target.value)}
                     value={text}
                 ></input>
-            {showResult ?
-
-<div className="StationContainer">{suggestions && suggestions.map((suggestion, i) =>
-                    <div
-                    key={i}
-                    className="suggestion"
-                    onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
-                    >
-                        {suggestion.AdvertisedLocationName}
-                    </div>
-                )}
-                    {noResult ?
-                        <div className="NoResult">
-                            Ingen matchning
+                    <div className="StationContainer">{suggestions && suggestions.map((suggestion, i) =>
+                        <div
+                            key={i}
+                            className="suggestion"
+                            onClick={() => onSuggestHandler(suggestion.AdvertisedLocationName)}
+                        >
+                            {suggestion.AdvertisedLocationName}
                         </div>
-                        :
-                        <div></div>
-                    }
-                </div>
-                :
-                <div></div>
-                    }
+                    )}
+                        {noResult ?
+                            <div className="NoResult">
+                                Ingen matchning
+                            </div>
+                            :
+                            <div></div>
+                        }
+                    </div>
 
             </div>
         </>
