@@ -11,11 +11,11 @@ module.exports = function (bookingInformation) {
 <div name="header" style="padding: 0"><h2><p>Bokningsbekräftelse</p></h2></div>
 <div name="subject"><h3>Tack för din bokning, se din biljett nedan.</p></h3><br></div>
 
-<div name="ticket" display=flex><p name="ticketText">
+<div name="ticket" display=flex style="color:Black;"><p name="ticketText">
 Biljettnummer: ${bookingInformation[1]}<br>
 Pris: ${bookingInformation[2]}<br>
-Avresa:      ${bookingInformation[6]} - Tid för avgång:   ${bookingInformation[8]}<br>
-Destination: ${bookingInformation[7]} - Tid för ankomst:  ${bookingInformation[9]}<br>
+Avresa:      ${bookingInformation[6]} - Tid för avgång:  ${getWeekday(bookingInformation[8])} ${bookingInformation[8]}<br>
+Destination: ${bookingInformation[7]} - Tid för ankomst: ${getWeekday(bookingInformation[9])} ${bookingInformation[9]}<br>
 Vagn: ${bookingInformation[11]}<br>
 Sittplats: ${bookingInformation[12]}<br>
 Tågnummer: ${bookingInformation[4]}<br>
@@ -59,4 +59,9 @@ Tack för att för att du väljer att resa med oss!</h3>
     console.log('Message sent: %s', info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
   });
+};
+function getWeekday(date){
+  const weekday = ["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
+  var day = new Date(date);
+  return weekday[day.getDay()];
 };
