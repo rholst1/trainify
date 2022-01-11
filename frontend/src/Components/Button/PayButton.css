@@ -51,6 +51,12 @@
     outline: none;
     border: 2px solid #4285f4;
   }
+
+  .btnPay:hover{
+    outline: none;
+    border: 2px solid #4285f4;
+
+  }
   
   .btnPay:not(:disabled) {
     box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;

@@ -2,4 +2,10 @@
     margin: 3px;
     padding: 1px;
     border-bottom: 15px;
+
+}
+.btnSort:hover{
+    outline: none;
+    border: 2px solid #4285f4;
+
 }

@@ -239,11 +239,7 @@ class Booking extends React.Component {
                         <div className="ResultWrapper">
                             <div className='ResultContainer' hidden={this.state.seats.length === 0}>
                                 <div className='SortContainer'>
-
-
                                 </div>
-
-
                                 <table >
                                     <thead>
                                         <tr>
@@ -311,14 +307,13 @@ class Booking extends React.Component {
                             <div className='ViewContainer'>
                                 <div>
 
-                                    <p >Översikt</p>
+                                    <p className='Text' >Översikt</p>
                                     {this.state.selectedSeats.map(seat =>
                                         <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
-                                            {seat.DepartureTime} - {seat.ArrivalTime} - Tåg: {seat.Name} - Vagn: {seat.WagonNr} - Plats: {seat.SeatNr}- Pris
-                                            :  {this.calculatePrice(seat.Price, seat.DepartureTime)} kr
+                                            {seat.DepartureTime}-{this.getTime(seat.ArrivalTime)}, Vagn {seat.WagonNr}, Plats {seat.SeatNr}, Pris {this.calculatePrice(seat.Price, seat.DepartureTime)}kr
                                         </li>
                                     )}
-                                    <p>Att betala: {this.state.sum} kr</p>
+                                    <p className='Text'>Att betala: {this.state.sum} kr</p>
                                 </div>
 
                                     <div className='CardColumn'>
