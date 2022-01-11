@@ -216,7 +216,7 @@ app.get('/api/db/getunoccupiedseats', (request, response) => {
   let day = new Date(request.query.day);
   let nextDay = new Date(day);
   nextDay.setDate(day.getDate() + 1);
-  let dayStr = formatDate(day);
+  let dayStr = request.query.day;
   let nextDayStr = formatDate(nextDay);
 
   let query = `
