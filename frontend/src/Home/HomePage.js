@@ -1,6 +1,6 @@
 import StripePayment from '../Components/Stripe/StripePayment';
 import React, { useState } from 'react';
-import DateTimePicker from 'react-datetime-picker';
+import DatePicker from 'react-date-picker';
 import './HomePage.css';
 import SearchStation from '../Components/Search/SearchStation';
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
@@ -42,12 +42,11 @@ const HomePage = () => {
             </div>
 
             <div className="DateTimeContainer">
-              <DateTimePicker
+              <DatePicker
                 className="DateTime"
                 onChange={setValue}
                 value={value}
                 locale="sv"
-                disableClock="true"
                 minDate={today}
               />
             </div>
