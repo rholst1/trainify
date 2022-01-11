@@ -71,17 +71,19 @@ h1{
   }
 .react-date-picker{
     padding: 14px 6px;
+    width: 81%;
     position: inherit;
   }
-  .react-datetime-picker__inputGroup__input {   
+
+  .react-date-picker__inputGroup__input {
     position: inherit;
   }
 .react-calendar{
-    max-width:76%;
+    max-width:83%;
   }
 fieldset{
-    width: 110%;
-    margin-left: -20px;
+    width: 137%;
+    margin-left: 6px;
      }
 .DateTimeContainer{
     margin-top: 20px;
