@@ -30,8 +30,19 @@ class Booking extends React.Component {
             email: '',
             error: false
         })
-        var day = this.formatDate(this.props.d);
+        var today = new Date();
+        var day = this.props.d;
+        // if user is looking for tickets for today, then show only trains with departure time > now.
+        // if user is looking for tickets for the following days, show all trains on that day
+        if (this.formatDate(today)!==this.formatDate(this.props.d)){
+            day = this.formatDate(this.props.d)+' 00:00';
+        }
+        else {
+            day = this.formatDateTime(this.props.d);
+        }
+
         var path = `/api/db/getunoccupiedseats?from='${this.props.fromStation}'&to='${this.props.toStation}'&day=${day}`;
+
 
         fetch(path)
             .then(response => response.json())
@@ -151,6 +162,8 @@ class Booking extends React.Component {
                 });
         });
     }
+    
+    // returns date in the format 'YYYY-MM-DD' 
     formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -162,7 +175,22 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
+ // returns date in the format 'YYYY-MM-DD HH:MM' 
+ formatDateTime(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hours = '' + d.getHours(),
+        minutes = '' + d.getMinutes();
 
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    if (hours.length < 2) day = '0' + hours;
+    if (minutes.length < 2) day = '0' + minutes;
+
+    return ([year, month, day].join('-') + ' ' + hours + ':' + minutes);
+}
     handleInputMailChange = (event) => {
         this.setState({
             email: event.target.value
