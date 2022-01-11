@@ -22,15 +22,16 @@
     flex-direction: column;
     width: 60%;
     height: 530px;
-    overflow: hidden;
-    overflow: scroll;
+    /* overflow: hidden;
+    overflow: scroll; */
     padding-left: 2rem;
+    height: auto;
 }
 .Text{
     color: black;
 }
  
-.ResultContainer::-webkit-scrollbar {
+/* .ResultContainer::-webkit-scrollbar {
  display: none;
 }
 .ResultContainer {
@@ -43,7 +44,7 @@
 }
 .ResultContainer { -ms-overflow-style: none;
   scrollbar-width: none;
-}
+} */
 th{
    padding: 3px;
     padding-right: 10px;
@@ -86,5 +87,3 @@ th{
  }
      
  }
-
- 
