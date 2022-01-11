@@ -51,9 +51,6 @@ const SearchStation = (props) => {
             })
         }
         setNoResult(false)
-        // if()
-        // console.log(suggestions[0].AdvertisedLocationName)
-
         setSuggestions(matches)
         setText(text)
         if ((text !== '') && matches.length === 0) {
@@ -62,7 +59,14 @@ const SearchStation = (props) => {
 
     }
     const handleOnBlur =() =>{
-        // setText(suggestions[0].AdvertisedLocationName)
+        if(suggestions.length !== 0){
+
+            console.log(suggestions[0].AdvertisedLocationName)
+            setText(suggestions[0].AdvertisedLocationName);
+            setSuggestions([]);
+            props.setValue(suggestions[0].AdvertisedLocationName)
+
+        }
     }
 
 
@@ -74,7 +78,7 @@ const SearchStation = (props) => {
                     typ="text"
                     placeholder={props.input}
                     // onFocus={() => { setShowResult(true) }}
-                    // onBlur={() => { handleOnBlur() }}
+                    onBlur={() => { handleOnBlur() }}
                     onChange={e => onChangeHandler(e.target.value)}
                     value={text}
                 ></input>
