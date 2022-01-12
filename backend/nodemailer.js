@@ -1,6 +1,18 @@
 const nodemailer = require('nodemailer');
 
 module.exports = function (bookingInformation) {
+ let body = '';
+ bookingInformation.forEach( ticket=>
+  body = body +
+  'Biljettnummer: '+ticket.TicketNumber + '<br>' +
+  'Pris: ' + ticket.Price + '<br>' + 
+  'Avresa:      ' + ticket.Departure +' - Tid för avgång:  '+ getWeekday(ticket.DepartureTime)+' '+ticket.DepartureTime+'<br>'+
+  'Destination: ' + ticket.Arrival+' - Tid för ankomst: '+ getWeekday(ticket.ArrivalTime)+ ' '+ ticket.ArrivalTime+'<br>'+
+  'Vagn: ' + ticket.WagonNr+'<br>'+
+  'Sittplats: '+ticket.SeatNr+'<br>'+
+  'Tågnummer: '+ticket.TrainId+'<br>'+
+  'Tågnamn: '+ ticket.Name+'<br><br>'
+);
   const output = `
   <!DOCTYPE html>
 <html lang="en">
@@ -9,17 +21,9 @@ module.exports = function (bookingInformation) {
  <div name=innerContainer style="padding: 1vh">
  <div name=mainContainer style="padding-left: 10vh; background-color: whitesmoke; padding: 1vh">
 <div name="header" style="padding: 0"><h2><p>Bokningsbekräftelse</p></h2></div>
-<div name="subject"><h3>Tack för din bokning, se din biljett nedan.</p></h3><br></div>
-
+<div name="subject"><h3>Tack för din bokning, se dina biljetter nedan.</p></h3><br></div>
 <div name="ticket" display=flex style="color:Black;"><p name="ticketText">
-Biljettnummer: ${bookingInformation[1]}<br>
-Pris: ${bookingInformation[2]}<br>
-Avresa:      ${bookingInformation[6]} - Tid för avgång:  ${getWeekday(bookingInformation[8])} ${bookingInformation[8]}<br>
-Destination: ${bookingInformation[7]} - Tid för ankomst: ${getWeekday(bookingInformation[9])} ${bookingInformation[9]}<br>
-Vagn: ${bookingInformation[11]}<br>
-Sittplats: ${bookingInformation[12]}<br>
-Tågnummer: ${bookingInformation[4]}<br>
-Tågnamn: ${bookingInformation[5]}<br>
+${body}
 </p></div>
 
 <footer><h3>
@@ -40,12 +44,11 @@ Tack för att du väljer att resa med oss!</h3>
       pass: '@Trainteam1',
     },
   });
-  console.log('mailer: ' + bookingInformation);
   // send mail with defined transport object
-
+console.log(output);
   mailOptions = {
     from: '"Trainify Team" <trainteam14@gmail.com>', // sender address
-    to: `${bookingInformation[0]}`, // list of receivers
+    to: `${bookingInformation[0].email}`, // list of receivers
     subject: 'Bokningsbekräftelse', // Subject line
     text: 'none graphical text', // plain text body
     html: output, // html body
