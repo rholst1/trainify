@@ -87,20 +87,29 @@ th{
 
 .ResultWrapper{
     font-size: 16px; 
+    border-radius: 13px;
+    display: block;
 }
 .ResultContainer{
     overflow-x: auto;
     overflow-y: hidden;
-    justify-content: normal;    
+    justify-content: normal; 
+    margin-left: -18px;
+    height: auto;   
+    width: 94%;
      }
      .ViewContainer{
-    overflow-x: auto;
-    overflow-y: hidden; 
-    width: 38%; 
+    margin-top: 0px;
+    margin-left: 54px;
+    width: 73%;
+
      }
-     .ViewContainer p,.ViewContainer li,.Paybtn{
+     .ViewContainer li{
+    font-size: 17px;
+     }
+     /* .ViewContainer p,.ViewContainer li,.Paybtn{
     margin-left: 12px;
-     }
+     } */
     
 .BookingWrapper p{
     font-size: 23px;
@@ -109,8 +118,8 @@ th{
     font-size: 20px;
      }
 
- .CardColumn{
+ /* .CardColumn{
     margin-left: -18px;
-     }
+     } */
      
  }
