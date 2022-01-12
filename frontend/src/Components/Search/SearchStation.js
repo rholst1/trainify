@@ -41,13 +41,8 @@ const SearchStation = (props) => {
         setSuggestions([]);
         props.setValue(text)
     }
-    const handleOnBlur =() =>{
-        if(suggestions.length !== 0){
-            setText(suggestions[0].AdvertisedLocationName);
-            setSuggestions([]);
-            props.setValue(suggestions[0].AdvertisedLocationName)
-        }
-    }
+    
+    
     const onChangeHandler = (text) => {
         let matches = []
         if (text.length > 0) {
@@ -74,7 +69,6 @@ const SearchStation = (props) => {
                     typ="text"
                     placeholder={props.input}
                     // onFocus={() => { setShowResult(true) }}
-                    onBlur={() => { handleOnBlur() }}
                     onChange={e => onChangeHandler(e.target.value)}
                     value={text}
                      
