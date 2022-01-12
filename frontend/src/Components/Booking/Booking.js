@@ -35,11 +35,11 @@ class Booking extends React.Component {
 
         // if user is looking for tickets for today, then show only trains with departure time > now.
         // if user is looking for tickets for the following days, show all trains on that day
-        if (this.formatDate(today)!== day){
-            day = day+' 00:00';
+        if (this.formatDate(today) !== day) {
+            day = day + ' 00:00';
         }
         else {
-            day = day +' '+this.getTime(this.props.d);
+            day = day + ' ' + this.getTime(this.props.d);
         }
 
         var path = `/api/db/getunoccupiedseats?from='${this.props.fromStation}'&to='${this.props.toStation}'&day=${day}`;
@@ -121,49 +121,52 @@ class Booking extends React.Component {
     }
 
 
-    handlePurchase = () => {
-
-        this.state.selectedSeats.forEach((seat) => {
-
-            fetch("/api/db/post/Ticket", {
-                "method": "POST",
-                "headers": {
-                    "content-type": "application/json",
-                    "accept": "application/json"
-                },
-                "body": JSON.stringify({
-                    email: this.state.email,
-                    ScheduleId: seat.ScheduleId,
-                    Price: this.calculatePrice(seat.Price, seat.DepartureTime),
-                    SeatGuid: seat.SeatGuid
+    handlePurchase = async () => {
+        var date = new Date(); 
+        await Promise.all(
+            this.state.selectedSeats.map(async(seat)=>{
+                console.log(this.state.email+'_'+this.formatDate(date)+'_'+this.getTime(date));
+                await fetch("/api/db/post/Ticket", {
+                    "method": "POST",
+                    "headers": {
+                        "content-type": "application/json",
+                        "accept": "application/json"
+                    },
+                    "body": JSON.stringify({
+                        email: this.state.email,
+                        ScheduleId: seat.ScheduleId,
+                        Price: this.calculatePrice(seat.Price, seat.DepartureTime),
+                        SeatGuid: seat.SeatGuid,
+                        OrderId: this.state.email+'_'+this.formatDate(date)+'_'+this.getTime(date)
+                    })
                 })
-            })
-                .then(response => {
-                    console.log(response.status);
-                    if (response.status !== 200) this.setState({ error: true });
-                    var infoString = '';
-                    if (this.state.error === true) {
-                        infoString = 'Förlåt, köpet var inte slutfört. Kontakta kundtjänst.';
-                    }
-                    else {
-                        infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
-                    }
-
-                    this.setState({
-                        seats: [],
-                        info: infoString,
-                        selectedSeats: [],
-                        sum: 0,
-                        email: '',
-                        error: false
+                    .then(response => {
+                        if (response.status !== 200) this.setState({ error: true });
+                    })
+                    .catch(err => {
+                        console.log(err);
                     });
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            })    
+        );
+
+        var infoString = '';
+        if (this.state.error === true) {
+            infoString = 'Förlåt, köpet var inte slutfört. Kontakta kundtjänst.';
+        }
+        else {
+            infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
+        }
+
+        this.setState({
+            seats: [],
+            info: infoString,
+            selectedSeats: [],
+            sum: 0,
+            email: '',
+            error: false
         });
     }
-    
+
     // returns date in the format 'YYYY-MM-DD' 
     formatDate(date) {
         var d = new Date(date),
@@ -176,7 +179,7 @@ class Booking extends React.Component {
 
         return [year, month, day].join('-');
     }
-    
+
     handleInputMailChange = (event) => {
         this.setState({
             email: event.target.value
@@ -208,11 +211,11 @@ class Booking extends React.Component {
 
         return [hours, minutes].join(':');
     }
-    // T.ex. if departureDate= '2022-12-31 22:35' and arrivalDate= '2023-01-01 01:35'
     handleClick() {
         // e.preventDefault();
         // this.props.setSearch(false)
     }
+    // T.ex. if departureDate= '2022-12-31 22:35' and arrivalDate= '2023-01-01 01:35'
     // getArrivalTime returns '01:35 (+1 dag)'
     getArrivalTime(departureDate, arrivalDate) {
         var departure = new Date(departureDate);
@@ -316,22 +319,22 @@ class Booking extends React.Component {
                                     <p className='Text'>Att betala: {this.state.sum} kr</p>
                                 </div>
 
-                                    <div className='CardColumn'>
-                                        <input className='EmailContainer' hidden={this.state.selectedSeats.length === 0}
-                                            required
-                                            type="mail"
-                                            placeholder="example@gmail.com"
-                                            value={this.state.email}
-                                            onChange={this.handleInputMailChange} />
+                                <div className='CardColumn'>
+                                    <input className='EmailContainer' hidden={this.state.selectedSeats.length === 0}
+                                        required
+                                        type="mail"
+                                        placeholder="example@gmail.com"
+                                        value={this.state.email}
+                                        onChange={this.handleInputMailChange} />
 
-                                        <div hidden={this.state.selectedSeats.length === 0}>
-                                            <StripePayment
-                                                sum={this.state.sum}
-                                                email={this.state.email}
-                                                handlePurchase={() => this.handlePurchase()}
-                                            />
-                                        </div>
+                                    <div hidden={this.state.selectedSeats.length === 0}>
+                                        <StripePayment
+                                            sum={this.state.sum}
+                                            email={this.state.email}
+                                            handlePurchase={() => this.handlePurchase()}
+                                        />
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>

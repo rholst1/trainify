@@ -169,24 +169,24 @@ app.post('/api/db/post/:table', (request, response) => {
     console.log('lastID: ' + lastId);
     response.json(result);
 
-    if (request.params.table === 'Ticket') {
-      query = `
- Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
-From Ticket
-Join Schedule On Schedule.Id=Ticket.ScheduleId
-Join Train On Schedule.TrainId = Train.Id
-Join Seat On Ticket.SeatGuid = Seat.Id
-Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
-Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
-Where Ticket.Id = ${lastId[1]}
-      `;
+//     if (request.params.table === 'Ticket') {
+//       query = `
+//  Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
+// From Ticket
+// Join Schedule On Schedule.Id=Ticket.ScheduleId
+// Join Train On Schedule.TrainId = Train.Id
+// Join Seat On Ticket.SeatGuid = Seat.Id
+// Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
+// Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
+// Where Ticket.Id = ${lastId[1]}
+//       `;
 
-      postToDatabase = dbPath.prepare(query);
-      result = postToDatabase.get();
-      resultArr = Object.values(result);
-      console.log('Resultat 2: ' + resultArr);
-      bookingInformation(Object.values(resultArr));
-    }
+//       postToDatabase = dbPath.prepare(query);
+//       result = postToDatabase.get();
+//       resultArr = Object.values(result);
+//       console.log('Resultat 2: ' + resultArr);
+//       bookingInformation(Object.values(resultArr));
+    // }
   } catch (error) {
     console.log('caught error');
     console.log(error);
