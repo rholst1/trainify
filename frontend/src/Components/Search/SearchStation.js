@@ -77,6 +77,15 @@ const SearchStation = (props) => {
                     onBlur={() => { handleOnBlur() }}
                     onChange={e => onChangeHandler(e.target.value)}
                     value={text}
+                     
+                    //onBlur = {() =>{
+                    //    setTimeout(()=>{
+                      //      setSuggestions([])
+                        //}, 100)
+                        //}}
+                        
+                       
+                    
                 ></input>
                     <div className="StationContainer">{suggestions && suggestions.map((suggestion, i) =>
                         <div
