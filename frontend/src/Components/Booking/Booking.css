@@ -96,7 +96,10 @@ th{
      .ViewContainer{
     overflow-x: auto;
     overflow-y: hidden; 
-    width: 56%; 
+    width: 38%; 
+     }
+     .ViewContainer p,.ViewContainer li,.Paybtn{
+    margin-left: 12px;
      }
     
 .BookingWrapper p{
