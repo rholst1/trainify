@@ -29,6 +29,10 @@ export default function PaymentForm(props) {
                     console.log('success payment')
                     setSuccess('successfull payment')
                     props.handlePurchase();
+                    document.getElementsByClassName('ResultContainer')[0].style.setProperty("display", "none")
+                    document.getElementsByClassName('ViewContainer')[0].style.setProperty("display", "none")
+                    document.getElementsByClassName('Date')[0].style.setProperty("display", "none")
+                    
                 }
                 else {
                     setSuccess('payment not accepted')
