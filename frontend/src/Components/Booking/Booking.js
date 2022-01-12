@@ -148,7 +148,7 @@ class Booking extends React.Component {
                         infoString = 'Förlåt, köpet var inte slutfört. Kontakta kundtjänst.';
                     }
                     else {
-                        infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
+                        infoString = 'Köpet slutfört. Köpbekräftelse har skickats till ditt mail.';
                     }
 
                     this.setState({
