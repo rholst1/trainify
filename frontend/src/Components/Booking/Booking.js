@@ -125,7 +125,6 @@ class Booking extends React.Component {
         var date = new Date(); 
         await Promise.all(
             this.state.selectedSeats.map(async(seat)=>{
-                console.log(this.state.email+'_'+this.formatDate(date)+'_'+this.getTime(date));
                 await fetch("/api/db/post/Ticket", {
                     "method": "POST",
                     "headers": {
@@ -149,6 +148,8 @@ class Booking extends React.Component {
             })    
         );
 
+        this.sendConfirmation(this.state.email+'_'+this.formatDate(date)+'_'+this.getTime(date));
+
         var infoString = '';
         if (this.state.error === true) {
             infoString = 'Förlåt, köpet var inte slutfört. Kontakta kundtjänst.';
@@ -165,6 +166,7 @@ class Booking extends React.Component {
             email: '',
             error: false
         });
+
     }
 
     // returns date in the format 'YYYY-MM-DD' 
@@ -229,6 +231,15 @@ class Booking extends React.Component {
         if (days > 1) arrivalString = arrivalString + ' (+' + days + ' dagar)';
         return arrivalString;
     }
+
+    sendConfirmation(order){
+        var path = `/api/db/gettickets?order=${order}`;
+        fetch(path)
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     render() {
         return (
             <>

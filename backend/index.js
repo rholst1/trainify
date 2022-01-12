@@ -91,6 +91,7 @@ app.post('/payment', (req, res) => {
 const dbDriver = require('better-sqlite3');
 const { format } = require('path');
 const { error } = require('console');
+const { query } = require('express');
 
 // Database connector with DB path
 const dbPath = dbDriver('./backend/data/database.db');
@@ -164,28 +165,24 @@ app.post('/api/db/post/:table', (request, response) => {
       request.params
     );
     let result = postToDatabase.run(request.body);
+    response.sendStatus(200);
+    //     if (request.params.table === 'Ticket') {
+    //       query = `
+    //  Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
+    // From Ticket
+    // Join Schedule On Schedule.Id=Ticket.ScheduleId
+    // Join Train On Schedule.TrainId = Train.Id
+    // Join Seat On Ticket.SeatGuid = Seat.Id
+    // Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
+    // Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
+    // Where Ticket.Id = ${lastId[1]}
+    //       `;
 
-    let lastId = Object.values(result);
-    console.log('lastID: ' + lastId);
-    response.json(result);
-
-//     if (request.params.table === 'Ticket') {
-//       query = `
-//  Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
-// From Ticket
-// Join Schedule On Schedule.Id=Ticket.ScheduleId
-// Join Train On Schedule.TrainId = Train.Id
-// Join Seat On Ticket.SeatGuid = Seat.Id
-// Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
-// Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
-// Where Ticket.Id = ${lastId[1]}
-//       `;
-
-//       postToDatabase = dbPath.prepare(query);
-//       result = postToDatabase.get();
-//       resultArr = Object.values(result);
-//       console.log('Resultat 2: ' + resultArr);
-//       bookingInformation(Object.values(resultArr));
+    //       postToDatabase = dbPath.prepare(query);
+    //       result = postToDatabase.get();
+    //       resultArr = Object.values(result);
+    //       console.log('Resultat 2: ' + resultArr);
+    //       bookingInformation(Object.values(resultArr));
     // }
   } catch (error) {
     console.log('caught error');
@@ -260,4 +257,24 @@ function formatDate(date) {
 //listen
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
+});
+
+app.get('/api/db/gettickets', (request, response) => {
+
+  var query = `
+    Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
+    From Ticket
+    Join Schedule On Schedule.Id=Ticket.ScheduleId
+    Join Train On Schedule.TrainId = Train.Id
+    Join Seat On Ticket.SeatGuid = Seat.Id
+    Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
+    Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
+    Where Ticket.OrderId = '${request.query.order}'
+  `;
+  
+  console.log(query);
+  let requestDB = dbPath.prepare(query);
+  let result = requestDB.all();
+  resultArr = Object.values(result);
+  bookingInformation(Object.values(resultArr));
 });
