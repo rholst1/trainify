@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
+import HomePage from '../../Home/HomePage';
 import SearchButton from "../Button/SearchButton";
 import SortButton from "../Button/SortButton";
 import StripePayment from "../Stripe/StripePayment";
+import { FaRegArrowAltCircleLeft } from 'react-icons/fa';
 import './Booking.css';
 
 class Booking extends React.Component {
@@ -169,7 +171,7 @@ class Booking extends React.Component {
 
     }
 
-    // returns date in the format 'YYYY-MM-DD' 
+    // returns date in the format 'YYYY-MM-DD'
     formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -202,7 +204,7 @@ class Booking extends React.Component {
         return newPrice;
     }
     // Extracts time from date (string),
-    // t.ex. if dateString = '2022-02-01 07:05' getTime returns '07:05' 
+    // t.ex. if dateString = '2022-02-01 07:05' getTime returns '07:05'
     getTime(dateString) {
         var date = new Date(dateString),
             hours = '' + date.getHours(),
@@ -213,9 +215,9 @@ class Booking extends React.Component {
 
         return [hours, minutes].join(':');
     }
-    handleClick() {
-        // e.preventDefault();
-        // this.props.setSearch(false)
+
+    handleClick(e) {
+        this.props.setSearch(false)
     }
     // T.ex. if departureDate= '2022-12-31 22:35' and arrivalDate= '2023-01-01 01:35'
     // getArrivalTime returns '01:35 (+1 dag)'
@@ -246,6 +248,11 @@ class Booking extends React.Component {
                 {this.state.didMount ?
                     <div className='BookingWrapper'>
                         <div className='InfoCotainer'>
+                            <div className='Back'>
+
+                            
+                            <button className='BackArrow' onClick={() => this.handleClick()}>{<FaRegArrowAltCircleLeft />}</button>
+                            </div>
                             <p>{this.state.info}
                                 <p className='Date'>{this.state.date}</p>
                             </p>

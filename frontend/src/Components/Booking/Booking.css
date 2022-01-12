@@ -7,13 +7,25 @@
 }
 .Back{
     display: flex;
+    
+}
+.BackArrow{
+    margin-left: 10px;
+    display: flex;
+    border-radius: 11px;
+    font-size: 30px;
+    background-color: rgba(255, 255, 255, 0.329);
+}
+.BackArrow:hover{
+   
+    outline: 1px solid #4285f4;
 }
 .ResultWrapper{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     letter-spacing: 1px;
-    background-color: rgba(255, 255, 255, 0.541);
+    background-color: rgba(255, 255, 255, 0.329);
     border-radius: 23px;
     color: black;
 }
@@ -84,7 +96,10 @@ th{
      .ViewContainer{
     overflow-x: auto;
     overflow-y: hidden; 
-    width: 56%; 
+    width: 38%; 
+     }
+     .ViewContainer p,.ViewContainer li,.Paybtn{
+    margin-left: 12px;
      }
     
 .BookingWrapper p{
