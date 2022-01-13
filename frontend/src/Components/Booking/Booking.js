@@ -5,6 +5,7 @@ import SortButton from "../Button/SortButton";
 import StripePayment from "../Stripe/StripePayment";
 import { FaRegArrowAltCircleLeft } from 'react-icons/fa';
 import './Booking.css';
+import validator from 'validator'
 
 class Booking extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class Booking extends React.Component {
             sortedSeats: [],
             sum: 0,
             email: '',
+            emailError: '',
             error: false,
             didMount: false
         };
@@ -184,10 +186,29 @@ class Booking extends React.Component {
         return [year, month, day].join('-');
     }
 
-    handleInputMailChange = (event) => {
-        this.setState({
-            email: event.target.value
-        });
+    handleInputMailChange = (e) => {
+        var email = e.target.value
+        console.log(e)
+        console.log(email)
+        console.log(this.state.emailError)
+        if (validator.isEmail(email)) {
+            this.setState({
+                emailError: 'Valid Email',
+                email: email,
+                error:false
+            })
+          } else {
+            this.setState({
+                emailError: 'Enter valid Email!',
+                email: email,
+                error: true
+            })
+            // setEmailError('')
+          }
+
+        // this.setState({
+        //     email: event.target.value
+        // });
     }
     calculatePrice(basePrice, departure) {
         var today = new Date();
@@ -352,9 +373,11 @@ class Booking extends React.Component {
                                         type="mail"
                                         placeholder="example@gmail.com"
                                         value={this.state.email}
-                                        onChange={this.handleInputMailChange} />
+                                        onChange={e => this.handleInputMailChange(e)} />
+                                        
+                                    <p className='TextEmail'>{this.state.emailError}</p>
 
-                                    <div hidden={this.state.selectedSeats.length === 0}>
+                                    <div hidden={this.state.error}>
                                         <StripePayment
                                             sum={this.state.sum}
                                             email={this.state.email}

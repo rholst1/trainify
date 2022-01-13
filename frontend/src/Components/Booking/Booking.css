@@ -42,6 +42,10 @@
 .Text{
     color: black;
 }
+.TextEmail{
+    color: black;
+    font-size: 13px;
+}
  
 /* .ResultContainer::-webkit-scrollbar {
  display: none;
