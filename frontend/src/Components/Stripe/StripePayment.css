@@ -10,3 +10,14 @@ fieldset:hover{
     outline: none;
     border: 2px solid #4285f4;
 }
+
+@media screen and (max-width: 600px) {
+
+fieldset{
+    width: 106%;
+    margin-left: -25px;   
+    }
+}
+
+
+
