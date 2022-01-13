@@ -5,6 +5,9 @@ import SortButton from "../Button/SortButton";
 import StripePayment from "../Stripe/StripePayment";
 import { FaRegArrowAltCircleLeft } from 'react-icons/fa';
 import './Booking.css';
+import EmailValidation from "../Email/EmailValidation";
+import '../Email/EmailValidation.css';
+
 
 
 class Booking extends React.Component {
