@@ -6,6 +6,7 @@ import StripePayment from "../Stripe/StripePayment";
 import { FaRegArrowAltCircleLeft } from 'react-icons/fa';
 import './Booking.css';
 
+
 class Booking extends React.Component {
     constructor(props) {
         super(props);
@@ -184,11 +185,6 @@ class Booking extends React.Component {
         return [year, month, day].join('-');
     }
 
-    handleInputMailChange = (event) => {
-        this.setState({
-            email: event.target.value
-        });
-    }
     calculatePrice(basePrice, departure) {
         var today = new Date();
         var departureDate = new Date(departure);
@@ -338,18 +334,12 @@ class Booking extends React.Component {
                                 </div>
 
                                 <div className='CardColumn'>
-                                    <input className='EmailContainer' hidden={this.state.selectedSeats.length === 0}
-                                        required
-                                        type="mail"
-                                        placeholder="example@gmail.com"
-                                        value={this.state.email}
-                                        onChange={this.handleInputMailChange} />
-
                                     <div hidden={this.state.selectedSeats.length === 0}>
-                                        <StripePayment
-                                            sum={this.state.sum}
-                                            email={this.state.email}
-                                            handlePurchase={() => this.handlePurchase()}
+                                        <EmailValidation
+                                        sum={this.state.sum}
+                                        //email={this.state.email}
+                                        handlePurchase={() => this.handlePurchase()}
+
                                         />
                                     </div>
                                 </div>
