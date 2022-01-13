@@ -108,7 +108,7 @@ class Booking extends React.Component {
 
         this.setState({
             seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => { return new Date(a.DepartureTime).getTime() - new Date(b.DepartureTime).getTime() })
+            sortedSeats: this.state.seats.sort((a, b) => { return new Date(this.getJSDateString(a.DepartureTime)).getTime() - new Date(this.getJSDateString(b.DepartureTime)).getTime() })
         });
 
     }
@@ -117,7 +117,7 @@ class Booking extends React.Component {
 
         this.setState({
             seats: this.state.seats,
-            sortedSeats: this.state.seats.sort((a, b) => { return new Date(b.DepartureTime).getTime() - new Date(a.DepartureTime).getTime() })
+            sortedSeats: this.state.seats.sort((a, b) => { return new Date(this.getJSDateString(b.DepartureTime)).getTime() - new Date(this.getJSDateString(a.DepartureTime)).getTime() })
         });
 
     }
@@ -191,7 +191,7 @@ class Booking extends React.Component {
     }
     calculatePrice(basePrice, departure) {
         var today = new Date();
-        var departureDate = new Date(departure);
+        var departureDate = new Date(this.getJSDateString(departure));
 
         var daysLeft = Math.round((departureDate - today) / (1000 * 60 * 60 * 24));
         var newPrice;
@@ -203,12 +203,17 @@ class Booking extends React.Component {
         }
         return newPrice;
     }
-    // Extracts time from date (string),
-    // t.ex. if dateString = '2022-02-01 07:05' getTime returns '07:05'
-    getTime(dateString) {
-        var date = new Date(dateString),
-            hours = '' + date.getHours(),
-            minutes = '' + date.getMinutes();
+    // Extracts time from date,
+    // t.ex. if date = '2022-02-01 07:05' getTime returns '07:05'
+    getTime(date) {
+        var dateCorrectFormat;
+        if (typeof date === 'string') {
+            dateCorrectFormat = this.getJSDateString(date);
+        }
+        else dateCorrectFormat = date;
+        var dateObj = new Date(dateCorrectFormat);
+        var hours = '' + dateObj.getHours();
+        var minutes = '' + dateObj.getMinutes();
 
         if (hours.length < 2) hours = '0' + hours;
         if (minutes.length < 2) minutes = '0' + minutes;
@@ -216,14 +221,15 @@ class Booking extends React.Component {
         return [hours, minutes].join(':');
     }
 
+
     handleClick(e) {
         this.props.setSearch(false)
     }
     // T.ex. if departureDate= '2022-12-31 22:35' and arrivalDate= '2023-01-01 01:35'
     // getArrivalTime returns '01:35 (+1 dag)'
     getArrivalTime(departureDate, arrivalDate) {
-        var departure = new Date(departureDate);
-        var arrival = new Date(arrivalDate);
+        var departure = new Date(this.getJSDateString(departureDate));
+        var arrival = new Date(this.getJSDateString(arrivalDate));
         var arrivalString = '' + this.getTime(arrivalDate);
         departure.setHours(0, 0, 0, 0);
         arrival.setHours(0, 0, 0, 0);
@@ -240,6 +246,9 @@ class Booking extends React.Component {
             .catch(err => {
                 console.log(err);
             });
+    }
+    getJSDateString(date){
+        return date.replace(" ", "T");
     }
 
     render() {
@@ -331,7 +340,7 @@ class Booking extends React.Component {
                                     <p className='Text' >Översikt</p>
                                     {this.state.selectedSeats.map(seat =>
                                         <li key={"Guid" + seat.SeatGuid + "ScheduleId" + seat.ScheduleId}>
-                                            {seat.DepartureTime}-{this.getTime(seat.ArrivalTime)}, Vagn {seat.WagonNr}, Plats {seat.SeatNr}, Pris {this.calculatePrice(seat.Price, seat.DepartureTime)}kr
+                                            {seat.DepartureTime}-{this.getArrivalTime(seat.DepartureTime, seat.ArrivalTime)}, Vagn {seat.WagonNr}, Plats {seat.SeatNr}, Pris {this.calculatePrice(seat.Price, seat.DepartureTime)}kr
                                         </li>
                                     )}
                                     <p className='Text'>Att betala: {this.state.sum} kr</p>
