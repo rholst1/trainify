@@ -156,7 +156,7 @@ class Booking extends React.Component {
 
         var infoString = '';
         if (this.state.error === true) {
-            infoString = 'Förlåt, köpet var inte slutfört. Kontakta kundtjänst.';
+            infoString = 'Köpet har inte slutförts. Kontakta kundtjänst.';
         }
         else {
             infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
@@ -193,13 +193,13 @@ class Booking extends React.Component {
         console.log(this.state.emailError)
         if (validator.isEmail(email)) {
             this.setState({
-                emailError: 'Valid Email',
+                emailError: 'Giltig Email',
                 email: email,
                 error:false
             })
           } else {
             this.setState({
-                emailError: 'Enter valid Email!',
+                emailError: 'Ange giltig Email!',
                 email: email,
                 error: true
             })

@@ -12,9 +12,7 @@ h1{
     position:sticky;
     width: 100%;
     background-color:black;
-    height:6000px;
-    
-    
+   
 }
 .Icon{
     background-color: rgba(14, 41, 5, 0.226);
@@ -42,7 +40,6 @@ h1{
 }
 
 .react-date-picker:hover{
-    /* border: 2px solid #4285f4; */
     outline: 2px solid #4285f4
     
 }
