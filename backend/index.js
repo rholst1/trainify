@@ -271,10 +271,79 @@ app.get('/api/db/gettickets', (request, response) => {
     Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
     Where Ticket.OrderId = '${request.query.order}'
   `;
-  
+
   console.log(query);
   let requestDB = dbPath.prepare(query);
   let result = requestDB.all();
   resultArr = Object.values(result);
   bookingInformation(Object.values(resultArr));
 });
+
+// example: http://localhost:3001/api/db/schedule?from=Göteborg C&to=Stockholm Central&day=2022-02-01
+app.get('/api/db/schedule', (request, response) => {
+  // all routes between station 'from' and station 'to' (includes opposite direction)
+  let allRoutes = getRoutes(request.query.from, request.query.to);
+
+  let routesRightDirection = [];
+  allRoutes.forEach(route => {
+
+    let parts = getRouteParts(route.Id); 
+    
+    let dep = request.query.from;
+    let arr = request.query.to;
+
+    while (true) {
+      let part = parts.find(p => p.DepSt_Part == dep);
+      if (part === undefined) break;
+      dep = part.ArrSt_Part;
+      if (dep === arr) {
+        routesRightDirection.push(route.Id);
+        console.log(route.Id);
+        break;
+      }
+    }
+  });
+
+  response.json(routesRightDirection);
+});
+
+function getRoutes(Station1, Station2) {
+  let queryRoutes = `
+  Select Route.Id
+  From Route
+  Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
+  Join Parts On Join_Route_Parts.PartOfRouteId = Parts.Id
+  Join Station As Station1 On Parts.Station1Id = Station1.Id
+  Join Station As Station2 On Parts.Station2Id = Station2.Id
+  Where Station1.Name = '${Station1}'
+  INTERSECT
+  Select Route.Id
+  From Route
+  Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
+  Join Parts On Join_Route_Parts.PartOfRouteId = Parts.Id
+  Join Station As Station1 On Parts.Station1Id = Station1.Id
+  Join Station As Station2 On Parts.Station2Id = Station2.Id
+  Where Station2.Name = '${Station2}'
+  `;
+  let requestDBRoutes = dbPath.prepare(queryRoutes);
+  let routes = requestDBRoutes.all();
+  return routes;
+}
+function getRouteParts(RouteId) {
+  let query = `
+  Select Route.Id, DepartureStation.Name AS DepartureStation, ArrivalStation.Name AS ArrivalStation, Station1.Name AS DepSt_Part,  Station2.Name AS ArrSt_Part
+  From Route
+  Join Station As DepartureStation On Route.DepartureStationId=  DepartureStation.Id
+  Join Station As ArrivalStation On Route.ArrivalStationId= ArrivalStation.Id
+  Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
+  Join Parts On Join_Route_Parts.PartOfRouteId = Parts.Id
+  Join Station As Station1 On Parts.Station1Id = Station1.Id
+  Join Station As Station2 On Parts.Station2Id = Station2.Id
+  Where Route.Id = ${RouteId}
+  `;
+  let requestDB = dbPath.prepare(query);
+  let parts = requestDB.all();
+  return parts
+}
+async function getRoutesRightDirection() {
+}
