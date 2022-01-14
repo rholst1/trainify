@@ -14,11 +14,21 @@ code {
 .footer{
   margin-top: 14rem;
   padding: 1rem;
-  background-color: black;
   bottom: 0;
   left: 0;
   width: 100%;
+  background-color: black;
+  box-shadow: 0px -4px 5px 0px rgba(0,0,0,0.75)
 }
 .footer p{
   font-size: 18px;
+}
+
+@media screen and (max-width: 600px) {
+.footer {
+  width: 91%;
+  }
+  .footer p{
+  font-size: 17px;
+}
 }
