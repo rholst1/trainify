@@ -111,9 +111,6 @@ th{
      .ViewContainer li{
     font-size: 17px;
      }
-     /* .ViewContainer p,.ViewContainer li,.Paybtn{
-    margin-left: 12px;
-     } */
     
 .BookingWrapper p{
     font-size: 23px;
@@ -121,9 +118,5 @@ th{
 .BookingWrapper p.Date{
     font-size: 20px;
      }
-
- /* .CardColumn{
-    margin-left: -18px;
-     } */
      
  }
