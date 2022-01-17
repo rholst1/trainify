@@ -34,8 +34,6 @@
     flex-direction: column;
     width: 60%;
     height: 530px;
-    /* overflow: hidden;
-    overflow: scroll; */
     padding-left: 2rem;
     height: auto;
 }
@@ -46,21 +44,7 @@
     color: black;
     font-size: 13px;
 }
- 
-/* .ResultContainer::-webkit-scrollbar {
- display: none;
-}
-.ResultContainer {
-    -ms-overflow-style: none;
-     scrollbar-width: none;
-}
 
-.ResultContainer::-webkit-scrollbar { 
-    display: none;
-}
-.ResultContainer { -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
 th{
    padding: 3px;
     padding-right: 10px;
