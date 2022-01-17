@@ -1,6 +1,8 @@
 const nodemail = require('./nodemailer');
 console.log(nodemail);
 let bookingInformation = require('./nodemailer');
+var moment = require('moment'); 
+moment().format(); 
 
 const path = require('path');
 const express = require('express');
@@ -92,6 +94,7 @@ const dbDriver = require('better-sqlite3');
 const { format } = require('path');
 const { error } = require('console');
 const { query } = require('express');
+const { stringify } = require('querystring');
 
 // Database connector with DB path
 const dbPath = dbDriver('./backend/data/database.db');
@@ -278,22 +281,29 @@ app.get('/api/db/gettickets', (request, response) => {
   resultArr = Object.values(result);
   bookingInformation(Object.values(resultArr));
 });
-
-// example: http://localhost:3001/api/db/schedule?from=Göteborg C&to=Stockholm Central&day=2022-02-01
+// returns an array with schedule from station 'from' to station 'to' on day 'day':
+// t.ex.
+// {
+// "ScheduleId": 1,
+// "DepartureStation": "Göteborg C",
+// "ArrivalStation": "Stockholm Central",
+// "DepartureTime": "2022-02-01 10:00",
+// "ArrivalTime": "2022-02-01 14:00",
+// "Price": 525
+// }
+// example: http://localhost:3001/api/db/schedule?from=Skövde C&to=Katrineholm C&day=2022-02-01
 app.get('/api/db/schedule', (request, response) => {
   // all routes between station 'from' and station 'to' (includes opposite direction)
   let allRoutes = getRoutes(request.query.from, request.query.to);
+  // routes from station 'from' to station 'to' (not include opposite direction)
   let rightDirectionRoutes = getRoutesRightDirection(allRoutes, request.query.from, request.query.to)
-
-  let day = new Date(request.query.day);
-  let nextDay = new Date(day);
-  nextDay.setDate(day.getDate() + 1);
-  let dayStr = request.query.day;
-  let nextDayStr = formatDate(nextDay);
-  let scheduleIds = getScheduleIds(rightDirectionRoutes, dayStr, nextDayStr);
+  // scheduleIds from station 'from' to station 'to' and selected day
+  let scheduleIds = getScheduleIds(rightDirectionRoutes, request.query.day);
+  // an array with ScheduleId, DepartureTime (from the first station of the whole route, not from StationFromName), StationFromName, StationToName, TransilteTime, StopTime, Price, PriceCoefficient 
   let schedules = getSchedules(scheduleIds);
-  getDepartureAndArrivalTimeForSelectStations(schedules, request.query.from, request.query.to) 
-  response.json(schedules);
+  // an array with ScheduleId, DepartureStationName('from'), DepartureTime('from'), ArrivalStation('to'), ArrivalTime('to'), Price 
+  let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
+  response.json(scheduleFromToStationDay);
 });
 
 function getRoutes(Station1, Station2) {
@@ -346,21 +356,24 @@ function getRoutesRightDirection(allRoutes, fromStation, toStation) {
       dep = part.ArrSt_Part;
       if (dep === toStation) {
         routesRightDirection.push(route.Id);
-        console.log(route.Id);
         break;
       }
     }
   });
   return routesRightDirection;
 }
-function getScheduleIds(routes, day, nextDay) {
-
+function getScheduleIds(routes, queryday) {
+  let day = new Date(queryday);
+  let nextDay = new Date(day);
+  nextDay.setDate(day.getDate() + 1);
+  let dayStr = queryday;
+  let nextDayStr = formatDate(nextDay);
   let scheduleId = [];
   routes.forEach(route => {
     let query = `
     Select Schedule.Id
     From Schedule
-    Where RouteId=${route} AND DepartureTime Between '${day}' AND '${nextDay}'
+    Where RouteId=${route} AND DepartureTime Between '${dayStr}' AND '${nextDayStr}'
     `;
     let requestDB = dbPath.prepare(query);
     let result = requestDB.all();
@@ -374,7 +387,8 @@ function getSchedules(scheduleIds) {
   let schedules = [];
   scheduleIds.forEach(scheduleId => {
     let query = `
-    Select Schedule.Id, DepStation.Name As DepartureRoute, ArrStation.Name As ArrivalRoute, Schedule.DepartureTime, Station1.Name AS DeparturePart, Station2.Name AS ArrivalPart, Parts.TransiteTime, Join_Route_Parts.StopTime
+    Select Schedule.Id, DepStation.Name As DepartureRoute, ArrStation.Name As ArrivalRoute, Schedule.DepartureTime, Station1.Name AS DeparturePart,
+    Station2.Name AS ArrivalPart, Parts.TransiteTime, Join_Route_Parts.StopTime, Parts.Price, Schedule.PriceCoefficient
     From Schedule
     Join Route On Schedule.RouteId = Route.Id
     Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
@@ -389,22 +403,46 @@ function getSchedules(scheduleIds) {
     let result = requestDB.all();
     schedules.push(result);
   });
-  console.log(schedules);
   return schedules;
 }
-// function getDepartureAndArrivalTimeForSelectStations(schedules, departureStation, arrivalStation) {
-//   newSchedule = [];
-//   dep = departureStation;
-//   schedules.forEach(schedule => {
+function getDepartureAndArrivalTimeForSelectStations(schedulesString, departureStationSearch, arrivalStationSearch) {
 
-//     let depTime = schedule[0].DepartureTime;
-//     let arrTime;
-//     let depStation = departureStation;
-//     while (true){
-//       let part = schedule.find(p => p.DeparturePart === depStation);
-//       nextDepTime = depTime + part.TransiteTime+...???
-//       depStation = part.ArrivalPart;
-//     };
-//   });
-//   return newSchedule;
-// }
+  let schedules = JSON.parse(schedulesString);
+
+  let newSchedule = [];
+  
+  schedules.forEach(scheduleId => {
+    let newScheduleRow = {};
+    newScheduleRow.ScheduleId = scheduleId[0].Id;
+    newScheduleRow.DepartureStation = departureStationSearch;
+    newScheduleRow.ArrivalStation = arrivalStationSearch;
+    newScheduleRow.DepartureTime = null;
+    let time = moment(scheduleId[0].DepartureTime, "YYYY-MM-DD HH:mm");
+    let station = scheduleId[0].DepartureRoute;
+    let price=0;
+    while (true) {
+      let part = scheduleId.find(p => p.DeparturePart === station);
+      if (station === departureStationSearch){
+        newScheduleRow.DepartureTime = time.format("YYYY-MM-DD HH:mm");
+      } 
+      station = part.ArrivalPart;
+      time = addTime(time, moment(part.TransiteTime, "HH:mm"));
+      if (newScheduleRow.DepartureTime !== null) price = price + part.Price;
+      if (station === arrivalStationSearch) {
+        newScheduleRow.ArrivalTime = time.format("YYYY-MM-DD HH:mm");
+        newScheduleRow.Price = parseFloat(scheduleId[0].PriceCoefficient)*price;
+        break;
+      }
+      time = addTime(time, moment(part.StopTime, "HH:mm"));
+    };
+    newSchedule.push(newScheduleRow);
+  });
+  return newSchedule;
+}
+// return moment1(type of 'moment' in format "YYYY-MM-DD HH:mm") + moment2(type of 'moment' in format "HH:mm")
+function addTime(moment1, moment2){
+  let hours =  moment(moment2, "HH:mm").hours();
+  let minutes = moment(moment2, "HH:mm").minutes();
+  moment1.add(hours, 'hours').add(minutes, 'minutes');
+  return moment1;
+}
