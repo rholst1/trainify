@@ -16,8 +16,7 @@ Educational project that revolves around creating a Ticket booking app for a pas
 # Frameworks:
 
 * React App
-* SQLite
-* better-sql-lite3
+* SQLite (better-sql-lite3)
 * Node.js
 * Express 
 
@@ -31,7 +30,10 @@ There is no specific code standard in this project.
 
 # Run application:
  
-frontend : npm install --save @stripe/react-stripe-js @stripe/stripe-js, npm start
-trainify: npm install, npm start
+frontend :first run npm install --save @stripe/react-stripe-js @stripe/stripe-js,
+create a .env file and put the stripekey from StripePayment.js in it 
+then run npm start.
+
+trainify: first run npm install then npm start.
 
 
