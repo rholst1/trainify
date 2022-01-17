@@ -37,11 +37,6 @@
   
   }
   
-  /* .btnSearch:hover {
-    background: #F6F9FE;
-    color: #174ea6;
-  } */
-  
   .btnPay:active {
     box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
     outline: none;

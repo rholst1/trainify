@@ -62,19 +62,4 @@
     position:absolute;
   }
 }
-/* 
-.StationContainer::-webkit-scrollbar {
- display: none;
-}
-.StationContainer {
-    -ms-overflow-style: none;
-     scrollbar-width: none;
-}
-
-.StationContainer::-webkit-scrollbar { 
-    display: none;
-}
-.StationContainer { -ms-overflow-style: none;
-     scrollbar-width: none;
-} */
 

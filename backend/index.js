@@ -13,22 +13,11 @@ let PORT = process.env.PORT;
 if (PORT == null || PORT == '') {
   PORT = 3001;
 }
-//const uuid = require("uuid/v4")
 
-// const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
 app.use(express.static(path.join(__dirname, '../frontend', 'build')));
-// const db_name = path.join(__dirname, "data", "database.db");
-// connect to the database
-/* const db = new sqlite3.Database(db_name, err => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log("Successful connection to the database 'apptest.db'");
-});
 
-*/
 
 //middelware
 app.use(express.json());
@@ -130,18 +119,6 @@ app.get('/api/db/getemail/:table/:email', (request, response) => {
   console.log('GET request returned data (from DB): ', result);
 });
 
-// POST Function that posts to DB and fills column, dynamic setup that maps both table, column names and paramaters dynamically
-// example: use postman to do a POST (with json matching that table setup) request towards
-// localhost:3001/api/db/post/(insert table name here)
-//  Example json in POST body
-//  URL: /api/db/post/Ticket
-//  Body
-//  {
-//     "email":  "test@test.com",
-//     "ScheduleId": "1",
-//     "Price": "400",
-//     "SeatGuid": "103"
-// }
 
 app.post('/api/db/post/:table', (request, response) => {
   try {
@@ -166,24 +143,7 @@ app.post('/api/db/post/:table', (request, response) => {
     );
     let result = postToDatabase.run(request.body);
     response.sendStatus(200);
-    //     if (request.params.table === 'Ticket') {
-    //       query = `
-    //  Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
-    // From Ticket
-    // Join Schedule On Schedule.Id=Ticket.ScheduleId
-    // Join Train On Schedule.TrainId = Train.Id
-    // Join Seat On Ticket.SeatGuid = Seat.Id
-    // Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
-    // Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
-    // Where Ticket.Id = ${lastId[1]}
-    //       `;
-
-    //       postToDatabase = dbPath.prepare(query);
-    //       result = postToDatabase.get();
-    //       resultArr = Object.values(result);
-    //       console.log('Resultat 2: ' + resultArr);
-    //       bookingInformation(Object.values(resultArr));
-    // }
+   
   } catch (error) {
     console.log('caught error');
     console.log(error);

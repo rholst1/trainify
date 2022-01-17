@@ -13,8 +13,25 @@ Educational project that revolves around creating a Ticket booking app for a pas
 * Sruthi Krishna Radhakrishnan Rajini
 * Awat Farah
 
+# Frameworks:
 
-Run: npm install --save @stripe/react-stripe-js @stripe/stripe-js
-frontend : npm run build
+* React App
+* SQLite
+* better-sql-lite3
+* Node.js
+* Express 
+
+# Structure:
+
+Everything related to frontend lays in the frontend-folder and the files related to backend in the backend-folder. 
+The .vs folder contains the storage of local user settings while the .vscode folder stores the debugger support. 
+
+There is no specific code standard in this project.
+
+
+# Run application:
+ 
+frontend : npm install --save @stripe/react-stripe-js @stripe/stripe-js, npm start
+trainify: npm install, npm start
 
 
