@@ -159,7 +159,7 @@ class Booking extends React.Component {
             infoString = 'Köpet har inte slutförts. Kontakta kundtjänst.';
         }
         else {
-            infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
+            infoString = 'Köpet slutfört. Köpbekräftelse har skickats till ditt mejl.';
         }
 
         this.setState({
@@ -193,22 +193,20 @@ class Booking extends React.Component {
         console.log(this.state.emailError)
         if (validator.isEmail(email)) {
             this.setState({
-                emailError: 'Giltig Email',
+                emailError: 'Giltig e-postadress',
                 email: email,
                 error:false
             })
           } else {
             this.setState({
-                emailError: 'Ange giltig Email!',
+                emailError: 'Ange giltig e-postadress!',
                 email: email,
                 error: true
             })
-            // setEmailError('')
+          
           }
 
-        // this.setState({
-        //     email: event.target.value
-        // });
+      
     }
     calculatePrice(basePrice, departure) {
         var today = new Date();
@@ -316,11 +314,11 @@ class Booking extends React.Component {
                                                 <th>Pris</th>
 
                                                 <SortButton
-                                                    text='▲'
+                                                    text='▼'
                                                     handleOnClick={() => this.handleSortPriceAsc()}
                                                 />
                                                 <SortButton
-                                                    text='▼'
+                                                    text='▲'
                                                     handleOnClick={() => this.handleSortPriceDesc()}
                                                 />
                                             </div>
