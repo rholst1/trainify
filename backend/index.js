@@ -283,28 +283,17 @@ app.get('/api/db/gettickets', (request, response) => {
 app.get('/api/db/schedule', (request, response) => {
   // all routes between station 'from' and station 'to' (includes opposite direction)
   let allRoutes = getRoutes(request.query.from, request.query.to);
+  let rightDirectionRoutes = getRoutesRightDirection(allRoutes, request.query.from, request.query.to)
 
-  let routesRightDirection = [];
-  allRoutes.forEach(route => {
-
-    let parts = getRouteParts(route.Id); 
-    
-    let dep = request.query.from;
-    let arr = request.query.to;
-
-    while (true) {
-      let part = parts.find(p => p.DepSt_Part == dep);
-      if (part === undefined) break;
-      dep = part.ArrSt_Part;
-      if (dep === arr) {
-        routesRightDirection.push(route.Id);
-        console.log(route.Id);
-        break;
-      }
-    }
-  });
-
-  response.json(routesRightDirection);
+  let day = new Date(request.query.day);
+  let nextDay = new Date(day);
+  nextDay.setDate(day.getDate() + 1);
+  let dayStr = request.query.day;
+  let nextDayStr = formatDate(nextDay);
+  let scheduleIds = getScheduleIds(rightDirectionRoutes, dayStr, nextDayStr);
+  let schedules = getSchedules(scheduleIds);
+  getDepartureAndArrivalTimeForSelectStations(schedules, request.query.from, request.query.to) 
+  response.json(schedules);
 });
 
 function getRoutes(Station1, Station2) {
@@ -345,5 +334,77 @@ function getRouteParts(RouteId) {
   let parts = requestDB.all();
   return parts
 }
-async function getRoutesRightDirection() {
+function getRoutesRightDirection(allRoutes, fromStation, toStation) {
+  let routesRightDirection = [];
+  allRoutes.forEach(route => {
+
+    let parts = getRouteParts(route.Id);
+    let dep = fromStation;
+    while (true) {
+      let part = parts.find(p => p.DepSt_Part == dep);
+      if (part === undefined) break;
+      dep = part.ArrSt_Part;
+      if (dep === toStation) {
+        routesRightDirection.push(route.Id);
+        console.log(route.Id);
+        break;
+      }
+    }
+  });
+  return routesRightDirection;
 }
+function getScheduleIds(routes, day, nextDay) {
+
+  let scheduleId = [];
+  routes.forEach(route => {
+    let query = `
+    Select Schedule.Id
+    From Schedule
+    Where RouteId=${route} AND DepartureTime Between '${day}' AND '${nextDay}'
+    `;
+    let requestDB = dbPath.prepare(query);
+    let result = requestDB.all();
+    result.forEach(res => {
+      scheduleId.push(res);
+    });
+  });
+  return scheduleId;
+}
+function getSchedules(scheduleIds) {
+  let schedules = [];
+  scheduleIds.forEach(scheduleId => {
+    let query = `
+    Select Schedule.Id, DepStation.Name As DepartureRoute, ArrStation.Name As ArrivalRoute, Schedule.DepartureTime, Station1.Name AS DeparturePart, Station2.Name AS ArrivalPart, Parts.TransiteTime, Join_Route_Parts.StopTime
+    From Schedule
+    Join Route On Schedule.RouteId = Route.Id
+    Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
+    Join Parts On Join_Route_Parts.PartOfRouteId = Parts.Id
+    Join Station As Station1 On Parts.Station1Id = Station1.Id
+    Join Station As Station2 On Parts.Station2Id = Station2.Id
+    Join Station As DepStation On Route.DepartureStationId=DepStation.Id
+    Join Station As ArrStation On Route.ArrivalStationId=ArrStation.Id
+    Where Schedule.Id=${scheduleId.Id}
+    `;
+    let requestDB = dbPath.prepare(query);
+    let result = requestDB.all();
+    schedules.push(result);
+  });
+  console.log(schedules);
+  return schedules;
+}
+// function getDepartureAndArrivalTimeForSelectStations(schedules, departureStation, arrivalStation) {
+//   newSchedule = [];
+//   dep = departureStation;
+//   schedules.forEach(schedule => {
+
+//     let depTime = schedule[0].DepartureTime;
+//     let arrTime;
+//     let depStation = departureStation;
+//     while (true){
+//       let part = schedule.find(p => p.DeparturePart === depStation);
+//       nextDepTime = depTime + part.TransiteTime+...???
+//       depStation = part.ArrivalPart;
+//     };
+//   });
+//   return newSchedule;
+// }
