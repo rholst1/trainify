@@ -1,5 +1,5 @@
 # trainify
-Educational project that revolves around creating a Ticket booking app for a passenger-carrier railway company
+Educational project that revolves around creating a Ticket booking app for a passenger-carrier railway company.
 
 # Authors:
 
@@ -26,7 +26,8 @@ Educational project that revolves around creating a Ticket booking app for a pas
 
 .vscode: Stores the debugger support.
 
-frontend: Has the subfolder API which contains Axios a HTTP client for node.js and the browser. It also has the subfolder Components where all the React Components in this project lays in their own folders.
+frontend: Has a src folder with the subfolder API which contains Axios a HTTP client for node.js and the browser. It also has the subfolder Components where all the React Components in this project lays in their own folders.
+You can find the images and the index file in the public folder.
 
 backend folder: 
 *	data folder - contains a database file.
@@ -36,8 +37,13 @@ backend folder:
 
  
 There is no specific code standard in this project.
+
 #### Database structure
-![DB](https://user-images.githubusercontent.com/70198472/149945752-a8fb1156-d900-4c5a-b171-7f239f4ae317.jpg)
+
+UML: ![DB](https://user-images.githubusercontent.com/70198472/149945752-a8fb1156-d900-4c5a-b171-7f239f4ae317.jpg)
+
+* The script databasescript.js in the backend folder, adds data to the database. 
+
 
 # Run application:
  
