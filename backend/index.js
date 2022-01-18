@@ -267,22 +267,26 @@ app.get('/api/db/gettickets', (request, response) => {
 
 // example: http://localhost:3001/api/db/schedule?from=Skövde C&to=Katrineholm C&day=2022-02-01
 app.get('/api/db/schedule', (request, response) => {
-  // all routes between station 'from' and station 'to' (includes opposite direction)
-  let allRoutes = getRoutes(request.query.from, request.query.to);
-  // routes from station 'from' to station 'to' (not include opposite direction)
-  let rightDirectionRoutes = getRoutesRightDirection(allRoutes, request.query.from, request.query.to)
-  // scheduleIds from station 'from' to station 'to' and selected day
-  let scheduleIds = getScheduleIds(rightDirectionRoutes, request.query.day);
-  // an array with ScheduleId, DepartureTime (from the first station of the whole route, not from StationFromName), StationFromName, StationToName, TransilteTime, StopTime, Price, PriceCoefficient 
-  let schedules = getSchedules(scheduleIds);
-  // an array with ScheduleId, DepartureStation('from'), DepartureTime('from'), ArrivalStation('to'), ArrivalTime('to'), Price 
-  let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
-  
-  let allSeats = getAllSeats(scheduleIds);
-  let occupiedSeats = getOccupaidSeats(scheduleIds);
-  let unoccupiedSeats = getUnoccupiedSeat(allSeats, occupiedSeats);
-  let seatIdsFromTo = getSeatIdsFromTo(unoccupiedSeats, request.query.from, request.query.to);
-  let result = joinScheduleTickets(scheduleFromToStationDay, seatIdsFromTo);
+  let result = [];
+  try {
+    // all routes between station 'from' and station 'to' (includes opposite direction)
+    let allRoutes = getRoutes(request.query.from, request.query.to);
+    // routes from station 'from' to station 'to' (not include opposite direction)
+    let rightDirectionRoutes = getRoutesRightDirection(allRoutes, request.query.from, request.query.to)
+    // scheduleIds from station 'from' to station 'to' and selected day
+    let scheduleIds = getScheduleIds(rightDirectionRoutes, request.query.day);
+    // an array with ScheduleId, DepartureTime (from the first station of the whole route, not from StationFromName), StationFromName, StationToName, TransilteTime, StopTime, Price, PriceCoefficient 
+    let schedules = getSchedules(scheduleIds);
+    // an array with ScheduleId, DepartureStation('from'), DepartureTime('from'), ArrivalStation('to'), ArrivalTime('to'), Price 
+    let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
+
+    let allSeats = getAllSeats(scheduleIds);
+    let occupiedSeats = getOccupaidSeats(scheduleIds);
+    let unoccupiedSeats = getUnoccupiedSeat(allSeats, occupiedSeats);
+    let seatIdsFromTo = getSeatIdsFromTo(unoccupiedSeats, request.query.from, request.query.to);
+    result = joinScheduleTickets(scheduleFromToStationDay, seatIdsFromTo);
+  }
+  catch {}
   response.json(result);
 });
 
@@ -583,7 +587,7 @@ function getSeatIdsFromTo(seats, from, to) {
 function joinScheduleTickets(schedules, tickets) {
   let result = [];
   let fromStationId = getStationId(schedules[0].DepartureStation);
-  let toStationId =  getStationId(schedules[0].ArrivalStation);
+  let toStationId = getStationId(schedules[0].ArrivalStation);
   tickets.forEach(ticket => {
     let row = {};
     row.ScheduleId = ticket.ScheduleId;
@@ -598,7 +602,7 @@ function joinScheduleTickets(schedules, tickets) {
     row.DepartureTime = schedule.DepartureTime;
     row.ArrivalTime = schedule.ArrivalTime;
     row.Price = schedule.Price;
-    row.FromStationId = fromStationId; 
+    row.FromStationId = fromStationId;
     row.ToStationId = toStationId;
     result.push(row);
   });
