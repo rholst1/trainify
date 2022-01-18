@@ -31,7 +31,8 @@ frontend: Has the subfolder API which contains Axios a HTTP client for node.js a
 backend: Contains all the backend related javascript files along with the data folder where the database is.
  
 There is no specific code standard in this project.
-
+#### Database structure
+![DB](https://user-images.githubusercontent.com/70198472/149945752-a8fb1156-d900-4c5a-b171-7f239f4ae317.jpg)
 
 # Run application:
  
