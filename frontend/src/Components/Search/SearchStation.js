@@ -57,6 +57,7 @@ const SearchStation = (props) => {
     if (text !== '' && matches.length === 0) {
       setNoResult(true);
     }
+    props.setValue(text);
   };
 
   return (
