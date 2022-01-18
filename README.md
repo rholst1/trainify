@@ -22,7 +22,7 @@ Educational project that revolves around creating a Ticket booking app for a pas
 
 # Structure:
 
-.vsc: Contains the storage of local user settings.
+.vs: Contains the storage of local user settings.
 
 .vscode: Stores the debugger support.
 
