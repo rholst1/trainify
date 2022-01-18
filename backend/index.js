@@ -1,8 +1,8 @@
 const nodemail = require('./nodemailer');
 console.log(nodemail);
 let bookingInformation = require('./nodemailer');
-var moment = require('moment'); 
-moment().format(); 
+var moment = require('moment');
+moment().format();
 
 const path = require('path');
 const express = require('express');
@@ -281,6 +281,8 @@ app.get('/api/db/gettickets', (request, response) => {
   resultArr = Object.values(result);
   bookingInformation(Object.values(resultArr));
 });
+
+//___________________________________________________________________________________________________________
 // returns an array with schedule from station 'from' to station 'to' on day 'day':
 // t.ex.
 // {
@@ -303,7 +305,12 @@ app.get('/api/db/schedule', (request, response) => {
   let schedules = getSchedules(scheduleIds);
   // an array with ScheduleId, DepartureStationName('from'), DepartureTime('from'), ArrivalStation('to'), ArrivalTime('to'), Price 
   let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
-  response.json(scheduleFromToStationDay);
+
+  let allSeats = getAllSeats(scheduleIds);
+  let occupiedSeats = getOccupaidSeats(scheduleIds);
+  let unoccupiedSeats = getUnoccupiedSeat(allSeats, occupiedSeats);
+  let seatIdsFromTo = getSeatIdsFromTo(unoccupiedSeats, request.query.from, request.query.to);
+  response.json(seatIdsFromTo);
 });
 
 function getRoutes(Station1, Station2) {
@@ -410,7 +417,7 @@ function getDepartureAndArrivalTimeForSelectStations(schedulesString, departureS
   let schedules = JSON.parse(schedulesString);
 
   let newSchedule = [];
-  
+
   schedules.forEach(scheduleId => {
     let newScheduleRow = {};
     newScheduleRow.ScheduleId = scheduleId[0].Id;
@@ -419,18 +426,18 @@ function getDepartureAndArrivalTimeForSelectStations(schedulesString, departureS
     newScheduleRow.DepartureTime = null;
     let time = moment(scheduleId[0].DepartureTime, "YYYY-MM-DD HH:mm");
     let station = scheduleId[0].DepartureRoute;
-    let price=0;
+    let price = 0;
     while (true) {
       let part = scheduleId.find(p => p.DeparturePart === station);
-      if (station === departureStationSearch){
+      if (station === departureStationSearch) {
         newScheduleRow.DepartureTime = time.format("YYYY-MM-DD HH:mm");
-      } 
+      }
       station = part.ArrivalPart;
       time = addTime(time, moment(part.TransiteTime, "HH:mm"));
       if (newScheduleRow.DepartureTime !== null) price = price + part.Price;
       if (station === arrivalStationSearch) {
         newScheduleRow.ArrivalTime = time.format("YYYY-MM-DD HH:mm");
-        newScheduleRow.Price = parseFloat(scheduleId[0].PriceCoefficient)*price;
+        newScheduleRow.Price = parseFloat(scheduleId[0].PriceCoefficient) * price;
         break;
       }
       time = addTime(time, moment(part.StopTime, "HH:mm"));
@@ -440,9 +447,161 @@ function getDepartureAndArrivalTimeForSelectStations(schedulesString, departureS
   return newSchedule;
 }
 // return moment1(type of 'moment' in format "YYYY-MM-DD HH:mm") + moment2(type of 'moment' in format "HH:mm")
-function addTime(moment1, moment2){
-  let hours =  moment(moment2, "HH:mm").hours();
+function addTime(moment1, moment2) {
+  let hours = moment(moment2, "HH:mm").hours();
   let minutes = moment(moment2, "HH:mm").minutes();
   moment1.add(hours, 'hours').add(minutes, 'minutes');
   return moment1;
 }
+function getAllSeats(scheduleIds) {
+  let allTickets = [];
+  scheduleIds.forEach(scheduleId => {
+    let query = `
+    Select Schedule.Id AS ScheduleId, Seat.Id AS SeatId, Seat.TrainId, Train.Name,Seat.WagonNr, Seat.SeatId AS Seat,  DepartureRoute.Name As DepartureRoute,
+   ArrivalRoute.Name As ArrivalRoute, Parts.Id  AS PartId, DeparturePart.Name AS DeparturePart, ArrivalPart.Name AS ArrivalPart
+  From Schedule
+  Join Train On Schedule.TrainId = Train.Id
+  Join Seat On Train.Id=Seat.TrainId
+  Join Route On Schedule.RouteId = Route.Id
+  Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
+  Join Parts On Join_Route_Parts.PartOfRouteId = Parts.Id
+  Join Station As DeparturePart On Parts.Station1Id = DeparturePart.Id
+  Join Station As ArrivalPart On Parts.Station2Id = ArrivalPart.Id
+  Join Station As DepartureRoute On Route.DepartureStationId=DepartureRoute.Id
+  Join Station As ArrivalRoute On Route.ArrivalStationId=ArrivalRoute.Id
+  Where Schedule.Id = ${scheduleId.Id} 
+    `;
+    let requestDB = dbPath.prepare(query);
+    let tickets = requestDB.all();
+    allTickets.push(tickets);
+  });
+  return simplifyArray(allTickets);
+}
+function getOccupaidSeats(scheduleIds) {
+  let occupiedSeats = [];
+  scheduleIds.forEach(scheduleId => {
+    let query = `
+    Select Schedule.Id AS ScheduleId, Ticket.SeatGuid AS SeatId, Seat.TrainId, Train.Name, Seat.WagonNr, Seat.SeatId AS Seat, DepartureRoute.Name As DepartureRoute,
+    ArrivalRoute.Name As ArrivalRoute,  Parts.Id AS PartId, DeparturePart.Name AS DeparturePart, ArrivalPart.Name AS ArrivalPart,
+   DepartureTicket.Name AS DepartureTicket, ArrivalTicket.Name AS ArrivalTicket
+   From Ticket
+   Join Seat On Ticket.SeatGuid=Seat.Id
+   Join Schedule On Ticket.ScheduleId = Schedule.Id
+   Join Route On Schedule.RouteId = Route.Id
+   Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
+   Join Parts On Join_Route_Parts.PartOfRouteId = Parts.Id
+   Join Station As DeparturePart On Parts.Station1Id = DeparturePart.Id
+   Join Station As ArrivalPart On Parts.Station2Id = ArrivalPart.Id
+   Join Station As DepartureRoute On Route.DepartureStationId=DepartureRoute.Id
+   Join Station As ArrivalRoute On Route.ArrivalStationId=ArrivalRoute.Id
+   Join Station As DepartureTicket On Ticket.FromStationId = DepartureTicket.Id
+   Join Station As ArrivalTicket On Ticket.ToStationId = ArrivalTicket.Id
+   Join Train On Schedule.TrainId=Train.Id
+  Where Schedule.Id = ${scheduleId.Id} 
+    `;
+    let requestDB = dbPath.prepare(query);
+    let occupied = requestDB.all();
+    occupiedSeats.push(occupied);
+  });
+
+  occupiedSeats = removeUnocciedParts(occupiedSeats);
+
+  return simplifyArray(occupiedSeats);
+}
+function removeUnocciedParts(seats) {
+  occupiedSeats = [];
+  seats.forEach(scheduleId => {
+    seatIds = getUniqueSeatIds(scheduleId);
+
+    seatIds.forEach(seatId => {
+      let parts = scheduleId.filter(s => s.SeatId == seatId);
+      let depTicket = parts[0].DepartureTicket;
+      let arrTicket = parts[0].ArrivalTicket;
+      let dep = parts[0].DepartureRoute;
+      let occupied = [];
+      while (true) {
+        let part = parts.find(p => p.DeparturePart === dep);
+        if (dep == depTicket) {
+          while (dep !== arrTicket) {
+            occupied.push(part);
+            dep = part.ArrivalPart;
+            part = parts.find(p => p.DeparturePart === dep);
+          }
+          break;
+        }
+        dep = part.ArrivalPart;
+      };
+      occupiedSeats.push(occupied);
+    });
+  });
+  return occupiedSeats;
+}
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+function getUniqueSeatIds(seats) {
+  let seatIds = [];
+  seats.forEach(row => {
+    seatIds.push(row.SeatId);
+  });
+  let uniqueSeatIds = seatIds.filter(onlyUnique);
+  return uniqueSeatIds;
+}
+function getUnoccupiedSeat(allSeats, occupiedSeats) {
+  let unoccupiedSeat = allSeats;
+
+  occupiedSeats.forEach(row => {
+    unoccupiedSeat = unoccupiedSeat.filter(
+      s => s.ScheduleId != row.ScheduleId || s.SeatId != row.SeatId || s.PartId != row.PartId);
+  });
+  return unoccupiedSeat;
+}
+function simplifyArray(array) {
+  let simpleArray = [];
+  array.forEach(external => {
+    external.forEach(internal => {
+      simpleArray.push(internal);
+    });
+  });
+  return simpleArray;
+}
+
+// function getSeatIdsFromTo(seats, from, to) {
+//   let newArray = [];
+//   let checked = [];
+  
+//   seats.forEach(seat => {
+//     let scheduleId = seat.ScheduleId;
+//     let seatGuid = seat.SeatId;
+//     let isChecked = checked.find(s => s.scheduleId == scheduleId && s.seatGuid == seatGuid);
+    
+//     if (isChecked === undefined) {
+//       let parts = seats.filter(s => s.ScheduleId == scheduleId && s.SeatId == seatGuid);
+//       let dep = from;
+      
+//       while (true) {
+//         let part = parts.find(p => p.DeparturePart === dep);
+//         if (part === undefined) break;
+//         dep = part.ArrivalPart;
+//         if (dep === to) {
+//           let row = {};
+//           row.ScheduleId = scheduleId;
+//           row.SeatId = seatGuid;
+//           row.TrainId = seat.TrainId;
+//           row.Name = seat.Name;
+//           row.WagonNr = seat.WagonNr;
+//           row.Seat = seat.Seat;
+//           newArray.push(row);
+//           break;
+//         }
+//       }
+//       let checkedSeat = {};
+//       checkedSeat.scheduleId = scheduleId;
+//       checkedSeat.seatGuid = seatGuid;
+//       checked.push(checkedSeat);
+//     }
+//   });
+// return newArray;
+// }
