@@ -97,10 +97,14 @@ th{
      }
     
 .BookingWrapper p{
-    font-size: 23px;
+    font-size: 20px;
      }
 .BookingWrapper p.Date{
     font-size: 20px;
      }
-     
+
+.purchaseinfo{
+    margin-top: 223px;
+    background-color: unset;
+     }
  }

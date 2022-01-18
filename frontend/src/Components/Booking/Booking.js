@@ -13,6 +13,7 @@ class Booking extends React.Component {
         this.state = {
             seats: [],
             info: '',
+            infoString: '',
             selectedSeats: [],
             sortedSeats: [],
             sum: 0,
@@ -154,22 +155,30 @@ class Booking extends React.Component {
 
         this.sendConfirmation(this.state.email+'_'+this.formatDate(date)+'_'+this.getTime(date));
 
-        var infoString = '';
+        
         if (this.state.error === true) {
-            infoString = 'Köpet har inte slutförts. Kontakta kundtjänst.';
+            this.setState({
+                infoString: 'Köpet har inte slutförts. Kontakta kundtjänst.',
+                seats: [],
+                selectedSeats: [],
+                sum: 0,
+                email: '',
+                error: false
+            });
+            
         }
         else {
-            infoString = 'Köpet slutfört. Köpbekräftelse har skickats till ditt mejl.';
+            this.setState({
+                infoString: 'Köpet slutfört. Köpbekräftelse har skickats till ditt mejl.',
+                seats: [],
+                selectedSeats: [],
+                sum: 0,
+                email: '',
+                error: false
+            });
         }
 
-        this.setState({
-            seats: [],
-            info: infoString,
-            selectedSeats: [],
-            sum: 0,
-            email: '',
-            error: false
-        });
+       
 
     }
 
@@ -282,8 +291,10 @@ class Booking extends React.Component {
                             <button className='BackArrow' onClick={() => this.handleClick()}>{<FaRegArrowAltCircleLeft />}</button>
                             </div>
                             <p>{this.state.info}
+                                
                                 <p className='Date'>{this.state.date}</p>
                             </p>
+                            
                         </div>
                         <div className="ResultWrapper">
                             <div className='ResultContainer' hidden={this.state.seats.length === 0}>
@@ -352,7 +363,7 @@ class Booking extends React.Component {
                                     </tbody>
                                 </table>
                             </div>
-
+                            
                             <div className='ViewContainer'>
                                 <div>
 
@@ -385,7 +396,9 @@ class Booking extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <p className="purchaseinfo">{this.state.infoString}</p>
                     </div>
+                    
                     :
                     <div></div>
                 }
