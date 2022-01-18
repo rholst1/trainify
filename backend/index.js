@@ -310,7 +310,8 @@ app.get('/api/db/schedule', (request, response) => {
   let occupiedSeats = getOccupaidSeats(scheduleIds);
   let unoccupiedSeats = getUnoccupiedSeat(allSeats, occupiedSeats);
   let seatIdsFromTo = getSeatIdsFromTo(unoccupiedSeats, request.query.from, request.query.to);
-  response.json(seatIdsFromTo);
+  let result = joinScheduleTickets( scheduleFromToStationDay, seatIdsFromTo);
+  response.json(result);
 });
 
 function getRoutes(Station1, Station2) {
@@ -604,4 +605,25 @@ function getSeatIdsFromTo(seats, from, to) {
     }
   });
 return newArray;
+}
+
+function joinScheduleTickets(schedules, tickets){
+  let result= [];
+  tickets.forEach (ticket=>{
+    let row = {};
+    row.ScheduleId = ticket.ScheduleId;
+    row.SeatId = ticket.SeatId;
+    row.TrainId =ticket.TrainId;
+    row.Name = ticket.Name;
+    row.WagonNr = ticket.WagonNr;
+    row.Seat = ticket.Seat;
+    let schedule = schedules.find(s=>s.ScheduleId == ticket.ScheduleId);
+    row.DepartureStation = schedule.DepartureStationName;
+    row.ArrivalStation = schedule.ArrivalStation;
+    row.DepartureTime = schedule.DepartureTime;
+    row.ArrivalTime = schedule.ArrivalTime;
+    row.Price = schedule.Price;
+    result.push(row);
+  });
+  return result;
 }
