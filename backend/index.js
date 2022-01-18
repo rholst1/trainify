@@ -169,24 +169,6 @@ app.post('/api/db/post/:table', (request, response) => {
     );
     let result = postToDatabase.run(request.body);
     response.sendStatus(200);
-    //     if (request.params.table === 'Ticket') {
-    //       query = `
-    //  Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
-    // From Ticket
-    // Join Schedule On Schedule.Id=Ticket.ScheduleId
-    // Join Train On Schedule.TrainId = Train.Id
-    // Join Seat On Ticket.SeatGuid = Seat.Id
-    // Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
-    // Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
-    // Where Ticket.Id = ${lastId[1]}
-    //       `;
-
-    //       postToDatabase = dbPath.prepare(query);
-    //       result = postToDatabase.get();
-    //       resultArr = Object.values(result);
-    //       console.log('Resultat 2: ' + resultArr);
-    //       bookingInformation(Object.values(resultArr));
-    // }
   } catch (error) {
     console.log('caught error');
     console.log(error);
@@ -265,34 +247,24 @@ app.listen(PORT, () => {
 app.get('/api/db/gettickets', (request, response) => {
 
   var query = `
-    Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatNr
+    Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, Departure.Name AS Departure, Arrival.Name AS Arrival, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatId
     From Ticket
     Join Schedule On Schedule.Id=Ticket.ScheduleId
     Join Train On Schedule.TrainId = Train.Id
     Join Seat On Ticket.SeatGuid = Seat.Id
-    Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
-    Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
+    Join Station As Departure On Ticket.FromStationId = Departure.Id
+    Join Station As Arrival On Ticket.ToStationId = Arrival.Id
     Where Ticket.OrderId = '${request.query.order}'
   `;
+  // TODO: get DepartureTime and ArrivalTime from:
+  //let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
 
-  console.log(query);
   let requestDB = dbPath.prepare(query);
   let result = requestDB.all();
   resultArr = Object.values(result);
   bookingInformation(Object.values(resultArr));
 });
 
-//___________________________________________________________________________________________________________
-// returns an array with schedule from station 'from' to station 'to' on day 'day':
-// t.ex.
-// {
-// "ScheduleId": 1,
-// "DepartureStation": "Göteborg C",
-// "ArrivalStation": "Stockholm Central",
-// "DepartureTime": "2022-02-01 10:00",
-// "ArrivalTime": "2022-02-01 14:00",
-// "Price": 525
-// }
 // example: http://localhost:3001/api/db/schedule?from=Skövde C&to=Katrineholm C&day=2022-02-01
 app.get('/api/db/schedule', (request, response) => {
   // all routes between station 'from' and station 'to' (includes opposite direction)
@@ -303,14 +275,14 @@ app.get('/api/db/schedule', (request, response) => {
   let scheduleIds = getScheduleIds(rightDirectionRoutes, request.query.day);
   // an array with ScheduleId, DepartureTime (from the first station of the whole route, not from StationFromName), StationFromName, StationToName, TransilteTime, StopTime, Price, PriceCoefficient 
   let schedules = getSchedules(scheduleIds);
-  // an array with ScheduleId, DepartureStationName('from'), DepartureTime('from'), ArrivalStation('to'), ArrivalTime('to'), Price 
+  // an array with ScheduleId, DepartureStation('from'), DepartureTime('from'), ArrivalStation('to'), ArrivalTime('to'), Price 
   let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
-
+  
   let allSeats = getAllSeats(scheduleIds);
   let occupiedSeats = getOccupaidSeats(scheduleIds);
   let unoccupiedSeats = getUnoccupiedSeat(allSeats, occupiedSeats);
   let seatIdsFromTo = getSeatIdsFromTo(unoccupiedSeats, request.query.from, request.query.to);
-  let result = joinScheduleTickets( scheduleFromToStationDay, seatIdsFromTo);
+  let result = joinScheduleTickets(scheduleFromToStationDay, seatIdsFromTo);
   response.json(result);
 });
 
@@ -424,6 +396,7 @@ function getDepartureAndArrivalTimeForSelectStations(schedulesString, departureS
     newScheduleRow.ScheduleId = scheduleId[0].Id;
     newScheduleRow.DepartureStation = departureStationSearch;
     newScheduleRow.ArrivalStation = arrivalStationSearch;
+
     newScheduleRow.DepartureTime = null;
     let time = moment(scheduleId[0].DepartureTime, "YYYY-MM-DD HH:mm");
     let station = scheduleId[0].DepartureRoute;
@@ -572,16 +545,16 @@ function simplifyArray(array) {
 function getSeatIdsFromTo(seats, from, to) {
   let newArray = [];
   let checked = [];
-  
+
   seats.forEach(seat => {
     let scheduleId = seat.ScheduleId;
     let seatGuid = seat.SeatId;
     let isChecked = checked.find(s => s.scheduleId == scheduleId && s.seatGuid == seatGuid);
-    
+
     if (isChecked === undefined) {
       let parts = seats.filter(s => s.ScheduleId == scheduleId && s.SeatId == seatGuid);
       let dep = from;
-      
+
       while (true) {
         let part = parts.find(p => p.DeparturePart === dep);
         if (part === undefined) break;
@@ -604,26 +577,42 @@ function getSeatIdsFromTo(seats, from, to) {
       checked.push(checkedSeat);
     }
   });
-return newArray;
+  return newArray;
 }
 
-function joinScheduleTickets(schedules, tickets){
-  let result= [];
-  tickets.forEach (ticket=>{
+function joinScheduleTickets(schedules, tickets) {
+  let result = [];
+  let fromStationId = getStationId(schedules[0].DepartureStation);
+  let toStationId =  getStationId(schedules[0].ArrivalStation);
+  tickets.forEach(ticket => {
     let row = {};
     row.ScheduleId = ticket.ScheduleId;
-    row.SeatId = ticket.SeatId;
-    row.TrainId =ticket.TrainId;
+    row.SeatGuid = ticket.SeatId;
+    row.TrainId = ticket.TrainId;
     row.Name = ticket.Name;
     row.WagonNr = ticket.WagonNr;
-    row.Seat = ticket.Seat;
-    let schedule = schedules.find(s=>s.ScheduleId == ticket.ScheduleId);
-    row.DepartureStation = schedule.DepartureStationName;
-    row.ArrivalStation = schedule.ArrivalStation;
+    row.SeatNr = ticket.Seat;
+    let schedule = schedules.find(s => s.ScheduleId == ticket.ScheduleId);
+    row.Departure = schedule.DepartureStation;
+    row.Arrival = schedule.ArrivalStation;
     row.DepartureTime = schedule.DepartureTime;
     row.ArrivalTime = schedule.ArrivalTime;
     row.Price = schedule.Price;
+    row.FromStationId = fromStationId; 
+    row.ToStationId = toStationId;
     result.push(row);
   });
+
+  // TODO: sort result
   return result;
+}
+function getStationId(name) {
+  let query = `
+    Select Id
+    From Station
+    Where Station.Name = '${name}' 
+    `;
+  let requestDB = dbPath.prepare(query);
+  let res = requestDB.all();
+  return res[0].Id;
 }

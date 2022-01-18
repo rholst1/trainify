@@ -46,8 +46,9 @@ class Booking extends React.Component {
             day = day + ' ' + this.getTime(this.props.d);
         }
 
-        var path = `/api/db/getunoccupiedseats?from='${this.props.fromStation}'&to='${this.props.toStation}'&day=${day}`;
-
+        //var path = `/api/db/getunoccupiedseats?from='${this.props.fromStation}'&to='${this.props.toStation}'&day=${day}`;
+        var path = `/api/db/schedule?from=${this.props.fromStation}&to=${this.props.toStation}&day=${day}`;
+        console.log(path);
 
         fetch(path)
             .then(response => response.json())
@@ -138,6 +139,8 @@ class Booking extends React.Component {
                     "body": JSON.stringify({
                         email: this.state.email,
                         ScheduleId: seat.ScheduleId,
+                        FromStationId:seat.FromStationId,
+                        ToStationId: seat.ToStationId,
                         Price: this.calculatePrice(seat.Price, seat.DepartureTime),
                         SeatGuid: seat.SeatGuid,
                         OrderId: this.state.email+'_'+this.formatDate(date)+'_'+this.getTime(date)
