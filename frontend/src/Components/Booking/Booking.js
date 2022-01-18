@@ -58,7 +58,7 @@ class Booking extends React.Component {
                 })
                 if (this.state.seats.length === 0) {
                     this.props.setSearch(false)
-                    this.props.setStation('Inga resor för valt datum finns.')
+                    this.props.setStation('Inga resor för valt datum och stationer finns.')
                 }
                 else {
                     this.setState({
