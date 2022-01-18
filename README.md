@@ -45,9 +45,7 @@ There is no specific code standard in this project.
 #### Database structure
 
 UML: ![DB](https://user-images.githubusercontent.com/70198472/149945752-a8fb1156-d900-4c5a-b171-7f239f4ae317.jpg)
-
-* The script databasescript.js in the backend folder, adds data to the database. 
-
+ 
 
 # Run application:
  
