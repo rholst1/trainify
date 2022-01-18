@@ -70,7 +70,16 @@ const SearchStation = (props) => {
           value={text}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              setText(suggestions[0].AdvertisedLocationName);
+              if(suggestions[0] !== undefined){
+                setText(suggestions[0].AdvertisedLocationName);
+                setSuggestions([]);
+                props.setValue(suggestions[0].AdvertisedLocationName);
+              }
+              else{
+                setText('');
+                setSuggestions([]);
+                props.setValue('');
+              }
             }
           }}
           
