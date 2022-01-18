@@ -568,40 +568,40 @@ function simplifyArray(array) {
   return simpleArray;
 }
 
-// function getSeatIdsFromTo(seats, from, to) {
-//   let newArray = [];
-//   let checked = [];
+function getSeatIdsFromTo(seats, from, to) {
+  let newArray = [];
+  let checked = [];
   
-//   seats.forEach(seat => {
-//     let scheduleId = seat.ScheduleId;
-//     let seatGuid = seat.SeatId;
-//     let isChecked = checked.find(s => s.scheduleId == scheduleId && s.seatGuid == seatGuid);
+  seats.forEach(seat => {
+    let scheduleId = seat.ScheduleId;
+    let seatGuid = seat.SeatId;
+    let isChecked = checked.find(s => s.scheduleId == scheduleId && s.seatGuid == seatGuid);
     
-//     if (isChecked === undefined) {
-//       let parts = seats.filter(s => s.ScheduleId == scheduleId && s.SeatId == seatGuid);
-//       let dep = from;
+    if (isChecked === undefined) {
+      let parts = seats.filter(s => s.ScheduleId == scheduleId && s.SeatId == seatGuid);
+      let dep = from;
       
-//       while (true) {
-//         let part = parts.find(p => p.DeparturePart === dep);
-//         if (part === undefined) break;
-//         dep = part.ArrivalPart;
-//         if (dep === to) {
-//           let row = {};
-//           row.ScheduleId = scheduleId;
-//           row.SeatId = seatGuid;
-//           row.TrainId = seat.TrainId;
-//           row.Name = seat.Name;
-//           row.WagonNr = seat.WagonNr;
-//           row.Seat = seat.Seat;
-//           newArray.push(row);
-//           break;
-//         }
-//       }
-//       let checkedSeat = {};
-//       checkedSeat.scheduleId = scheduleId;
-//       checkedSeat.seatGuid = seatGuid;
-//       checked.push(checkedSeat);
-//     }
-//   });
-// return newArray;
-// }
+      while (true) {
+        let part = parts.find(p => p.DeparturePart === dep);
+        if (part === undefined) break;
+        dep = part.ArrivalPart;
+        if (dep === to) {
+          let row = {};
+          row.ScheduleId = scheduleId;
+          row.SeatId = seatGuid;
+          row.TrainId = seat.TrainId;
+          row.Name = seat.Name;
+          row.WagonNr = seat.WagonNr;
+          row.Seat = seat.Seat;
+          newArray.push(row);
+          break;
+        }
+      }
+      let checkedSeat = {};
+      checkedSeat.scheduleId = scheduleId;
+      checkedSeat.seatGuid = seatGuid;
+      checked.push(checkedSeat);
+    }
+  });
+return newArray;
+}
