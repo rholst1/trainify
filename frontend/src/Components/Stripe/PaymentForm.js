@@ -27,7 +27,7 @@ export default function PaymentForm(props) {
                 })
                 if (response.data.success) {
                     console.log('success payment')
-                    setSuccess('successfull payment')
+                    setSuccess('Betalningen är genomförd')
                     props.handlePurchase();
                     document.getElementsByClassName('ResultContainer')[0].style.setProperty("display", "none")
                     document.getElementsByClassName('ViewContainer')[0].style.setProperty("display", "none")
@@ -35,7 +35,7 @@ export default function PaymentForm(props) {
                     
                 }
                 else {
-                    setSuccess('payment not accepted')
+                    setSuccess('Betalningen misslyckades')
                 }
                 return response
             } catch (error) {
