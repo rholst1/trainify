@@ -22,12 +22,16 @@ Educational project that revolves around creating a Ticket booking app for a pas
 
 # Structure:
 
-.vs: Contains the storage of local user settings.
+.vs folder: 
+* Contains the storage of local user settings.
 
-.vscode: Stores the debugger support.
+.vscode folder:
+* Stores the debugger support.
 
-frontend: Has a src folder with the subfolder API which contains Axios a HTTP client for node.js and the browser. It also has the subfolder Components where all the React Components in this project lays in their own folders.
-You can find the images and the index file in the public folder.
+frontend folder:
+* Has a src folder with the subfolder API which contains Axios a HTTP client for node.js and the browser.
+* It also has the subfolder Components where all the React Components in this project lays in their own folders.
+* You can find the images and the index file in the public folder.
 
 backend folder: 
 *	data folder - contains a database file.
