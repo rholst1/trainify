@@ -77,9 +77,7 @@ th{
     font-size: 16px; 
     border-radius: 13px;
     margin-bottom: -310px;
-    background: unset;
     display: block;
-    color: white;
 }
 .ResultContainer{
     overflow-x: auto;
@@ -98,13 +96,9 @@ th{
      .ViewContainer li{
     font-size: 17px;
      }
-     .BookingWrapper {
-     background-color: unset;
-     }
-   
+    
 .BookingWrapper p{
     font-size: 21px;
-    color: white;
      }
 .BookingWrapper p.Date{
     font-size: 20px;
