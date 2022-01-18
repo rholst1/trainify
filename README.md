@@ -28,7 +28,12 @@ Educational project that revolves around creating a Ticket booking app for a pas
 
 frontend: Has the subfolder API which contains Axios a HTTP client for node.js and the browser. It also has the subfolder Components where all the React Components in this project lays in their own folders.
 
-backend: Contains all the backend related javascript files along with the data folder where the database is.
+backend folder: 
+*	data folder - contains a database file.
+*	index.js – the main file in backend - contains endpoints for app requests.
+*	nodemailer.js – contains code for sending email confirmation.
+*	databasescript.js – contains code for inserting data into the database. Run: node databasescript.js 
+
  
 There is no specific code standard in this project.
 #### Database structure
