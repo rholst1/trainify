@@ -376,7 +376,7 @@ class Booking extends React.Component {
                                     <p className='Text'>Att betala: {this.state.sum} kr</p>
                                 </div>
 
-                                <div className='CardColumn'>
+                                <div className='CardColumn' hidden={this.state.selectedSeats.length === 0}>
                                     <input className='EmailContainer' hidden={this.state.selectedSeats.length === 0}
                                         required
                                         type="mail"
