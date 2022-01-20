@@ -15,22 +15,9 @@ let PORT = process.env.PORT;
 if (PORT == null || PORT == '') {
   PORT = 3001;
 }
-//const uuid = require("uuid/v4")
-
-// const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
 app.use(express.static(path.join(__dirname, '../frontend', 'build')));
-// const db_name = path.join(__dirname, "data", "database.db");
-// connect to the database
-/* const db = new sqlite3.Database(db_name, err => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log("Successful connection to the database 'apptest.db'");
-});
-
-*/
 
 //middelware
 app.use(express.json());
@@ -211,10 +198,9 @@ function getRoutes(Station1, Station2) {
 }
 function getRouteParts(RouteId) {
   let query = `
-  Select Route.Id, DepartureStation.Name AS DepartureStation, ArrivalStation.Name AS ArrivalStation, Station1.Name AS DepSt_Part,  Station2.Name AS ArrSt_Part
+  Select Route.Id, DepartureStation.Name AS DepartureStation, Station1.Name AS DepSt_Part,  Station2.Name AS ArrSt_Part
   From Route
   Join Station As DepartureStation On Route.DepartureStationId=  DepartureStation.Id
-  Join Station As ArrivalStation On Route.ArrivalStationId= ArrivalStation.Id
   Join Join_Route_Parts On Route.Id = Join_Route_Parts.RouteId
   Join Parts On Join_Route_Parts.PartOfRouteId = Parts.Id
   Join Station As Station1 On Parts.Station1Id = Station1.Id
@@ -274,7 +260,7 @@ function getSchedules(scheduleIds) {
 }
 function getSchedule(Id) {
   let query = `
-    Select Schedule.Id, DepStation.Name As DepartureRoute, ArrStation.Name As ArrivalRoute, Schedule.DepartureTime, Station1.Name AS DeparturePart,
+    Select Schedule.Id, DepStation.Name As DepartureRoute, Schedule.DepartureTime, Station1.Name AS DeparturePart,
     Station2.Name AS ArrivalPart, Parts.TransiteTime, Join_Route_Parts.StopTime, Parts.Price, Schedule.PriceCoefficient
     From Schedule
     Join Route On Schedule.RouteId = Route.Id
@@ -283,7 +269,6 @@ function getSchedule(Id) {
     Join Station As Station1 On Parts.Station1Id = Station1.Id
     Join Station As Station2 On Parts.Station2Id = Station2.Id
     Join Station As DepStation On Route.DepartureStationId=DepStation.Id
-    Join Station As ArrStation On Route.ArrivalStationId=ArrStation.Id
     Where Schedule.Id=${Id}
     `;
   let requestDB = dbPath.prepare(query);
@@ -336,7 +321,7 @@ function getAllSeats(scheduleIds) {
   scheduleIds.forEach(scheduleId => {
     let query = `
     Select Schedule.Id AS ScheduleId, Seat.Id AS SeatId, Seat.TrainId, Train.Name,Seat.WagonNr, Seat.SeatId AS Seat,  DepartureRoute.Name As DepartureRoute,
-   ArrivalRoute.Name As ArrivalRoute, Parts.Id  AS PartId, DeparturePart.Name AS DeparturePart, ArrivalPart.Name AS ArrivalPart
+   Parts.Id  AS PartId, DeparturePart.Name AS DeparturePart, ArrivalPart.Name AS ArrivalPart
   From Schedule
   Join Train On Schedule.TrainId = Train.Id
   Join Seat On Train.Id=Seat.TrainId
@@ -346,7 +331,6 @@ function getAllSeats(scheduleIds) {
   Join Station As DeparturePart On Parts.Station1Id = DeparturePart.Id
   Join Station As ArrivalPart On Parts.Station2Id = ArrivalPart.Id
   Join Station As DepartureRoute On Route.DepartureStationId=DepartureRoute.Id
-  Join Station As ArrivalRoute On Route.ArrivalStationId=ArrivalRoute.Id
   Where Schedule.Id = ${scheduleId.Id} 
     `;
     let requestDB = dbPath.prepare(query);
@@ -360,7 +344,7 @@ function getOccupaidSeats(scheduleIds) {
   scheduleIds.forEach(scheduleId => {
     let query = `
     Select Schedule.Id AS ScheduleId, Ticket.SeatGuid AS SeatId, Seat.TrainId, Train.Name, Seat.WagonNr, Seat.SeatId AS Seat, DepartureRoute.Name As DepartureRoute,
-    ArrivalRoute.Name As ArrivalRoute,  Parts.Id AS PartId, DeparturePart.Name AS DeparturePart, ArrivalPart.Name AS ArrivalPart,
+    Parts.Id AS PartId, DeparturePart.Name AS DeparturePart, ArrivalPart.Name AS ArrivalPart,
    DepartureTicket.Name AS DepartureTicket, ArrivalTicket.Name AS ArrivalTicket
    From Ticket
    Join Seat On Ticket.SeatGuid=Seat.Id
@@ -371,7 +355,6 @@ function getOccupaidSeats(scheduleIds) {
    Join Station As DeparturePart On Parts.Station1Id = DeparturePart.Id
    Join Station As ArrivalPart On Parts.Station2Id = ArrivalPart.Id
    Join Station As DepartureRoute On Route.DepartureStationId=DepartureRoute.Id
-   Join Station As ArrivalRoute On Route.ArrivalStationId=ArrivalRoute.Id
    Join Station As DepartureTicket On Ticket.FromStationId = DepartureTicket.Id
    Join Station As ArrivalTicket On Ticket.ToStationId = ArrivalTicket.Id
    Join Train On Schedule.TrainId=Train.Id
@@ -521,31 +504,6 @@ function getStationId(name) {
   return res[0].Id;
 }
 
-// Schedule: DepartureTimeRoute, DepartureRoute, DeparturePart,ArrivalPart
-function getDepartureAndArrivalTimeForSelectedStations2(scheduleString, departureStationSearch, arrivalStationSearch) {
-
-  let schedule = JSON.parse(scheduleString);
-  let newScheduleRow = {};
-  newScheduleRow.DepartureTime = null;
-  let time = moment(schedule.DepartureTime, "YYYY-MM-DD HH:mm");
-  let station = schedule.DepartureRoute;
-  while (true) {
-    let part = schedule.find(p => p.DeparturePart === station);
-    if (station === departureStationSearch) {
-      newScheduleRow.DepartureTime = time.format("YYYY-MM-DD HH:mm");
-    }
-    station = part.ArrivalPart;
-    time = addTime(time, moment(part.TransiteTime, "HH:mm"));
-    if (newScheduleRow.DepartureTime !== null) price = price + part.Price;
-    if (station === arrivalStationSearch) {
-      newScheduleRow.ArrivalTime = time.format("YYYY-MM-DD HH:mm");
-      break;
-    }
-    time = addTime(time, moment(part.StopTime, "HH:mm"));
-  };
-  return newScheduleRow;
-}
-
 app.get('/api/db/gettickets', (request, response) => {
 
   var query = `
@@ -574,7 +532,7 @@ app.get('/api/db/gettickets', (request, response) => {
 
   for (let i = 0; i < result.length; i++) {
     let newTicket = {};
-    newTicket.email= result[i].email;
+    newTicket.email = result[i].email;
     newTicket.TicketNumber = result[i].TicketNumber;
     newTicket.Price = result[i].Price;
     newTicket.Departure = result[i].Departure;
