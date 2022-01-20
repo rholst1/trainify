@@ -3,25 +3,15 @@ const nodemailer = require('nodemailer');
 module.exports = function (bookingInformation) {
  let body = '';
  bookingInformation.forEach( ticket=>
-//   body = body +
-//   'Biljettnummer: '+ticket.TicketNumber + '<br>' +
-//   'Pris: ' + ticket.Price + '<br>' + 
-//   'Avresa:      ' + ticket.Departure +' - Tid för avgång:  '+ getWeekday(ticket.DepartureTime)+' '+ticket.DepartureTime+'<br>'+
-//   'Destination: ' + ticket.Arrival+' - Tid för ankomst: '+ getWeekday(ticket.ArrivalTime)+ ' '+ ticket.ArrivalTime+'<br>'+
-//   'Vagn: ' + ticket.WagonNr+'<br>'+
-//   'Sittplats: '+ticket.SeatNr+'<br>'+
-//   'Tågnummer: '+ticket.TrainId+'<br>'+
-//   'Tågnamn: '+ ticket.Name+'<br><br>'
-// );
-body = body +
-'Biljettnummer: '+ticket.TicketNumber + '<br>' +
-'Pris: ' + ticket.Price + '<br>' + 
-'Avresa:      ' + ticket.Departure +' - Tid för avgång:  <br>'+
-'Destination: ' + ticket.Arrival+' - Tid för ankomst: <br>'+
-'Vagn: ' + ticket.WagonNr+'<br>'+
-'Sittplats: '+ticket.SeatId+'<br>'+
-'Tågnummer: '+ticket.TrainId+'<br>'+
-'Tågnamn: '+ ticket.Name+'<br><br>'
+  body = body +
+  'Biljettnummer: '+ticket.TicketNumber + '<br>' +
+  'Pris: ' + ticket.Price + '<br>' + 
+  'Avresa:      ' + ticket.Departure +' - Tid för avgång:  '+ getWeekday(ticket.DepartureTime)+' '+ticket.DepartureTime+'<br>'+
+  'Destination: ' + ticket.Arrival+' - Tid för ankomst: '+ getWeekday(ticket.ArrivalTime)+ ' '+ ticket.ArrivalTime+'<br>'+
+  'Vagn: ' + ticket.WagonNr+'<br>'+
+  'Sittplats: '+ticket.SeatId+'<br>'+
+  'Tågnummer: '+ticket.TrainId+'<br>'+
+  'Tågnamn: '+ ticket.Name+'<br><br>'
 );
   const output = `
   <!DOCTYPE html>

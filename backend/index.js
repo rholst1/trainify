@@ -99,52 +99,6 @@ const { stringify } = require('querystring');
 // Database connector with DB path
 const dbPath = dbDriver('./backend/data/database.db');
 
-// GET Function that grabs tablename and ID dynamically
-// example: localhost:3001/api/db/getid/Ticket/1 <--- Get you all the data from Ticket table with ID 1
-app.get('/api/db/getid/:table/:id', (request, response) => {
-  let query = `
-      SELECT * 
-      FROM ${request.params.table}
-      WHERE id = :id
-      `;
-
-  let fetchIdFromDatabase = dbPath.prepare(query);
-  console.log('GET request input: ', request.params);
-  let result = fetchIdFromDatabase.all({ id: request.params.id });
-
-  response.json(result);
-  console.log('GET request returned data (from DB): ', result);
-});
-
-// GET Function that grabs table name and email dynamically
-// example localhost:3001/api/db/getemail/(db table)/(email in db) <--- Gets you all db info connected to the email in that row
-app.get('/api/db/getemail/:table/:email', (request, response) => {
-  let query = `
-      SELECT * 
-      FROM ${request.params.table}
-      WHERE email = :email
-      `;
-
-  let fetchEmailFromDatabase = dbPath.prepare(query);
-  console.log('GET request input: ', request.params);
-  let result = fetchEmailFromDatabase.all({ email: request.params.email });
-
-  response.json(result);
-  console.log('GET request returned data (from DB): ', result);
-});
-
-// POST Function that posts to DB and fills column, dynamic setup that maps both table, column names and paramaters dynamically
-// example: use postman to do a POST (with json matching that table setup) request towards
-// localhost:3001/api/db/post/(insert table name here)
-//  Example json in POST body
-//  URL: /api/db/post/Ticket
-//  Body
-//  {
-//     "email":  "test@test.com",
-//     "ScheduleId": "1",
-//     "Price": "400",
-//     "SeatGuid": "103"
-// }
 
 app.post('/api/db/post/:table', (request, response) => {
   try {
@@ -191,42 +145,6 @@ app.get('/api/db/getstations', (request, response) => {
   console.log('GET request returned data (from DB): ', result);
 });
 
-// GET function that takes as input parameters DepartureStationId, ArrivalStationId and day,
-// rerturns a list of seats available for booking.
-// example: http://localhost:3001/api/db/getunoccupiedseats?from=1&to=2&day=2022-02-01
-app.get('/api/db/getunoccupiedseats', (request, response) => {
-  let day = new Date(request.query.day);
-  let nextDay = new Date(day);
-  nextDay.setDate(day.getDate() + 1);
-  let dayStr = request.query.day;
-  let nextDayStr = formatDate(nextDay);
-
-  let query = `
-  Select Schedule.Id AS ScheduleId, Schedule.TrainId, Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Schedule.Price, Seat.Id AS SeatGuid, Seat.WagonNr, Seat.SeatNr 
-  From Schedule
-  Join Train On Schedule.TrainId = Train.Id
-  Join Seat On Train.Id = Seat.TrainId
-  Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
-  Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
-  Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN '${dayStr}' AND '${nextDayStr}'
-  Except
-  Select Schedule.Id AS ScheduleId, Schedule.TrainId , Train.Name, DepSt.Name AS Departure, ArrSt.Name AS Arrival, Schedule.DepartureTime, Schedule.ArrivalTime, Schedule.Price, Ticket.SeatGuid  AS SeatGuid, Seat.WagonNr, Seat.SeatNr
-  From Ticket
-  Join Schedule On Schedule.Id=Ticket.ScheduleId
-  Join Train On Schedule.TrainId = Train.Id 
-  Join Seat On Train.Id = Seat.TrainId
-  Join Station As DepSt On Schedule.DepartureStationId = DepSt.Id
-  Join Station As ArrSt On Schedule.ArrivalStationId = ArrSt.Id
-  Where DepSt.Name=${request.query.from} AND ArrSt.Name=${request.query.to} AND Schedule.DepartureTime BETWEEN  '${dayStr}' AND '${nextDayStr}'
-  Order by Schedule.DepartureTime ASC, Train.Name ASC, Seat.WagonNr ASC, Seat.SeatNr ASC
-    `;
-  let requestDB = dbPath.prepare(query);
-  let result = requestDB.all();
-  response.json(result);
-  console.log(query);
-  console.log('GET request returned data (from DB): ', result);
-});
-
 function formatDate(date) {
   var d = new Date(date),
     month = '' + (d.getMonth() + 1),
@@ -244,27 +162,6 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-app.get('/api/db/gettickets', (request, response) => {
-
-  var query = `
-    Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, Departure.Name AS Departure, Arrival.Name AS Arrival, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatId
-    From Ticket
-    Join Schedule On Schedule.Id=Ticket.ScheduleId
-    Join Train On Schedule.TrainId = Train.Id
-    Join Seat On Ticket.SeatGuid = Seat.Id
-    Join Station As Departure On Ticket.FromStationId = Departure.Id
-    Join Station As Arrival On Ticket.ToStationId = Arrival.Id
-    Where Ticket.OrderId = '${request.query.order}'
-  `;
-  // TODO: get DepartureTime and ArrivalTime from:
-  //let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
-
-  let requestDB = dbPath.prepare(query);
-  let result = requestDB.all();
-  resultArr = Object.values(result);
-  bookingInformation(Object.values(resultArr));
-});
-
 // example: http://localhost:3001/api/db/schedule?from=Skövde C&to=Katrineholm C&day=2022-02-01
 app.get('/api/db/schedule', (request, response) => {
   let result = [];
@@ -278,7 +175,7 @@ app.get('/api/db/schedule', (request, response) => {
     // an array with ScheduleId, DepartureTime (from the first station of the whole route, not from StationFromName), StationFromName, StationToName, TransilteTime, StopTime, Price, PriceCoefficient 
     let schedules = getSchedules(scheduleIds);
     // an array with ScheduleId, DepartureStation('from'), DepartureTime('from'), ArrivalStation('to'), ArrivalTime('to'), Price 
-    let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectStations(JSON.stringify(schedules), request.query.from, request.query.to);
+    let scheduleFromToStationDay = getDepartureAndArrivalTimeForSelectedStations(JSON.stringify(schedules), request.query.from, request.query.to);
 
     let allSeats = getAllSeats(scheduleIds);
     let occupiedSeats = getOccupaidSeats(scheduleIds);
@@ -286,7 +183,7 @@ app.get('/api/db/schedule', (request, response) => {
     let seatIdsFromTo = getSeatIdsFromTo(unoccupiedSeats, request.query.from, request.query.to);
     result = joinScheduleTickets(scheduleFromToStationDay, seatIdsFromTo);
   }
-  catch {}
+  catch { }
   response.json(result);
 });
 
@@ -370,7 +267,13 @@ function getScheduleIds(routes, queryday) {
 function getSchedules(scheduleIds) {
   let schedules = [];
   scheduleIds.forEach(scheduleId => {
-    let query = `
+    let result = getSchedule(scheduleId.Id);
+    schedules.push(result);
+  });
+  return schedules;
+}
+function getSchedule(Id) {
+  let query = `
     Select Schedule.Id, DepStation.Name As DepartureRoute, ArrStation.Name As ArrivalRoute, Schedule.DepartureTime, Station1.Name AS DeparturePart,
     Station2.Name AS ArrivalPart, Parts.TransiteTime, Join_Route_Parts.StopTime, Parts.Price, Schedule.PriceCoefficient
     From Schedule
@@ -381,18 +284,15 @@ function getSchedules(scheduleIds) {
     Join Station As Station2 On Parts.Station2Id = Station2.Id
     Join Station As DepStation On Route.DepartureStationId=DepStation.Id
     Join Station As ArrStation On Route.ArrivalStationId=ArrStation.Id
-    Where Schedule.Id=${scheduleId.Id}
+    Where Schedule.Id=${Id}
     `;
-    let requestDB = dbPath.prepare(query);
-    let result = requestDB.all();
-    schedules.push(result);
-  });
-  return schedules;
+  let requestDB = dbPath.prepare(query);
+  let result = requestDB.all();
+  return result;
 }
-function getDepartureAndArrivalTimeForSelectStations(schedulesString, departureStationSearch, arrivalStationSearch) {
+function getDepartureAndArrivalTimeForSelectedStations(schedulesString, departureStationSearch, arrivalStationSearch) {
 
   let schedules = JSON.parse(schedulesString);
-
   let newSchedule = [];
 
   schedules.forEach(scheduleId => {
@@ -620,3 +520,74 @@ function getStationId(name) {
   let res = requestDB.all();
   return res[0].Id;
 }
+
+// Schedule: DepartureTimeRoute, DepartureRoute, DeparturePart,ArrivalPart
+function getDepartureAndArrivalTimeForSelectedStations2(scheduleString, departureStationSearch, arrivalStationSearch) {
+
+  let schedule = JSON.parse(scheduleString);
+  let newScheduleRow = {};
+  newScheduleRow.DepartureTime = null;
+  let time = moment(schedule.DepartureTime, "YYYY-MM-DD HH:mm");
+  let station = schedule.DepartureRoute;
+  while (true) {
+    let part = schedule.find(p => p.DeparturePart === station);
+    if (station === departureStationSearch) {
+      newScheduleRow.DepartureTime = time.format("YYYY-MM-DD HH:mm");
+    }
+    station = part.ArrivalPart;
+    time = addTime(time, moment(part.TransiteTime, "HH:mm"));
+    if (newScheduleRow.DepartureTime !== null) price = price + part.Price;
+    if (station === arrivalStationSearch) {
+      newScheduleRow.ArrivalTime = time.format("YYYY-MM-DD HH:mm");
+      break;
+    }
+    time = addTime(time, moment(part.StopTime, "HH:mm"));
+  };
+  return newScheduleRow;
+}
+
+app.get('/api/db/gettickets', (request, response) => {
+
+  var query = `
+    Select Ticket.email, Ticket.Id AS TicketNumber, Ticket.Price, Schedule.Id, Schedule.TrainId, Train.Name, Departure.Name AS Departure,
+    Arrival.Name AS Arrival, Ticket.SeatGuid, Seat.WagonNr, Seat.SeatId
+    From Ticket
+    Join Schedule On Schedule.Id=Ticket.ScheduleId
+    Join Train On Schedule.TrainId = Train.Id
+    Join Seat On Ticket.SeatGuid = Seat.Id
+    Join Station As Departure On Ticket.FromStationId = Departure.Id
+    Join Station As Arrival On Ticket.ToStationId = Arrival.Id
+    Where Ticket.OrderId = '${request.query.order}'
+  `;
+
+  let requestDB = dbPath.prepare(query);
+  let result = requestDB.all();
+  let scheduleIds = [];
+  result.forEach(res => {
+    let IdRow = {};
+    IdRow.Id = res.Id;
+    scheduleIds.push(IdRow);
+  });
+  let schedules = getSchedules(scheduleIds);
+  let DepArrTime = getDepartureAndArrivalTimeForSelectedStations(JSON.stringify(schedules), result[0].Departure, result[0].Arrival);
+  let allInfo = [];
+
+  for (let i = 0; i < result.length; i++) {
+    let newTicket = {};
+    newTicket.email= result[i].email;
+    newTicket.TicketNumber = result[i].TicketNumber;
+    newTicket.Price = result[i].Price;
+    newTicket.Departure = result[i].Departure;
+    newTicket.Arrival = result[i].Arrival;
+    newTicket.WagonNr = result[i].WagonNr;
+    newTicket.SeatId = result[i].SeatId;
+    newTicket.TrainId = result[i].TrainId;
+    newTicket.Name = result[i].Name;
+    newTicket.DepartureTime = DepArrTime[i].DepartureTime;
+    newTicket.ArrivalTime = DepArrTime[i].ArrivalTime;
+    allInfo.push(newTicket);
+  };
+  resultArr = Object.values(allInfo);
+  bookingInformation(Object.values(resultArr));
+});
+
