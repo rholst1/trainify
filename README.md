@@ -44,8 +44,8 @@ There is no specific code standard in this project.
 
 #### Database structure
 
-UML: 
-![DB_2](https://user-images.githubusercontent.com/70198472/149946050-10dbaccd-168c-47c2-8cc4-c9dde6268ad1.jpg) 
+UML: ![DB_2](https://user-images.githubusercontent.com/70198472/150436853-e6c29116-9662-4164-89d4-476fcfa925d8.jpg)
+
 
 # Run application:
  
@@ -53,10 +53,6 @@ frontend : first run npm install --save @stripe/react-stripe-js @stripe/stripe-j
 create a .env file and put the stripekey from StripePayment.js in it 
 then run npm start.
 
-trainify: first run npm install then npm start.
-=======
-Run: npm install --save @stripe/react-stripe-js @stripe/stripe-js
-frontend : npm run build
 
 
 
