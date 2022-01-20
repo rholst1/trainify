@@ -55,4 +55,13 @@ then run npm start.
 
 trainify: first run npm install then npm start.
 
+# Implemented functionality
+The user can:
+* select two stations and a date
+* get a list of tickets available for booking
+* select tickets
+* pay for the order
+* receive an email confirming the purchase.
+
+Tickets can be purchased from the train departure station to the final station. Intermediate stations "do not exist". The solution with intermediate stations is in the branch "dev". It was finished after 4 sprints and the final presentation and was not tested.
 
