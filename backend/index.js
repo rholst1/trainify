@@ -19,6 +19,7 @@ if (PORT == null || PORT == '') {
 const app = express();
 app.use(express.static(path.join(__dirname, '../frontend', 'build')));
 
+
 //middelware
 app.use(express.json());
 app.use(cors());
@@ -85,7 +86,6 @@ const { stringify } = require('querystring');
 
 // Database connector with DB path
 const dbPath = dbDriver('./backend/data/database.db');
-
 
 app.post('/api/db/post/:table', (request, response) => {
   try {

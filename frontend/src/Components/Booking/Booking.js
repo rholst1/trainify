@@ -13,6 +13,7 @@ class Booking extends React.Component {
         this.state = {
             seats: [],
             info: '',
+            infoString: '',
             selectedSeats: [],
             sortedSeats: [],
             sum: 0,
@@ -58,7 +59,7 @@ class Booking extends React.Component {
                 })
                 if (this.state.seats.length === 0) {
                     this.props.setSearch(false)
-                    this.props.setStation('Inga resor för valt datum finns.')
+                    this.props.setStation('Inga resor för valt datum och stationer finns.')
                 }
                 else {
                     this.setState({
@@ -157,22 +158,30 @@ class Booking extends React.Component {
 
         this.sendConfirmation(this.state.email+'_'+this.formatDate(date)+'_'+this.getTime(date));
 
-        var infoString = '';
+        
         if (this.state.error === true) {
-            infoString = 'Förlåt, köpet var inte slutfört. Kontakta kundtjänst.';
+            this.setState({
+                infoString: 'Köpet har inte slutförts. Kontakta kundtjänst.',
+                seats: [],
+                selectedSeats: [],
+                sum: 0,
+                email: '',
+                error: false
+            });
+            
         }
         else {
-            infoString = 'Köpet slutfört. Köpbekräftelse har skickats till din email.';
+            this.setState({
+                infoString: 'Köpet slutfört. Köpbekräftelse har skickats till ditt mejl.',
+                seats: [],
+                selectedSeats: [],
+                sum: 0,
+                email: '',
+                error: false
+            });
         }
 
-        this.setState({
-            seats: [],
-            info: infoString,
-            selectedSeats: [],
-            sum: 0,
-            email: '',
-            error: false
-        });
+       
 
     }
 
@@ -196,22 +205,20 @@ class Booking extends React.Component {
         console.log(this.state.emailError)
         if (validator.isEmail(email)) {
             this.setState({
-                emailError: 'Valid Email',
+                emailError: 'Giltig e-postadress',
                 email: email,
                 error:false
             })
           } else {
             this.setState({
-                emailError: 'Enter valid Email!',
+                emailError: 'Ange giltig e-postadress!',
                 email: email,
                 error: true
             })
-            // setEmailError('')
+          
           }
 
-        // this.setState({
-        //     email: event.target.value
-        // });
+      
     }
     calculatePrice(basePrice, departure) {
         var today = new Date();
@@ -287,8 +294,10 @@ class Booking extends React.Component {
                             <button className='BackArrow' onClick={() => this.handleClick()}>{<FaRegArrowAltCircleLeft />}</button>
                             </div>
                             <p>{this.state.info}
+                                
                                 <p className='Date'>{this.state.date}</p>
                             </p>
+                            
                         </div>
                         <div className="ResultWrapper">
                             <div className='ResultContainer' hidden={this.state.seats.length === 0}>
@@ -303,11 +312,11 @@ class Booking extends React.Component {
                                                 <th>Avgång </th>
                                                 <SortButton
                                                     text='▲'
-                                                    handleOnClick={() => this.handleSortDepartureDesc()}
+                                                    handleOnClick={() => this.handleSortDepartureAsc()}
                                                 />
                                                 <SortButton
                                                     text='▼'
-                                                    handleOnClick={() => this.handleSortDepartureAsc()}
+                                                    handleOnClick={() => this.handleSortDepartureDesc()}
                                                 />
 
                                             </div>
@@ -357,7 +366,7 @@ class Booking extends React.Component {
                                     </tbody>
                                 </table>
                             </div>
-
+                            
                             <div className='ViewContainer'>
                                 <div>
 
@@ -370,7 +379,7 @@ class Booking extends React.Component {
                                     <p className='Text'>Att betala: {this.state.sum} kr</p>
                                 </div>
 
-                                <div className='CardColumn'>
+                                <div className='CardColumn' hidden={this.state.selectedSeats.length === 0}>
                                     <input className='EmailContainer' hidden={this.state.selectedSeats.length === 0}
                                         required
                                         type="mail"
@@ -390,7 +399,9 @@ class Booking extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <p className="purchaseinfo">{this.state.infoString}</p>
                     </div>
+                    
                     :
                     <div></div>
                 }

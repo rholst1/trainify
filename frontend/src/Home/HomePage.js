@@ -6,6 +6,7 @@ import SearchStation from '../Components/Search/SearchStation';
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
 import SearchButton from '../Components/Button/SearchButton';
 
+import Footer from '../Components/Footer/Footer';
 import Image from '../Components/Image/Image';
 import Booking from '../Components/Booking/Booking';
 import { handle } from 'express/lib/application';
@@ -75,8 +76,10 @@ const HomePage = () => {
           <div>
             <p>{station} </p>
           </div>
-        )}
+          )}
+        <Footer />
       </div>
+     
     </>
   );
 };

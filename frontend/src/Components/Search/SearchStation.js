@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-// import Select from 'react-select';
 import './SearchStation.css';
 
 const SearchStation = (props) => {
@@ -67,19 +66,23 @@ const SearchStation = (props) => {
           className="SearchInput"
           typ="text"
           placeholder={props.input}
-          // onFocus={() => { setShowResult(true) }}
           onChange={(e) => onChangeHandler(e.target.value)}
           value={text}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              setText(suggestions[0].AdvertisedLocationName);
+              if(suggestions[0] !== undefined){
+                setText(suggestions[0].AdvertisedLocationName);
+                setSuggestions([]);
+                props.setValue(suggestions[0].AdvertisedLocationName);
+              }
+              else{
+                setText('');
+                setSuggestions([]);
+                props.setValue('');
+              }
             }
           }}
-          //onBlur = {() =>{
-          //    setTimeout(()=>{
-          //      setSuggestions([])
-          //}, 100)
-          //}}
+          
         ></input>
         <div className="StationContainer">
           {suggestions &&

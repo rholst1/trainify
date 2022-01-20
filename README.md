@@ -1,5 +1,5 @@
 # trainify
-Educational project that revolves around creating a Ticket booking app for a passenger-carrier railway company
+Educational project that revolves around creating a Ticket booking app for a passenger-carrier railway company.
 
 # Authors:
 
@@ -13,10 +13,51 @@ Educational project that revolves around creating a Ticket booking app for a pas
 * Sruthi Krishna Radhakrishnan Rajini
 * Awat Farah
 
+# Frameworks:
 
+* React App
+* SQLite (better-sql-lite3)
+* Node.js
+* Express 
+
+# Structure:
+
+.vs folder: 
+* Contains the storage of local user settings.
+
+.vscode folder:
+* Stores the debugger support.
+
+frontend folder:
+* Has a src folder with the subfolder API which contains Axios a HTTP client for node.js and the browser.
+* It also has the subfolder Components where all the React Components in this project lays in their own folders.
+* You can find the images and the index file in the public folder.
+
+backend folder: 
+*	data folder - contains a database file.
+*	index.js – the main file in backend - contains endpoints for app requests.
+*	nodemailer.js – contains code for sending email confirmation.
+*	databasescript.js – contains code for inserting data into the database. Run: node databasescript.js 
+
+ 
+There is no specific code standard in this project.
+
+#### Database structure
+
+UML: 
+![DB_2](https://user-images.githubusercontent.com/70198472/149946050-10dbaccd-168c-47c2-8cc4-c9dde6268ad1.jpg) 
+
+# Run application:
+ 
+frontend : first run npm install --save @stripe/react-stripe-js @stripe/stripe-js,
+create a .env file and put the stripekey from StripePayment.js in it 
+then run npm start.
+
+trainify: first run npm install then npm start.
+=======
 Run: npm install --save @stripe/react-stripe-js @stripe/stripe-js
 frontend : npm run build
-#### Database structure
-![DB_2](https://user-images.githubusercontent.com/70198472/149946050-10dbaccd-168c-47c2-8cc4-c9dde6268ad1.jpg)
+
+
 
 

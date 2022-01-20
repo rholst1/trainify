@@ -34,8 +34,6 @@
     flex-direction: column;
     width: 60%;
     height: 530px;
-    /* overflow: hidden;
-    overflow: scroll; */
     padding-left: 2rem;
     height: auto;
 }
@@ -46,21 +44,7 @@
     color: black;
     font-size: 13px;
 }
- 
-/* .ResultContainer::-webkit-scrollbar {
- display: none;
-}
-.ResultContainer {
-    -ms-overflow-style: none;
-     scrollbar-width: none;
-}
 
-.ResultContainer::-webkit-scrollbar { 
-    display: none;
-}
-.ResultContainer { -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
 th{
    padding: 3px;
     padding-right: 10px;
@@ -92,6 +76,7 @@ th{
 .ResultWrapper{
     font-size: 16px; 
     border-radius: 13px;
+    margin-bottom: -310px;
     display: block;
 }
 .ResultContainer{
@@ -103,7 +88,7 @@ th{
     width: 94%;
      }
      .ViewContainer{
-    margin-top: 0px;
+    margin-top: 38px;
     margin-left: 54px;
     width: 73%;
 
@@ -111,19 +96,16 @@ th{
      .ViewContainer li{
     font-size: 17px;
      }
-     /* .ViewContainer p,.ViewContainer li,.Paybtn{
-    margin-left: 12px;
-     } */
     
 .BookingWrapper p{
-    font-size: 23px;
+    font-size: 21px;
      }
 .BookingWrapper p.Date{
     font-size: 20px;
      }
 
- /* .CardColumn{
-    margin-left: -18px;
-     } */
-     
+.purchaseinfo{
+    margin-top: 489px;
+    margin-bottom: -160px;
+     }
  }
