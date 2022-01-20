@@ -53,6 +53,15 @@ frontend : first run npm install --save @stripe/react-stripe-js @stripe/stripe-j
 create a .env file and put the stripekey from StripePayment.js in it 
 then run npm start.
 
+# Implemented functionality
+The user can:
+* select two stations and a date
+* get a list of tickets available for booking
+* select tickets
+* pay for the order
+* receive an email confirming the purchase
+* the user can book a place both from/to the final stations and from/to the intermediate ones.
+
 
 
 
