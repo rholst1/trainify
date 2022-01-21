@@ -165,7 +165,6 @@ class Booking extends React.Component {
                 email: '',
                 error: false
             });
-            
         }
         else {
             this.setState({
@@ -177,9 +176,6 @@ class Booking extends React.Component {
                 error: false
             });
         }
-
-       
-
     }
 
     // returns date in the format 'YYYY-MM-DD'
