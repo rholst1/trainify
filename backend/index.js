@@ -14,7 +14,6 @@ if (PORT == null || PORT == '') {
   PORT = 3001;
 }
 
-
 const app = express();
 app.use(express.static(path.join(__dirname, '../frontend', 'build')));
 
@@ -25,11 +24,6 @@ app.use(cors());
 
 // View Engine Setup
 app.set('view engine', 'ejs');
-
-//routes
-app.get('/', (req, res) => {
-  res.send('test Randa');
-});
 
 app.post('/paymentTwo', cors(), async (req, res) => {
   let { amount, id } = req.body;
@@ -56,26 +50,6 @@ app.post('/paymentTwo', cors(), async (req, res) => {
   }
 });
 
-app.post('/payment', (req, res) => {
-  const { product, token } = req.body;
-  console.log('Product', product);
-  console.log('Price', product.price);
-  //const idempontencyKey = uuid()
-
-  return stripe.customers
-    .create({
-      email: token.email,
-      source: token.id,
-    })
-    .then((customer) => {
-      stripe.charges.create({
-        amount: product.price * 100,
-      });
-    })
-    .then((result) => res.status(200).json(result))
-    .catch((err) => console.log(err));
-});
-
 // Driver for better-sqlite3
 const dbDriver = require('better-sqlite3');
 const { format } = require('path');
@@ -84,40 +58,6 @@ const { query } = require('express');
 
 // Database connector with DB path
 const dbPath = dbDriver('./backend/data/database.db');
-
-// GET Function that grabs tablename and ID dynamically
-// example: localhost:3001/api/db/getid/Ticket/1 <--- Get you all the data from Ticket table with ID 1
-app.get('/api/db/getid/:table/:id', (request, response) => {
-  let query = `
-      SELECT * 
-      FROM ${request.params.table}
-      WHERE id = :id
-      `;
-
-  let fetchIdFromDatabase = dbPath.prepare(query);
-  console.log('GET request input: ', request.params);
-  let result = fetchIdFromDatabase.all({ id: request.params.id });
-
-  response.json(result);
-  console.log('GET request returned data (from DB): ', result);
-});
-
-// GET Function that grabs table name and email dynamically
-// example localhost:3001/api/db/getemail/(db table)/(email in db) <--- Gets you all db info connected to the email in that row
-app.get('/api/db/getemail/:table/:email', (request, response) => {
-  let query = `
-      SELECT * 
-      FROM ${request.params.table}
-      WHERE email = :email
-      `;
-
-  let fetchEmailFromDatabase = dbPath.prepare(query);
-  console.log('GET request input: ', request.params);
-  let result = fetchEmailFromDatabase.all({ email: request.params.email });
-
-  response.json(result);
-  console.log('GET request returned data (from DB): ', result);
-});
 
 
 app.post('/api/db/post/:table', (request, response) => {
@@ -151,24 +91,9 @@ app.post('/api/db/post/:table', (request, response) => {
   }
 });
 
-// Get function that returns a list of stations
-// example: localhost:3001/api/db/getstations
-app.get('/api/db/getstations', (request, response) => {
-  let query = `
-        SELECT *
-        FROM Station
-        `;
-
-  let requestDB = dbPath.prepare(query);
-  console.log('GET request - get all stations');
-  let result = requestDB.all();
-  response.json(result);
-  console.log('GET request returned data (from DB): ', result);
-});
-
-// GET function that takes as input parameters DepartureStationId, ArrivalStationId and day,
+// GET function that takes as input parameters DepartureStation, ArrivalStation and day,
 // rerturns a list of seats available for booking.
-// example: http://localhost:3001/api/db/getunoccupiedseats?from=1&to=2&day=2022-02-01
+// example: http://localhost:3001/api/db/getunoccupiedseats?from='Göteborg C'&to='Stockholm Central'&day=2022-02-01
 app.get('/api/db/getunoccupiedseats', (request, response) => {
   let day = new Date(request.query.day);
   let nextDay = new Date(day);
@@ -219,6 +144,8 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
+// Returns tickets from a specific order
+// example: http://localhost:3001/api/db/gettickets?order=test@test.com_2022-01-20_10:39`
 app.get('/api/db/gettickets', (request, response) => {
 
   var query = `

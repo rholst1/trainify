@@ -2,7 +2,7 @@ const dbDriver = require('better-sqlite3');
 const { format } = require('path');
 const { error, log } = require('console');
 const moment = require('moment');
-const dbPath = dbDriver('./backend/data/database.db');
+const dbPath = dbDriver('../backend/data/database.db');
 
 let startDate = moment('2022-04-01');
 let endDate = moment('2022-07-01');
