@@ -65,3 +65,5 @@ The user can:
 
 Tickets can be purchased from the train departure station to the final station. Intermediate stations "do not exist". The solution with intermediate stations is in the branch "dev". It was finished after 4 sprints and the final presentation and was not tested.
 
+# Continuous deployment
+The code is being deployed to [heroku](https://trainify-app.herokuapp.com/)  
