@@ -55,6 +55,8 @@ then run npm start.
 
 trainify: first run npm install then npm start.
 
+link to server on Heroku: https://trainify-app.herokuapp.com/
+
 # Implemented functionality
 The user can:
 * select two stations and a date
